@@ -3,16 +3,25 @@ package core.domain.models;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import core.domain.enums.ManifestationType;
+import core.utils.JsonDateDeserializer;
+import core.utils.JsonDateSerializer;
 
 public class Manifestation extends BaseEntity {
 	private String name;
 	private ManifestationType type;
 	private int seats;
+	@JsonSerialize(using = JsonDateSerializer.class)
+	@JsonDeserialize(using = JsonDateDeserializer.class)
 	private LocalDateTime eventDate;
 	private int regularTicketPrice;
 	private boolean status;
 	private UUID locationId;
+	@JsonIgnore
 	private Location location;
 	
 	public Manifestation()

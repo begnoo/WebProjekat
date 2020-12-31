@@ -3,8 +3,16 @@ package core.domain.models;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import core.utils.JsonDateDeserializer;
+import core.utils.JsonDateSerializer;
+
 public abstract class BaseEntity {
 	private UUID id;
+	@JsonSerialize(using = JsonDateSerializer.class)
+	@JsonDeserialize(using = JsonDateDeserializer.class)
 	private LocalDateTime createdAt;
 	private boolean active;
 	

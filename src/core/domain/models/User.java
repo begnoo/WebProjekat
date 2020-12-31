@@ -2,8 +2,13 @@ package core.domain.models;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import core.domain.enums.Gender;
 import core.domain.enums.UserRole;
+import core.utils.JsonDateDeserializer;
+import core.utils.JsonDateSerializer;
 
 public abstract class User extends BaseEntity {
 	private String Username;
@@ -11,6 +16,8 @@ public abstract class User extends BaseEntity {
 	private String Name;
 	private String Surname;
 	private Gender gender;
+	@JsonSerialize(using = JsonDateSerializer.class)
+	@JsonDeserialize(using = JsonDateDeserializer.class)
 	private LocalDateTime birthdate;
 	private UserRole role;
 	
