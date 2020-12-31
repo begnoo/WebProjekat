@@ -10,7 +10,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
-import model.TestObject;
+import core.TestObject;
 
 @Path("/try")
 public class TryService {
