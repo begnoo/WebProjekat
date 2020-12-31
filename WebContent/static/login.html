@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="ISO-8859-1">
+	<title>Login</title>
+	<link rel="stylesheet" href="lib/bootstrap/css/bootstrap.css" >
+	<script src="lib/js/vue.js"></script>
+	<script src="js/loginForm.js"></script>
+</head>
+<body>
+	<div id="loginApp" class="d-flex justify-content-center min-vh-100 align-items-center">
+		<div class="row">
+				<form id="loginForm" @submit="reportLogin">
+				<div class="mb-3">
+					<label for="textField" class="form-label">Username</label>
+					<input type="text" class="form-control" id="textField" v-model="username">
+				</div>
+				<div class="mb-3">
+					<label for="inputPassword" class="form-label">Password</label>
+					<input type="password" class="form-control" id="inputPassword" v-model="password">
+				</div>
+				<button type="submit" class="btn btn-primary">Submit</button>
+				</form>
+				<div class="randomDataDiv">
+					<ul id="radnomDataList">
+						<li v-for="prop in randomData" :key="prop">
+							{{prop}}
+						</li>
+					</ul>
+					<input type="button" value="Get a beer" v-on:click="getRandomData">
+				</div>
+		</div>
+		
+	</div>
+</body>
+</html>
