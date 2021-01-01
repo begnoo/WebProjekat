@@ -21,10 +21,26 @@ public class DbSet<T extends BaseEntity> implements IDbSet<T> {
 	
 	public DbSet(Class<T> classType)
     {
-		this.classType = classType;
+		this(classType, new DefaultEntitiesSerializator<T>(), new DefaultEntitiesDeserializator<T>(classType));
+	}
+	
+	public DbSet(Class<T> classType, IEntitiesSerializator<T> serializator)
+    {
+		this(classType, serializator, new DefaultEntitiesDeserializator<T>(classType));
+	}
+
+	
+	public DbSet(Class<T> classType, IEntitiesDeserializator<T> deserializator)
+    {
+		this(classType, new DefaultEntitiesSerializator<T>(), deserializator);
+	}
+	
+	public DbSet(Class<T> classType, IEntitiesSerializator<T> serializator, IEntitiesDeserializator<T> deserializator)
+	{
 		this.entities = new HashMap<UUID, T>();
-		this.serializator = new DefaultEntitiesSerializator<T>();
-		this.deserializator = new DefaultEntitiesDeserializator<T>(this.classType);
+		this.classType = classType;
+		this.serializator = serializator;
+		this.deserializator = deserializator;
 		loadEntities();
 	}
 	
@@ -83,4 +99,13 @@ public class DbSet<T extends BaseEntity> implements IDbSet<T> {
 	{
 		return getDbSetName() + ".json";
 	}
+	
+	public void setSerializator(IEntitiesSerializator<T> serializator) {
+		this.serializator = serializator;
+	}
+
+	public void setDeserializator(IEntitiesDeserializator<T> deserializator) {
+		this.deserializator = deserializator;
+	}
+
 }

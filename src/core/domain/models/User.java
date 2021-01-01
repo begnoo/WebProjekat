@@ -2,9 +2,6 @@ package core.domain.models;
 
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -13,13 +10,7 @@ import core.domain.enums.UserRole;
 import core.utils.JsonDateDeserializer;
 import core.utils.JsonDateSerializer;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
-@JsonSubTypes({
-	  @JsonSubTypes.Type(value = Buyer.class, name = "Buyer"),
-	  @JsonSubTypes.Type(value = Seller.class, name = "Seller"),
-	  @JsonSubTypes.Type(value = Administrator.class, name = "Administrator")
-})
+
 public abstract class User extends BaseEntity {
 	private String Username;
 	private String Password;
