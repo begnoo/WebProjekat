@@ -8,14 +8,16 @@ import core.domain.dto.Credidentals;
 import core.domain.models.User;
 import core.repository.IRepository;
 import core.service.IAuthorizationService;
+import core.service.IJwtService;
 
 public class AuthorizationService implements IAuthorizationService {
-	
     private IRepository<User> userRepository;
+    private IJwtService jwtService;
 
-	public AuthorizationService(IRepository<User> userRepository) {
+	public AuthorizationService(IRepository<User> userRepository, IJwtService jwtService) {
 		super();
         this.userRepository = userRepository;
+        this.jwtService = jwtService;
 	}
 	
     @Override
@@ -26,11 +28,12 @@ public class AuthorizationService implements IAuthorizationService {
             .filter(user -> user.getPassword().equals(credidentals.getPassword()))
             .collect(Collectors.toList());
         
-        AuthorizedUser userToLogin = null;
+        AuthorizedUser authorizedUser = null;
         if(!users.isEmpty()){
-            userToLogin = new AuthorizedUser(users.get(0), "");
+        	User userToLogin = users.get(0); 
+			authorizedUser = new AuthorizedUser(userToLogin, jwtService.generateJwtTokenForUser(userToLogin.getId()));
         }
-        return userToLogin;
+        return authorizedUser;
     }
 	
 }
