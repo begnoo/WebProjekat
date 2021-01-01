@@ -54,6 +54,12 @@ public class DbSet<T extends BaseEntity> implements IDbSet<T> {
 	public List<T> read() {
 		return new ArrayList<T>(entities.values());
 	}
+	
+	@Override
+	public T read(UUID id) {
+		return entities.get(id);
+	}
+
 
 	@Override
 	public boolean remove(UUID id) {

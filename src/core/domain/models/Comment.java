@@ -2,10 +2,14 @@ package core.domain.models;
 
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Comment extends BaseEntity {
 	private UUID buyerId;
+	@JsonIgnore
 	private Buyer buyer;
 	private UUID manifestationId;
+	@JsonIgnore
 	private Manifestation manifestation;
 	private String text;
 	private int rating;

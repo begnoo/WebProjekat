@@ -5,13 +5,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import core.domain.enums.Gender;
 import core.domain.enums.UserRole;
 
 public class Buyer extends User {
+	@JsonIgnore
 	private List<Ticket> tickets;
 	private int points;
 	private UUID buyerTypeId;
+	@JsonIgnore
 	private BuyerType type;
 	
 	public Buyer()

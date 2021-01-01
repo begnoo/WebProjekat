@@ -23,6 +23,9 @@ public class Manifestation extends BaseEntity {
 	private UUID locationId;
 	@JsonIgnore
 	private Location location;
+	private UUID sellerId;
+	@JsonIgnore
+	private Seller seller;
 	
 	public Manifestation()
 	{
@@ -30,7 +33,7 @@ public class Manifestation extends BaseEntity {
 	}
 
 	public Manifestation(String name, ManifestationType type, int seats, LocalDateTime eventDate,
-			int regularTicketPrice, boolean status, UUID locationId, Location location) {
+			int regularTicketPrice, boolean status, UUID locationId, Location location, UUID sellerId, Seller seller) {
 		super();
 		this.name = name;
 		this.type = type;
@@ -40,6 +43,8 @@ public class Manifestation extends BaseEntity {
 		this.status = status;
 		this.locationId = locationId;
 		this.location = location;
+		this.sellerId = sellerId;
+		this.seller = seller;
 	}
 
 	public String getName() {
@@ -104,6 +109,21 @@ public class Manifestation extends BaseEntity {
 
 	public void setLocation(Location location) {
 		this.location = location;
-	
+	}
+
+	public UUID getSellerId() {
+		return sellerId;
+	}
+
+	public void setSellerId(UUID sellerId) {
+		this.sellerId = sellerId;
+	}
+
+	public Seller getSeller() {
+		return seller;
+	}
+
+	public void setSeller(Seller seller) {
+		this.seller = seller;
 	}
 }

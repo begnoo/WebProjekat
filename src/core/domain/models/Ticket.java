@@ -3,6 +3,7 @@ package core.domain.models;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -14,12 +15,14 @@ import core.utils.JsonDateSerializer;
 public class Ticket extends BaseEntity {
 	private String uniqueId;
 	private UUID manifestationId;
+	@JsonIgnore
 	private Manifestation manifestation;
 	@JsonSerialize(using = JsonDateSerializer.class)
 	@JsonDeserialize(using = JsonDateDeserializer.class)
 	private LocalDateTime manifestationDate;
 	private int price;
 	private UUID buyerId;
+	@JsonIgnore
 	private Buyer buyer;
 	private TicketStatus status;
 	private TicketType type;

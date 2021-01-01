@@ -30,6 +30,7 @@ public class UsersDeserializator implements IEntitiesDeserializator<User>{
 		this.mapper = new ObjectMapper();
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public List<User> Deserialize(String fileName) throws JsonParseException, JsonMappingException, IOException {
 		List<User> users = new ArrayList<User>();

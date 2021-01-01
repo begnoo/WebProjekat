@@ -10,6 +10,8 @@ public interface IDbSet<T extends BaseEntity> {
 	
 	List<T> read();
 	
+	T read(UUID id);
+	
 	boolean remove(UUID id);
 	
 	void save();

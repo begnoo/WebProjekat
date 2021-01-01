@@ -9,7 +9,15 @@ import core.domain.models.Manifestation;
 import core.domain.models.Ticket;
 import core.domain.models.User;
 import core.repository.IDbSet;
+import core.repository.IDependencyLoader;
+import repository.utils.loaders.BuyerDependencyLoader;
+import repository.utils.loaders.CommentDependencyLoader;
+import repository.utils.loaders.ManifestationDependencyLoader;
+import repository.utils.loaders.SellerDependencyLoader;
+import repository.utils.loaders.TicketDependencyLoader;
 
+
+@SuppressWarnings("unused")
 public class DbContext {
 	private IDbSet<User> users;
 	private IDbSet<BuyerType> buyerTypes;
@@ -20,12 +28,35 @@ public class DbContext {
 	
 	public DbContext()
 	{
+		InitializeSets();
+		LoadDependencies();
+	}
+	
+	private void InitializeSets()
+	{
 		this.users = new DbSet<User>(User.class, new UsersDeserializator());
 		this.buyerTypes = new DbSet<BuyerType>(BuyerType.class);
 		this.locations = new DbSet<Location>(Location.class);
 		this.manifestations = new DbSet<Manifestation>(Manifestation.class);
 		this.tickets = new DbSet<Ticket>(Ticket.class);
 		this.comments = new DbSet<Comment>(Comment.class);
+	}
+	
+	private void LoadDependencies()
+	{
+		IDependencyLoader[] loaders = new IDependencyLoader[]
+		{
+			new BuyerDependencyLoader(this),
+			new CommentDependencyLoader(this),
+			new ManifestationDependencyLoader(this),
+			new SellerDependencyLoader(this),
+			new TicketDependencyLoader(this)
+		};
+		
+		for(IDependencyLoader loader : loaders)
+		{
+			loader.Load();
+		}
 	}
 	
 	public IDbSet<?> getSet(Class<?> classType)

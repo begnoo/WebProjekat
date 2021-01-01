@@ -4,10 +4,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import core.domain.enums.Gender;
 import core.domain.enums.UserRole;
 
 public class Seller extends User {
+	@JsonIgnore
 	List<Manifestation> manifestations;
 	
 	public Seller()

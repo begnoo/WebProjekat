@@ -2,8 +2,6 @@ package repository;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 import core.domain.models.BaseEntity;
 import core.repository.IRepository;
@@ -11,6 +9,7 @@ import core.repository.IRepository;
 public class Repository<T extends BaseEntity> implements IRepository<T>{
 	private DbSet<T> entities;
 	
+	@SuppressWarnings("unchecked")
 	public Repository(DbContext context, Class<T> classType)
 	{
 		this.entities = (DbSet<T>) context.getSet(classType);
@@ -31,14 +30,7 @@ public class Repository<T extends BaseEntity> implements IRepository<T>{
 
 	@Override
 	public T read(UUID id) {
-		
-	    Predicate<T> filterById = entity -> entity.getId().equals(id);
-	    
-		return entities.read()
-					   .stream()
-					   .filter(filterById)
-					   .collect(Collectors.toList())
-					   .get(0);
+		return entities.read(id);
 	}
 
 	@Override
