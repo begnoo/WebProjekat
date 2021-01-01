@@ -9,12 +9,11 @@ import core.domain.models.Manifestation;
 import core.domain.models.Ticket;
 import core.domain.models.User;
 import core.repository.IDbSet;
-import core.repository.IDependencyLoader;
-import repository.utils.loaders.BuyerDependencyLoader;
-import repository.utils.loaders.CommentDependencyLoader;
-import repository.utils.loaders.ManifestationDependencyLoader;
-import repository.utils.loaders.SellerDependencyLoader;
-import repository.utils.loaders.TicketDependencyLoader;
+import repository.utils.loaders.list.BuyersDependencyLoader;
+import repository.utils.loaders.list.CommentsDependencyLoader;
+import repository.utils.loaders.list.ManifestationsDependencyLoader;
+import repository.utils.loaders.list.SellersDependencyLoader;
+import repository.utils.loaders.list.TicketsDependencyLoader;
 
 
 @SuppressWarnings("unused")
@@ -44,19 +43,11 @@ public class DbContext {
 	
 	private void LoadDependencies()
 	{
-		IDependencyLoader[] loaders = new IDependencyLoader[]
-		{
-			new BuyerDependencyLoader(this),
-			new CommentDependencyLoader(this),
-			new ManifestationDependencyLoader(this),
-			new SellerDependencyLoader(this),
-			new TicketDependencyLoader(this)
-		};
-		
-		for(IDependencyLoader loader : loaders)
-		{
-			loader.Load();
-		}
+			new BuyersDependencyLoader(this).load(users.read());
+			new CommentsDependencyLoader(this).load(comments.read());
+			new ManifestationsDependencyLoader(this).load(manifestations.read());
+			new SellersDependencyLoader(this).load(users.read());
+			new TicketsDependencyLoader(this).load(tickets.read());
 	}
 	
 	public IDbSet<?> getSet(Class<?> classType)

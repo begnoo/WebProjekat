@@ -1,4 +1,4 @@
-package repository.utils.loaders;
+package repository.utils.loaders.single;
 
 import core.domain.enums.UserRole;
 import core.domain.models.Manifestation;
@@ -8,29 +8,24 @@ import core.repository.IDependencyLoader;
 import repository.DbContext;
 import repository.DbSet;
 
-public class SellerDependencyLoader implements IDependencyLoader{
-	private DbSet<User> users;
+public class SellerDependencyLoader implements IDependencyLoader<User> {
 	private DbSet<Manifestation> manifestations;
 
 	@SuppressWarnings("unchecked")
 	public SellerDependencyLoader(DbContext context)
 	{
-		users = (DbSet<User>) context.getSet(User.class);
 		manifestations = (DbSet<Manifestation>) context.getSet(Manifestation.class);
 	}
 	
 	@Override
-	public void Load() {
-		for(User user : users.read()) {
-			if(user.getRole() != UserRole.Seller) {
-				continue;
-			}
-			
-			Seller seller = (Seller) user;
-		
-			LoadManifestationsForSeller(seller);
+	public void load(User user) {
+		if(user.getRole() != UserRole.Seller) {
+			return;
 		}
 		
+		Seller seller = (Seller) user;
+	
+		LoadManifestationsForSeller(seller);
 	}
 
 	private void LoadManifestationsForSeller(Seller seller) {

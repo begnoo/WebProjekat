@@ -1,6 +1,6 @@
 package core.repository;
 
-public interface IDependencyLoader {
+public interface IDependencyLoader<T> {
 
-	void Load();
+	void load(T entity);
 }

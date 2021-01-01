@@ -1,4 +1,4 @@
-package repository.utils.loaders;
+package repository.utils.loaders.single;
 
 import core.domain.models.Buyer;
 import core.domain.models.Comment;
@@ -8,29 +8,23 @@ import core.repository.IDependencyLoader;
 import repository.DbContext;
 import repository.DbSet;
 
-public class CommentDependencyLoader implements IDependencyLoader {
-	private DbSet<Comment> comments;
+public class CommentDependencyLoader implements IDependencyLoader<Comment> {
 	private DbSet<User> users;
 	private DbSet<Manifestation> manifestations;
 	
 	@SuppressWarnings("unchecked")
 	public CommentDependencyLoader(DbContext context)
 	{
-		this.comments = (DbSet<Comment>) context.getSet(Comment.class);
 		this.users = (DbSet<User>) context.getSet(User.class);
 		this.manifestations = (DbSet<Manifestation>) context.getSet(Manifestation.class);
 	}
 	
 	@Override
-	public void Load() {
-		for(Comment comment : comments.read()) {
-			Buyer commenter = (Buyer) users.read(comment.getBuyerId());
-			comment.setBuyer(commenter);
-			
-			Manifestation manifestation = manifestations.read(comment.getManifestationId());
-			comment.setManifestation(manifestation);
-		}
+	public void load(Comment comment) {
+		Buyer commenter = (Buyer) users.read(comment.getBuyerId());
+		comment.setBuyer(commenter);
 		
+		Manifestation manifestation = manifestations.read(comment.getManifestationId());
+		comment.setManifestation(manifestation);
 	}
-
 }
