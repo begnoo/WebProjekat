@@ -51,8 +51,9 @@ public class TicketService extends CrudService<Ticket> implements ITicketService
 
 	@Override
 	public Ticket create(Ticket entity) {
+		//TODO: Dodati uniqeId
 		entity.setStatus(TicketStatus.Reserved);
 		return repository.create(entity);
 	}
-
+	
 }
