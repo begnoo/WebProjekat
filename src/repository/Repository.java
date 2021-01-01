@@ -7,11 +7,13 @@ import core.domain.models.BaseEntity;
 import core.repository.IRepository;
 
 public class Repository<T extends BaseEntity> implements IRepository<T>{
+	protected DbContext context;
 	protected DbSet<T> entities;
 	
 	@SuppressWarnings("unchecked")
 	public Repository(DbContext context, Class<T> classType)
 	{
+		this.context = context;
 		this.entities = (DbSet<T>) context.getSet(classType);
 	}
 	
