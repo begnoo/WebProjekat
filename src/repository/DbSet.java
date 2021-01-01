@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import core.domain.models.BaseEntity;
 import core.repository.IDbSet;
@@ -52,29 +53,44 @@ public class DbSet<T extends BaseEntity> implements IDbSet<T> {
 
 	@Override
 	public List<T> read() {
-		return new ArrayList<T>(entities.values());
+		List<T> allEntities = new ArrayList<T>(entities.values());
+		List<T> activeEntities = allEntities.stream()
+											.filter(entity -> entity.isActive())
+											.collect(Collectors.toList());
+		
+		return activeEntities;
 	}
 	
 	@Override
 	public T read(UUID id) {
-		return entities.get(id);
+		T entity = entities.get(id);
+		
+		if(entity == null || entity.isActive() == false)
+		{
+			return null;
+		}
+		
+		return entity;
 	}
 
 
 	@Override
 	public boolean remove(UUID id) {
-		if(!entities.containsKey(id)) {
+		T entityForRemoval = entities.get(id);
+		
+		if(entityForRemoval == null || !entityForRemoval.isActive()) {
 			return false;
 		}
 		
-		entities.remove(id);
+		entityForRemoval.setActive(false);
 		return true;
 	}
 
 	@Override
 	public void save() {
+		
 		try {
-			serializator.Serialize(getFileName(), read());
+			serializator.Serialize(getFileName(), new ArrayList<T>(entities.values()));
 		} catch (Exception e) {
 			System.out.println("Problem while saving " + getDbSetName());
 		}
