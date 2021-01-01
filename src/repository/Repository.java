@@ -36,9 +36,7 @@ public class Repository<T extends BaseEntity> implements IRepository<T>{
 	@Override
 	public T update(T entityForUpdate) {
 		T entity = read(entityForUpdate.getId());
-		
 		entity = entityForUpdate;
-		
 		entities.save();
 		
 		return entity;
