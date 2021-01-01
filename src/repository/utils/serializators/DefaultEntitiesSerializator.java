@@ -1,4 +1,4 @@
-package repository;
+package repository.utils.serializators;
 
 import java.io.File;
 import java.io.IOException;

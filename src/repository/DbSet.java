@@ -11,6 +11,8 @@ import core.domain.models.BaseEntity;
 import core.repository.IDbSet;
 import core.repository.IEntitiesDeserializator;
 import core.repository.IEntitiesSerializator;
+import repository.utils.deserializators.DefaultEntitiesDeserializator;
+import repository.utils.serializators.DefaultEntitiesSerializator;
 
 
 public class DbSet<T extends BaseEntity> implements IDbSet<T> {

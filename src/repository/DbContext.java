@@ -9,6 +9,7 @@ import core.domain.models.Manifestation;
 import core.domain.models.Ticket;
 import core.domain.models.User;
 import core.repository.IDbSet;
+import repository.utils.deserializators.UsersDeserializator;
 import repository.utils.loaders.list.BuyersDependencyLoader;
 import repository.utils.loaders.list.CommentsDependencyLoader;
 import repository.utils.loaders.list.ManifestationsDependencyLoader;
