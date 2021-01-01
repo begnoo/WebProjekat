@@ -1,9 +1,12 @@
 package services;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import core.domain.dto.TicketOrder;
+import core.domain.enums.TicketStatus;
 import core.domain.enums.TicketType;
 import core.domain.models.Buyer;
 import core.domain.models.Manifestation;
@@ -15,15 +18,16 @@ import core.service.IUserService;
 
 public class TicketOrderService implements ITicketOrderService {
 
-	ITicketService ticketService;
-	IUserService userService;
-	IManifestationService manifestationService;
+	private ITicketService ticketService;
+	private IUserService userService;
+	private IManifestationService manifestationService;
 
 
 	public TicketOrderService(ITicketService ticketService, IUserService userService,
 			IManifestationService manifestationService) {
 		this.ticketService = ticketService;
 		this.userService = userService;
+		this.manifestationService = manifestationService;
 	}
 
 	@Override
@@ -36,24 +40,38 @@ public class TicketOrderService implements ITicketOrderService {
 				(ticketType, numberOfTickets) -> 
 				{
 					for(int i = 0; i < numberOfTickets; ++i) {
-						Ticket ticket = new Ticket();
-						ticket.setBuyer(buyer);
-						ticket.setBuyerId(buyer.getId());
-						ticket.setManifestation(manifestation);
-						ticket.setManifestationId(manifestation.getId());
-						ticket.setType(ticketType);
-						ticket.setPrice(getPriceOfTicket(manifestation.getRegularTicketPrice(), ticketType));
 						
-						tickets.add(ticket);
+						int price = getPriceOfTicket(manifestation.getRegularTicketPrice(), ticketType);
+						int priceWithDiscount = getPriceOfTicketWithDiscount(price, buyer);
+						
+						Ticket ticket = new  Ticket(
+								"", 
+								manifestation.getId(), 
+								manifestation, 
+								manifestation.getEventDate(),
+								priceWithDiscount, 
+								buyer.getId(), 
+								buyer, 
+								TicketStatus.Reserved, 
+								ticketType);
+						
+						tickets.add(ticketService.create(ticket));
 					}
 				}
 				);
+		
 		return tickets;
 	}
 	
 	public int getPriceOfTicket(int regularPrice, TicketType ticketType) {
 		int typeModifier = ticketType.getModifier();
 		return regularPrice * typeModifier;
+	}
+	
+	public int getPriceOfTicketWithDiscount(int price, Buyer buyer) {
+		double discount = (100 - buyer.getType().getDiscount()) / 100;
+		int priceWithDiscount = (int) (price*discount);
+		return priceWithDiscount;
 	}
 
 
