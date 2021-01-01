@@ -3,7 +3,9 @@ package core.repository;
 import java.util.List;
 import java.util.UUID;
 
-public interface IRepository<T> {
+import core.domain.models.BaseEntity;
+
+public interface IRepository<T extends BaseEntity> {
 	T create(T entity);
 	
 	List<T> read();

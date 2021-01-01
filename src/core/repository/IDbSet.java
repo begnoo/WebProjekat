@@ -13,4 +13,6 @@ public interface IDbSet<T extends BaseEntity> {
 	boolean remove(UUID id);
 	
 	void save();
+	
+	Class<?> getEntityClassType(); 
 }

@@ -29,7 +29,6 @@ public class DbSet<T extends BaseEntity> implements IDbSet<T> {
 		this(classType, serializator, new DefaultEntitiesDeserializator<T>(classType));
 	}
 
-	
 	public DbSet(Class<T> classType, IEntitiesDeserializator<T> deserializator)
     {
 		this(classType, new DefaultEntitiesSerializator<T>(), deserializator);
@@ -74,6 +73,11 @@ public class DbSet<T extends BaseEntity> implements IDbSet<T> {
 			System.out.println("Problem while saving " + getDbSetName());
 		}
 	}
+
+	@Override
+	public Class<?> getEntityClassType() {
+		return classType;
+	}
 	
 	protected void loadEntities()
 	{	
@@ -99,13 +103,4 @@ public class DbSet<T extends BaseEntity> implements IDbSet<T> {
 	{
 		return getDbSetName() + ".json";
 	}
-	
-	public void setSerializator(IEntitiesSerializator<T> serializator) {
-		this.serializator = serializator;
-	}
-
-	public void setDeserializator(IEntitiesDeserializator<T> deserializator) {
-		this.deserializator = deserializator;
-	}
-
 }

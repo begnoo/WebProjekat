@@ -3,7 +3,9 @@ package core.service;
 import java.util.List;
 import java.util.UUID;
 
-public interface ICrudService<T> {
+import core.domain.models.BaseEntity;
+
+public interface ICrudService<T extends BaseEntity> {
 	T create(T entity);
 	
 	List<T> read();
