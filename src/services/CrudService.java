@@ -8,9 +8,9 @@ import core.repository.IRepository;
 import core.service.ICrudService;
 
 public class CrudService<T extends BaseEntity> implements ICrudService<T> {
-	
+
 	protected IRepository<T> repository;
-	
+
 	public CrudService(IRepository<T> repository) {
 		this.repository = repository;
 	}

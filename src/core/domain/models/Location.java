@@ -4,9 +4,8 @@ public class Location extends BaseEntity {
 	private String latitude;
 	private String longitude;
 	private Address address;
-	
-	public Location()
-	{
+
+	public Location() {
 		super();
 		address = new Address();
 	}
