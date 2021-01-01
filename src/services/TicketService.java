@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import core.domain.dto.TicketOrder;
 import core.domain.enums.TicketStatus;
 import core.domain.models.Seller;
 import core.domain.models.Ticket;
