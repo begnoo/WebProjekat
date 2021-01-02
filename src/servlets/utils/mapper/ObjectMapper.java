@@ -4,7 +4,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import core.service.IMapper;
+import core.servlets.IMapper;
 
 public class ObjectMapper implements IMapper {
 	
