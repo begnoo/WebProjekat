@@ -3,6 +3,7 @@ package seeders;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+import core.domain.enums.CommentStatus;
 import core.domain.enums.Gender;
 import core.domain.enums.ManifestationType;
 import core.domain.enums.TicketStatus;
@@ -163,15 +164,15 @@ public class Seeder {
 
 
 		Comment comment1 = new Comment(buyer1.getId(), buyer1, manifestation1.getId(), manifestation1,
-				"It was pretty good", 4);
+				"It was pretty good", 4, CommentStatus.Approved);
 		Comment comment2 = new Comment(buyer2.getId(), buyer2, manifestation3.getId(), manifestation3,
-				"Could have been better, but still alright", 3);
+				"Could have been better, but still alright", 3, CommentStatus.Approved);
 		Comment comment3 = new Comment(buyer3.getId(), buyer3, manifestation2.getId(), manifestation2,
-				"It was pretty good", 1);
+				"It was pretty good", 1, CommentStatus.Approved);
 		Comment comment4 = new Comment(buyer4.getId(), buyer4, manifestation4.getId(), manifestation4,
-				"Best festival I've been to!!!", 5);
+				"Best festival I've been to!!!", 5, CommentStatus.Approved);
 		Comment comment5 = new Comment(buyer1.getId(), buyer3, manifestation2.getId(), manifestation2,
-				"The absoulte worst thing I have ever seen", 1);
+				"The absoulte worst thing I have ever seen", 1, CommentStatus.Refused);
 		
 		commentRepository.create(comment1);
 		commentRepository.create(comment2);
