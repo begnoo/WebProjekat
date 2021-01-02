@@ -63,7 +63,7 @@ public class UsersDeserializator implements IEntitiesDeserializator<User>{
 				if(role.equals("Buyer")) {
 					Buyer buyer = (Buyer) user;
 					buyer.setRole(UserRole.Buyer);
-					buyer.setPoints(Integer.parseInt((String) entityMap.get("points")));
+					buyer.setPoints((Integer) entityMap.get("points"));
 					buyer.setBuyerTypeId(UUID.fromString((String) entityMap.get("buyerTypeId")));
 					users.add(buyer);
 				}
