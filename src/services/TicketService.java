@@ -42,7 +42,6 @@ public class TicketService extends CrudService<Ticket> implements ITicketService
 	
 	@Override
 	public List<Ticket> readReservedTicketsOfBuyer(UUID buyerId) {
-		// TODO Auto-generated method stub
 		return readByBuyerId(buyerId)
 				.stream()
 				.filter(ticket -> ticket.getStatus() == TicketStatus.Reserved)
@@ -85,7 +84,7 @@ public class TicketService extends CrudService<Ticket> implements ITicketService
 	}
 
 	@Override
-	public Ticket updateCancelTicket(UUID ticketId) {
+	public Ticket cancelTicket(UUID ticketId) {
 		Ticket ticket = repository.read(ticketId);
 		if(ticket != null && checkIfSevenDaysBeforeEventDate(ticket.getManifestationDate())) {
 			Buyer buyer = (Buyer) userRepository.read(ticket.getBuyerId());
