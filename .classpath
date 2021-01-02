@@ -5,9 +5,6 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/aopalliance-repackaged-2.4.0-b31.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/asm-debug-all-5.0.4.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/hk2-api-2.4.0-b31.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/hk2-locator-2.4.0-b31.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/hk2-utils-2.4.0-b31.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jackson-annotations-2.5.4.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jackson-core-2.5.4.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jackson-databind-2.5.4.jar"/>
@@ -38,11 +35,14 @@
 			<attribute name="owner.project.facets" value="jst.web"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre1.8.0_271">
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
 		<attributes>
 			<attribute name="module" value="true"/>
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/zoran/ovca/WebProjekat/WebContent/WEB-INF/lib/hk2-api-2.4.0-b31.jar"/>
+	<classpathentry kind="lib" path="C:/Users/zoran/ovca/WebProjekat/WebContent/WEB-INF/lib/hk2-locator-2.4.0-b31.jar"/>
+	<classpathentry kind="lib" path="C:/Users/zoran/ovca/WebProjekat/WebContent/WEB-INF/lib/hk2-utils-2.4.0-b31.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
