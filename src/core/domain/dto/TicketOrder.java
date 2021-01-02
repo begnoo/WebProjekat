@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import core.domain.enums.TicketType;
-import core.domain.models.Ticket;
 
 public class TicketOrder {
 

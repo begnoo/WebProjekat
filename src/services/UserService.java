@@ -24,6 +24,7 @@ public class UserService extends CrudService<User> implements IUserService {
 		if(user == null || user.getRole() == UserRole.Administrator) {
 			return null;
 		}
+		
 		user.setActive(false);
 		return update(user);
 	}
@@ -49,7 +50,8 @@ public class UserService extends CrudService<User> implements IUserService {
 					.size() > 5;
 				})
 				.collect(Collectors.toList());
-		return null;
+		
+		return buyers;
 	}
 	
 	private boolean checkIfInLastMonth(LocalDateTime eventDate) {

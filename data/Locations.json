@@ -1,4 +1,19 @@
 [ {
+  "id" : "ce591855-aae7-430b-a7ad-ee37c9b4e7d8",
+  "createdAt" : "2021-01-02 23:00",
+  "active" : true,
+  "latitude" : "60.43",
+  "longitude" : "60.43",
+  "address" : {
+    "id" : "ca8f4bca-fd0c-40ac-9080-d54474250c2c",
+    "createdAt" : "2021-01-02 23:00",
+    "active" : true,
+    "street" : "MILOS KRALJ",
+    "houseNumber" : "10",
+    "place" : "MILOSEVGRAD",
+    "postalCode" : "30000Milosa"
+  }
+}, {
   "id" : "102d3276-6c45-41db-b2fc-0a5e48242b9b",
   "createdAt" : "2021-01-02 19:11",
   "active" : true,

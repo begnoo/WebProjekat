@@ -1,6 +1,5 @@
 package servlets.utils.mapper;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -20,13 +19,10 @@ public class ObjectMapper implements IMapper {
 		nestedMappings.put(sourceType, destinationType);
 	}
 	
-	public <T> T Map(Class<T> targetedClassType, Object mappingObject)
+	public <T> T Map(T mappedObject, Object mappingObject)
 	{
 		try
-		{
-			Constructor<T> constructorOfTargetedClass = targetedClassType.getConstructor();
-			T mappedObject = (T)constructorOfTargetedClass.newInstance();
-			
+		{			
 			for(Field field : mappingObject.getClass().getDeclaredFields())
 			{
 				Method getterOfMappingObject = mappingObject.getClass().getMethod(getGetterNameForField(field.getType(), field.getName()));
@@ -35,10 +31,11 @@ public class ObjectMapper implements IMapper {
 				
 				if(nestedMappings.containsKey(field.getType()))
 				{
-					setterOfMappedObject = targetedClassType.getMethod(getSetterNameForField(field.getName()), nestedMappings.get(field.getType()));
-					objectToSet = Map(nestedMappings.get(field.getType()), getterOfMappingObject.invoke(mappingObject));
+					setterOfMappedObject = mappedObject.getClass().getMethod(getSetterNameForField(field.getName()), nestedMappings.get(field.getType()));
+					Method nestedMappedObjectGetter = mappedObject.getClass().getMethod(getGetterNameForField(field.getType(), field.getName()));
+					objectToSet = Map(nestedMappedObjectGetter.invoke(mappedObject), getterOfMappingObject.invoke(mappingObject));
 				} else {
-					setterOfMappedObject = targetedClassType.getMethod(getSetterNameForField(field.getName()), field.getType());
+					setterOfMappedObject = mappedObject.getClass().getMethod(getSetterNameForField(field.getName()), field.getType());
 					objectToSet = getterOfMappingObject.invoke(mappingObject);
 				}
 			

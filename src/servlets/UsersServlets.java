@@ -23,7 +23,6 @@ import core.domain.models.User;
 import core.repository.IRepository;
 import core.requests.users.CreateBuyerRequest;
 import core.requests.users.CreateSellerRequest;
-import core.service.IUserService;
 import core.servlets.IMapper;
 import repository.DbContext;
 import repository.UserRepository;
@@ -35,7 +34,7 @@ public class UsersServlets {
 	@Context
 	ServletContext servletContext;
 	
-	private IUserService userService;
+	//private IUserService userService;
 	private IRepository<User> userRepository; // TODO: remove later and use service
 	private IMapper mapper;
 	
@@ -73,7 +72,7 @@ public class UsersServlets {
 	@Produces(MediaType.APPLICATION_JSON)
 	public User createBuyer(CreateBuyerRequest request)
 	{
-		User user = mapper.Map(Buyer.class, request);
+		User user = mapper.Map(new Buyer(), request);
 		user.setRole(UserRole.Buyer);
 		
 		return userRepository.create(user);
@@ -85,7 +84,7 @@ public class UsersServlets {
 	@Produces(MediaType.APPLICATION_JSON)
 	public User createBuyer(CreateSellerRequest request)
 	{
-		User user = mapper.Map(Seller.class, request);
+		User user = mapper.Map(new Seller(), request);
 		user.setRole(UserRole.Seller);
 		
 		return userRepository.create(user);

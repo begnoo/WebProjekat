@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.UUID;
 
 import core.domain.enums.UserRole;
-import core.domain.models.Buyer;
 import core.domain.models.User;
 
 public interface IUserService extends ICrudService<User>{

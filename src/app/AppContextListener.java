@@ -6,7 +6,6 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
 import repository.DbContext;
-import seeders.Seeder;
 
 @WebListener
 public class AppContextListener implements ServletContextListener{
