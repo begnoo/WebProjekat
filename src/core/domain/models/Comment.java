@@ -4,6 +4,8 @@ import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import core.domain.enums.CommentStatus;
+
 public class Comment extends BaseEntity {
 	private UUID buyerId;
 	@JsonIgnore
@@ -13,6 +15,7 @@ public class Comment extends BaseEntity {
 	private Manifestation manifestation;
 	private String text;
 	private int rating;
+	private CommentStatus status;
 	
 	public Comment()
 	{
@@ -20,7 +23,7 @@ public class Comment extends BaseEntity {
 	}
 
 	public Comment(UUID buyerId, Buyer buyer, UUID manifestationId, Manifestation manifestation, String text,
-			int rating) {
+			int rating, CommentStatus status) {
 		super();
 		this.buyerId = buyerId;
 		this.buyer = buyer;
@@ -28,6 +31,7 @@ public class Comment extends BaseEntity {
 		this.manifestation = manifestation;
 		this.text = text;
 		this.rating = rating;
+		this.status = status;
 	}
 
 	public UUID getBuyerId() {
@@ -77,4 +81,14 @@ public class Comment extends BaseEntity {
 	public void setRating(int rating) {
 		this.rating = rating;
 	}
+
+	public CommentStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(CommentStatus status) {
+		this.status = status;
+	}
+	
+	
 }

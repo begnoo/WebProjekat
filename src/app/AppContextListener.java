@@ -14,7 +14,7 @@ public class AppContextListener implements ServletContextListener{
 	@Override
 	public void contextDestroyed(ServletContextEvent servletContextEvent) {
 		// TODO Auto-generated method stub
-		
+		System.out.println("WebProjekat ENDED");
 	}
 
 	@Override
@@ -23,8 +23,11 @@ public class AppContextListener implements ServletContextListener{
 		ServletContext servletContext = servletContextEvent.getServletContext();
 		DbContext dbContext = new DbContext();
 		servletContext.setAttribute("DbContext", dbContext);
-		Seeder seeder = new Seeder(dbContext);
-		seeder.run();
+		
+		System.out.println("WebProjekat STARTED");
+		
+		//Seeder seeder = new Seeder(dbContext);
+		//seeder.run();
 	}
 
 }

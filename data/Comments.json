@@ -1,0 +1,41 @@
+[ {
+  "id" : "2f3516a2-0531-4d1d-9556-9acb41e4dd31",
+  "createdAt" : "2021-01-02 19:11",
+  "active" : true,
+  "buyerId" : "0b0acec4-3b35-4001-b612-f03bc7e94d77",
+  "manifestationId" : "8880035a-0b5d-40a4-92d4-714c3b78b919",
+  "text" : "The absoulte worst thing I have ever seen",
+  "rating" : 1
+}, {
+  "id" : "965cdb4a-1aa0-4928-bbea-15e7e6670933",
+  "createdAt" : "2021-01-02 19:11",
+  "active" : true,
+  "buyerId" : "2b9747a6-9798-4b27-b194-6a454d269edb",
+  "manifestationId" : "6f4f9f2a-058a-4a05-9e26-609f1eead1ca",
+  "text" : "Best festival I've been to!!!",
+  "rating" : 5
+}, {
+  "id" : "87b1a55f-d889-459a-b713-adf77ca3caf0",
+  "createdAt" : "2021-01-02 19:11",
+  "active" : true,
+  "buyerId" : "0b0acec4-3b35-4001-b612-f03bc7e94d77",
+  "manifestationId" : "41a1c421-5795-452f-ba61-2c884529ad4a",
+  "text" : "It was pretty good",
+  "rating" : 4
+}, {
+  "id" : "24a09d4b-d7a0-48f3-8b28-1593f4eb26c2",
+  "createdAt" : "2021-01-02 19:11",
+  "active" : true,
+  "buyerId" : "d6145764-9515-484b-a02b-fbbfd65e0592",
+  "manifestationId" : "39f3925f-b6fc-4ea4-813a-7712a2b8de56",
+  "text" : "Could have been better, but still alright",
+  "rating" : 3
+}, {
+  "id" : "0f26fedc-b55d-4260-8e4d-db449b56c0c4",
+  "createdAt" : "2021-01-02 19:11",
+  "active" : true,
+  "buyerId" : "0496f1dc-2c9d-4a53-973b-0388694a7ef6",
+  "manifestationId" : "8880035a-0b5d-40a4-92d4-714c3b78b919",
+  "text" : "It was pretty good",
+  "rating" : 1
+} ]

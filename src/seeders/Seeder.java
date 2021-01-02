@@ -2,8 +2,8 @@ package seeders;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.UUID;
 
+import core.domain.enums.CommentStatus;
 import core.domain.enums.Gender;
 import core.domain.enums.ManifestationType;
 import core.domain.enums.TicketStatus;
@@ -12,6 +12,7 @@ import core.domain.models.Address;
 import core.domain.models.Administrator;
 import core.domain.models.Buyer;
 import core.domain.models.BuyerType;
+import core.domain.models.Comment;
 import core.domain.models.Location;
 import core.domain.models.Manifestation;
 import core.domain.models.Seller;
@@ -105,7 +106,7 @@ public class Seeder {
 				seller2.getId(), seller2);
 		Manifestation manifestation3 = new Manifestation("Ujka Vanja", ManifestationType.Theater, 200,
 				LocalDateTime.now(), 800, true, location4.getId(), location4, seller2.getId(), seller2);
-		Manifestation manifestation4 = new Manifestation("Exit Festival", ManifestationType.Theater, 10000,
+		Manifestation manifestation4 = new Manifestation("Exit Festival", ManifestationType.Festival, 10000,
 				LocalDateTime.now(), 1400, true, location3.getId(), location3, seller3.getId(), seller3);
 
 		manifestationRepository.create(manifestation1);
@@ -128,28 +129,28 @@ public class Seeder {
 		Ticket ticket1 = new Ticket("c8cENsRLNO", manifestation1.getId(), manifestation1, manifestation1.getEventDate(),
 				manifestation1.getRegularTicketPrice(), buyer1.getId(), buyer1, TicketStatus.Reserved,
 				TicketType.Regular);
-		Ticket ticket2 = new Ticket("KeVXbpB9LW", manifestation1.getId(), manifestation3, manifestation3.getEventDate(),
+		Ticket ticket2 = new Ticket("KeVXbpB9LW", manifestation3.getId(), manifestation3, manifestation3.getEventDate(),
 				manifestation1.getRegularTicketPrice(), buyer2.getId(), buyer2, TicketStatus.Reserved,
 				TicketType.Regular);
-		Ticket ticket3 = new Ticket("gKane57z4T", manifestation1.getId(), manifestation3, manifestation3.getEventDate(),
+		Ticket ticket3 = new Ticket("gKane57z4T", manifestation3.getId(), manifestation3, manifestation3.getEventDate(),
 				manifestation1.getRegularTicketPrice(), buyer3.getId(), buyer3, TicketStatus.Canceled,
 				TicketType.Regular);
-		Ticket ticket4 = new Ticket("8O6VymZCSg", manifestation1.getId(), manifestation2, manifestation2.getEventDate(),
+		Ticket ticket4 = new Ticket("8O6VymZCSg", manifestation2.getId(), manifestation2, manifestation2.getEventDate(),
 				manifestation1.getRegularTicketPrice(), buyer3.getId(), buyer3, TicketStatus.Reserved,
 				TicketType.Regular);
-		Ticket ticket5 = new Ticket("rByJcHHPGk", manifestation1.getId(), manifestation4, manifestation4.getEventDate(),
+		Ticket ticket5 = new Ticket("rByJcHHPGk", manifestation4.getId(), manifestation4, manifestation4.getEventDate(),
 				manifestation1.getRegularTicketPrice(), buyer4.getId(), buyer4, TicketStatus.Reserved,
 				TicketType.Regular);
 		Ticket ticket6 = new Ticket("UzZxSs156B", manifestation1.getId(), manifestation1, manifestation1.getEventDate(),
 				manifestation1.getRegularTicketPrice(), buyer4.getId(), buyer4, TicketStatus.Reserved,
 				TicketType.Regular);
-		Ticket ticket7 = new Ticket("x8QY6WvhQk", manifestation1.getId(), manifestation2, manifestation2.getEventDate(),
+		Ticket ticket7 = new Ticket("x8QY6WvhQk", manifestation2.getId(), manifestation2, manifestation2.getEventDate(),
 				manifestation1.getRegularTicketPrice() * TicketType.FanPit.getModifier(), buyer4.getId(), buyer4,
 				TicketStatus.Canceled, TicketType.FanPit);
-		Ticket ticket8 = new Ticket("IC9aeB4E7j", manifestation1.getId(), manifestation3, manifestation3.getEventDate(),
+		Ticket ticket8 = new Ticket("IC9aeB4E7j", manifestation3.getId(), manifestation3, manifestation3.getEventDate(),
 				manifestation1.getRegularTicketPrice() * TicketType.Vip.getModifier(), buyer4.getId(), buyer4,
 				TicketStatus.Reserved, TicketType.Vip);
-		
+
 		ticketRepository.create(ticket1);
 		ticketRepository.create(ticket2);
 		ticketRepository.create(ticket3);
@@ -158,6 +159,26 @@ public class Seeder {
 		ticketRepository.create(ticket6);
 		ticketRepository.create(ticket7);
 		ticketRepository.create(ticket8);
+		
+		Repository<Comment> commentRepository = new Repository<>(context, Comment.class);
+
+
+		Comment comment1 = new Comment(buyer1.getId(), buyer1, manifestation1.getId(), manifestation1,
+				"It was pretty good", 4, CommentStatus.Approved);
+		Comment comment2 = new Comment(buyer2.getId(), buyer2, manifestation3.getId(), manifestation3,
+				"Could have been better, but still alright", 3, CommentStatus.Approved);
+		Comment comment3 = new Comment(buyer3.getId(), buyer3, manifestation2.getId(), manifestation2,
+				"It was pretty good", 1, CommentStatus.Approved);
+		Comment comment4 = new Comment(buyer4.getId(), buyer4, manifestation4.getId(), manifestation4,
+				"Best festival I've been to!!!", 5, CommentStatus.Approved);
+		Comment comment5 = new Comment(buyer1.getId(), buyer3, manifestation2.getId(), manifestation2,
+				"The absoulte worst thing I have ever seen", 1, CommentStatus.Refused);
+		
+		commentRepository.create(comment1);
+		commentRepository.create(comment2);
+		commentRepository.create(comment3);
+		commentRepository.create(comment4);
+		commentRepository.create(comment5);
 
 	}
 

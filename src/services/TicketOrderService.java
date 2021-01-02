@@ -1,9 +1,7 @@
 package services;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import core.domain.dto.TicketOrder;
 import core.domain.enums.TicketStatus;
@@ -36,29 +34,34 @@ public class TicketOrderService implements ITicketOrderService {
 		List<Ticket> tickets = new ArrayList<>();
 		Buyer buyer = (Buyer) userService.read(ticketOrder.getBuyerId());
 		Manifestation manifestation = manifestationService.read(ticketOrder.getManifestationId());
-		ticketOrder.getNumberOfOrderedTicketsMap().forEach(
-				(ticketType, numberOfTickets) -> 
-				{
-					for(int i = 0; i < numberOfTickets; ++i) {
-						
-						int price = getPriceOfTicket(manifestation.getRegularTicketPrice(), ticketType);
-						int priceWithDiscount = getPriceOfTicketWithDiscount(price, buyer);
-						
-						Ticket ticket = new  Ticket(
-								"", 
-								manifestation.getId(), 
-								manifestation, 
-								manifestation.getEventDate(),
-								priceWithDiscount, 
-								buyer.getId(), 
-								buyer, 
-								TicketStatus.Reserved, 
-								ticketType);
-						
-						tickets.add(ticketService.create(ticket));
+		
+		int numberOfAllTickets = ticketOrder.getNumberOfOrderedTicketsMap().values().stream().reduce(0, Integer::sum);
+		if(numberOfAllTickets <= manifestation.getSeats()) {
+			ticketOrder.getNumberOfOrderedTicketsMap().forEach(
+					(ticketType, numberOfTickets) -> 
+					{
+						for(int i = 0; i < numberOfTickets; ++i) {
+							
+							int price = getPriceOfTicket(manifestation.getRegularTicketPrice(), ticketType);
+							int priceWithDiscount = getPriceOfTicketWithDiscount(price, buyer);
+							
+							Ticket ticket = new  Ticket(
+									"", 
+									manifestation.getId(), 
+									manifestation, 
+									manifestation.getEventDate(),
+									priceWithDiscount, 
+									buyer.getId(), 
+									buyer, 
+									TicketStatus.Reserved, 
+									ticketType);
+							
+							tickets.add(ticketService.create(ticket));
+						}
 					}
-				}
-				);
+			);
+		}
+		
 		
 		return tickets;
 	}

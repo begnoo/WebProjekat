@@ -10,4 +10,6 @@ public interface ITicketService extends ICrudService<Ticket> {
 	List<Ticket> readByManifestationId(UUID manifestationId);
 	List<Ticket> readReservedTicketsOfSellersManifestations(UUID sellerId);
 	List<Ticket> readByBuyerId(UUID buyerId);
+	List<Ticket> readReservedTicketsOfBuyer(UUID buyerId);
+	Ticket updateCancelTicket(UUID ticketId);
 }
