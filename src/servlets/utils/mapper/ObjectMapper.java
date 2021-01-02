@@ -3,14 +3,21 @@ package servlets.utils.mapper;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 
 import core.servlets.IMapper;
 
 public class ObjectMapper implements IMapper {
+	private HashMap<Class<?>, Class<?>> nestedMappings;
 	
 	public ObjectMapper()
 	{
-		
+		nestedMappings = new HashMap<Class<?>, Class<?>>();
+	}
+	
+	public void addNestedMapping(Class<?> sourceType, Class<?> destinationType)
+	{
+		nestedMappings.put(sourceType, destinationType);
 	}
 	
 	public <T> T Map(Class<T> targetedClassType, Object mappingObject)
@@ -23,9 +30,19 @@ public class ObjectMapper implements IMapper {
 			for(Field field : mappingObject.getClass().getDeclaredFields())
 			{
 				Method getterOfMappingObject = mappingObject.getClass().getMethod(getGetterNameForField(field.getType(), field.getName()));
-				Method setterOfMappedObject = targetedClassType.getMethod(getSetterNameForField(field.getName()), field.getType());
-
-				setterOfMappedObject.invoke(mappedObject, getterOfMappingObject.invoke(mappingObject));
+				Object objectToSet = null;
+				Method setterOfMappedObject = null;
+				
+				if(nestedMappings.containsKey(field.getType()))
+				{
+					setterOfMappedObject = targetedClassType.getMethod(getSetterNameForField(field.getName()), nestedMappings.get(field.getType()));
+					objectToSet = Map(nestedMappings.get(field.getType()), getterOfMappingObject.invoke(mappingObject));
+				} else {
+					setterOfMappedObject = targetedClassType.getMethod(getSetterNameForField(field.getName()), field.getType());
+					objectToSet = getterOfMappingObject.invoke(mappingObject);
+				}
+			
+				setterOfMappedObject.invoke(mappedObject, objectToSet);
 			}
 			
 			return mappedObject;
