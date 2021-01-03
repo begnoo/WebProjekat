@@ -17,16 +17,21 @@ import core.service.ICommentService;
 
 public class CommentService extends CrudService<Comment> implements ICommentService{
 	
+	private IRepository<Manifestation> manifestationRepository;
+	private IRepository<User> userRepository;
+
 	
-	public CommentService(IRepository<Comment> repository) {
+	public CommentService(IRepository<Comment> repository, IRepository<Manifestation> manifestationRepository,
+			IRepository<User> userRepository) {
 		super(repository);
+		this.manifestationRepository = manifestationRepository;
+		this.userRepository = userRepository;
 	}
 	
 	@Override
 	public Comment create(Comment comment) {
-		Manifestation manifestation = comment.getManifestation();
-		Buyer buyer = (Buyer) comment.getBuyer();
-		
+		Manifestation manifestation = manifestationRepository.read(comment.getManifestationId());
+		Buyer buyer = (Buyer) userRepository.read(comment.getBuyerId());
 		List<Ticket> reservedTickets = buyer.getTickets()
 			.stream()
 			.filter(ticket -> ticket.getManifestationId().equals(comment.getManifestationId()))

@@ -66,21 +66,28 @@ public class TicketService extends CrudService<Ticket> implements ITicketService
 	@Override
 	public Ticket create(Ticket ticket) {
 		//TODO: Dodati uniqeId
-		Buyer buyer = ticket.getBuyer();
+		
+		Manifestation manifestation = manifestationRepository.read(ticket.getManifestationId());
+		
+		if(!updateNumberOfSeatsForManifestation(manifestation, -1)) {
+			return null;
+		}
+		
+		Buyer buyer = (Buyer) userRepository.read(ticket.getBuyerId());
 		ticket.getBuyer().setPoints(buyer.getPoints() + getPointValue(ticket.getPrice()));
 		userRepository.update(buyer);
-		//sredi ovo idiote, provera mesta
-		
 		
 		ticket.setStatus(TicketStatus.Reserved);
 		return repository.create(ticket);
 	}
 	
-	private boolean updateNumberOfSeatsForManifestation() {
-		int numberOfManifestationSeats = ticket.getManifestation().getSeats();
-		int newNumberOfManifestationSeats = (numberOfManifestationSeats - 1 >= 0) ?  numberOfManifestationSeats : 0;
-		ticket.getManifestation().setSeats(newNumberOfManifestationSeats);
-		manifestationRepository.update(ticket.getManifestation());
+	private boolean updateNumberOfSeatsForManifestation(Manifestation manifestation, int addition) {
+		int newNumberOfManifestationSeats = manifestation.getSeats() + addition;
+		if(newNumberOfManifestationSeats < 0) {
+			return false;
+		}
+		manifestation.setSeats(newNumberOfManifestationSeats);
+		manifestationRepository.update(manifestation);
 		return true;
 	}
 	
@@ -92,16 +99,15 @@ public class TicketService extends CrudService<Ticket> implements ITicketService
 	public Ticket cancelTicket(UUID ticketId) {
 		Ticket ticket = repository.read(ticketId);
 		if(ticket != null && checkIfSevenDaysBeforeEventDate(ticket.getManifestationDate())) {
+			
+			Manifestation manifestation = manifestationRepository.read(ticket.getManifestationId());
+			updateNumberOfSeatsForManifestation(manifestation, 1);
+			
 			Buyer buyer = (Buyer) userRepository.read(ticket.getBuyerId());
 			int pointsWithPenalty = buyer.getPoints() - getPointValue(ticket.getPrice())*4;
 			int newPoints = (pointsWithPenalty >= 0) ? pointsWithPenalty : 0;
 			ticket.getBuyer().setPoints(newPoints);
 			userRepository.update(buyer);
-			//sredi ovo idiote
-			int numberOfManifestationSeats = ticket.getManifestation().getSeats();
-			ticket.getManifestation().setSeats(numberOfManifestationSeats + 1);
-			manifestationRepository.update(ticket.getManifestation());
-			
 			
 			ticket.setStatus(TicketStatus.Reserved);
 		}
