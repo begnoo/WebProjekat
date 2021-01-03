@@ -7,15 +7,20 @@ import java.util.stream.Collectors;
 
 import core.domain.models.Location;
 import core.domain.models.Manifestation;
+import core.domain.models.User;
 import core.repository.IRepository;
 import core.service.IManifestationService;
 
 public class ManifestationService extends CrudService<Manifestation> implements IManifestationService {
 	private IRepository<Location> locationRepository;
+	private IRepository<User> userRepository;
 
-	public ManifestationService(IRepository<Manifestation> repository, IRepository<Location> locationRepository) {
+
+	public ManifestationService(IRepository<Manifestation> repository, IRepository<Location> locationRepository,
+			IRepository<User> userRepository) {
 		super(repository);
 		this.locationRepository = locationRepository;
+		this.userRepository = userRepository;
 	}
 
 	public List<Manifestation> readOrderedByDescendingDate() {
@@ -27,6 +32,11 @@ public class ManifestationService extends CrudService<Manifestation> implements 
 
 	@Override
 	public Manifestation create(Manifestation manifestation) {
+		
+		if(!checkIfSellerExists(manifestation.getSellerId())) {
+			return null;
+		}
+			
 		
 		if(!checkIfLocationExists(manifestation.getLocationId())) {
 			return null;
@@ -43,7 +53,7 @@ public class ManifestationService extends CrudService<Manifestation> implements 
 
 	@Override
 	public Manifestation update(Manifestation manifestationForUpdate) {
-		
+
 		if(!checkIfLocationExists(manifestationForUpdate.getLocationId())) {
 			return null;
 		}
@@ -58,6 +68,10 @@ public class ManifestationService extends CrudService<Manifestation> implements 
 		}
 		
 		return repository.update(manifestationForUpdate);
+	}
+	
+	private boolean checkIfSellerExists(UUID sellerId) {
+		return userRepository.read(sellerId) != null;
 	}
 	
 	private boolean checkIfLocationExists(UUID locationId) {

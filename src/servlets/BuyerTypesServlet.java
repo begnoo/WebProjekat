@@ -81,7 +81,11 @@ public class BuyerTypesServlet {
 	@Produces(MediaType.APPLICATION_JSON)
 	public BuyerType update(UpdateBuyerTypeRequest request)
 	{
-		BuyerType buyerTypeForUpdate = mapper.Map(buyerTypeService.read(request.getId()), request);
+		BuyerType buyerType = buyerTypeService.read(request.getId());
+		if(buyerType == null) {
+			return null;
+		}
+		BuyerType buyerTypeForUpdate = mapper.Map(buyerType, request);
 		
 		return buyerTypeService.update(buyerTypeForUpdate);
 	}

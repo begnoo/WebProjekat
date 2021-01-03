@@ -125,8 +125,8 @@ public class TicketService extends CrudService<Ticket> implements ITicketService
 		userRepository.update(buyer);
 	}
 	
-	private boolean updateNumberOfSeatsForManifestation(Manifestation manifestation, int additionSeats) {
-		int newNumberOfManifestationSeats = manifestation.getSeats() + additionSeats;
+	private boolean updateNumberOfSeatsForManifestation(Manifestation manifestation, int additionalSeats) {
+		int newNumberOfManifestationSeats = manifestation.getSeats() + additionalSeats;
 		if(newNumberOfManifestationSeats < 0) {
 			return false;
 		}

@@ -93,7 +93,11 @@ public class TicketServlet {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeTicketObjectResponse update(UpdateTicketRequest request) {
-		Ticket ticketForUpdate = mapper.Map(ticketService.read(request.getId()), request);
+		Ticket ticket = ticketService.read(request.getId());
+		if(ticket == null) {
+			return null;
+		}
+		Ticket ticketForUpdate = mapper.Map(ticket, request);
 
 		Ticket updatedTicket = ticketService.update(ticketForUpdate);
 
