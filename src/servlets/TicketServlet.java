@@ -1,8 +1,8 @@
 package servlets;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -37,13 +37,12 @@ import servlets.utils.mapper.ObjectMapper;
 
 @Path("tickets")
 public class TicketServlet {
+	@Context
+	ServletContext servletContext;
 
 	private ITicketService ticketService;
 	private ITicketOrderService ticketOrderService;
 	private IMapper mapper;
-
-	@Context
-	ServletContext servletContext;
 
 	public TicketServlet() {
 		mapper = new ObjectMapper();
@@ -80,11 +79,12 @@ public class TicketServlet {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<WholeTicketObjectResponse> create(TicketOrder ticketOrder) {
-
 		List<Ticket> createdTickets = ticketOrderService.createTicketsFromOrder(ticketOrder);
-		List<WholeTicketObjectResponse> response = new ArrayList<>();
-		createdTickets.forEach(ticket -> response.add(generateTicketObjectResponse(ticket)));
 		
+		List<WholeTicketObjectResponse> response = createdTickets.stream()
+				.map(ticket -> generateTicketObjectResponse(ticket))
+				.collect(Collectors.toList());
+						
 		return response;
 	}
 

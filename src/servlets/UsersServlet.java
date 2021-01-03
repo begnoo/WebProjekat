@@ -35,7 +35,7 @@ import services.UserService;
 import servlets.utils.mapper.ObjectMapper;
 
 @Path("users")
-public class UsersServlets {
+public class UsersServlet {
 
 	@Context
 	ServletContext servletContext;
@@ -43,7 +43,7 @@ public class UsersServlets {
 	private IUserService userService;
 	private IMapper mapper;
 	
-	public UsersServlets()
+	public UsersServlet()
 	{
 		mapper = new ObjectMapper();
 	}
@@ -81,7 +81,6 @@ public class UsersServlets {
 	public WholeUserObjectResponseBase createBuyer(CreateBuyerRequest request)
 	{
 		User user = mapper.Map(new Buyer(), request);
-		user.setRole(UserRole.Buyer);
 		
 		User createdUser = userService.create(user);
 		
@@ -95,7 +94,6 @@ public class UsersServlets {
 	public WholeUserObjectResponseBase createBuyer(CreateSellerRequest request)
 	{
 		User user = mapper.Map(new Seller(), request);
-		user.setRole(UserRole.Seller);
 		
 		User createdUser = userService.create(user);
 

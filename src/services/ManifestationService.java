@@ -11,56 +11,53 @@ import core.repository.IRepository;
 import core.service.IManifestationService;
 
 public class ManifestationService extends CrudService<Manifestation> implements IManifestationService {
-	
-	IRepository<Location> locationRepository;
+	private IRepository<Location> locationRepository;
 
 	public ManifestationService(IRepository<Manifestation> repository, IRepository<Location> locationRepository) {
 		super(repository);
 		this.locationRepository = locationRepository;
 	}
 
-	public List<Manifestation> readOrderdByDescendingDate() {
+	public List<Manifestation> readOrderedByDescendingDate() {
 		return repository.read()
 				.stream()
-				.sorted(
-				(manifestation1, manifestation2) -> manifestation2.getEventDate().compareTo(manifestation1.getEventDate()))
+				.sorted((manifestation1, manifestation2) -> manifestation2.getEventDate().compareTo(manifestation1.getEventDate()))
 				.collect(Collectors.toList());
 	}
 
 	@Override
-	public Manifestation create(Manifestation entity) {
+	public Manifestation create(Manifestation manifestation) {
 		
-		if(!checkIfLocationExists(entity.getLocationId())) {
+		if(!checkIfLocationExists(manifestation.getLocationId())) {
 			return null;
 		}
 		
-		List<Manifestation> manifestations = readByLocationAndEventDate(entity.getLocationId(), entity.getEventDate());
-		
-		if (!manifestations.isEmpty()) {
+		List<Manifestation> manifestationsOnLocationAtEventDate = readByLocationAndEventDate(manifestation.getLocationId(), manifestation.getEventDate());
+		if (!manifestationsOnLocationAtEventDate.isEmpty()) {
 			return null;
 		}
 		
-		entity.setStatus(false);
-		return repository.create(entity);
+		manifestation.setStatus(false);
+		return repository.create(manifestation);
 	}
 
 	@Override
-	public Manifestation update(Manifestation entityForUpdate) {
+	public Manifestation update(Manifestation manifestationForUpdate) {
 		
-		if(!checkIfLocationExists(entityForUpdate.getLocationId())) {
+		if(!checkIfLocationExists(manifestationForUpdate.getLocationId())) {
 			return null;
 		}
 		
-		List<Manifestation> manifestations = readByLocationAndEventDate(entityForUpdate.getLocationId(), entityForUpdate.getEventDate())
+		List<Manifestation> manifestationsOnLocationAtEventDateWithoutThisOne = readByLocationAndEventDate(manifestationForUpdate.getLocationId(), manifestationForUpdate.getEventDate())
 				.stream()
-				.filter(manifestation -> manifestation.getId() != entityForUpdate.getId())
+				.filter(manifestation -> manifestation.getId() != manifestationForUpdate.getId())
 				.collect(Collectors.toList());
 		
-		if (!manifestations.isEmpty()) {
+		if (!manifestationsOnLocationAtEventDateWithoutThisOne.isEmpty()) {
 			return null;
 		}
 		
-		return repository.update(entityForUpdate);
+		return repository.update(manifestationForUpdate);
 	}
 	
 	private boolean checkIfLocationExists(UUID locationId) {

@@ -30,20 +30,21 @@ public class TicketService extends CrudService<Ticket> implements ITicketService
 
 	@Override
 	public List<Ticket> readByManifestationId(UUID manifestationId) {
-		return repository.read().stream().filter(ticket -> manifestationId.equals(ticket.getManifestationId()))
+		return repository.read().stream()
+				.filter(ticket -> manifestationId.equals(ticket.getManifestationId()))
 				.collect(Collectors.toList());
 	}
 
 	@Override
 	public List<Ticket> readByBuyerId(UUID buyerId) {
-		return repository.read().stream().filter(ticket -> buyerId.equals(ticket.getBuyerId()))
+		return repository.read().stream()
+				.filter(ticket -> buyerId.equals(ticket.getBuyerId()))
 				.collect(Collectors.toList());
 	}
 	
 	@Override
 	public List<Ticket> readReservedTicketsOfBuyer(UUID buyerId) {
-		return readByBuyerId(buyerId)
-				.stream()
+		return readByBuyerId(buyerId).stream()
 				.filter(ticket -> ticket.getStatus() == TicketStatus.Reserved)
 				.collect(Collectors.toList());
 	}
@@ -55,17 +56,21 @@ public class TicketService extends CrudService<Ticket> implements ITicketService
 			return null;
 		}
 
-		// TODO: Pogledati da li ovo moze nekako lepse da se odradi
 		List<Ticket> tickets = new ArrayList<>();
-		seller.getManifestations()
-				.forEach(
-						manifestation -> tickets.addAll(readByManifestationId(manifestation.getId())
-								.stream()
-								.filter(ticket -> ticket.getStatus() == TicketStatus.Reserved)
-								.collect(Collectors.toList()))
-						);
+		for(Manifestation manifestation : seller.getManifestations())
+		{
+			tickets.addAll(readReservedTicketsOfBuyerOfManifestation(manifestation.getId()));
+		}
 
 		return tickets;
+	}
+	
+	private List<Ticket> readReservedTicketsOfBuyerOfManifestation(UUID manifestationId)
+	{
+		return readByManifestationId(manifestationId)
+				.stream()
+				.filter(ticket -> ticket.getStatus() == TicketStatus.Reserved)
+				.collect(Collectors.toList());
 	}
 
 	@Override
@@ -73,65 +78,64 @@ public class TicketService extends CrudService<Ticket> implements ITicketService
 		//TODO: Dodati uniqeId
 		
 		Manifestation manifestation = ticket.getManifestation();
-		
 		if(!updateNumberOfSeatsForManifestation(manifestation, -1)) {
 			return null;
 		}
 		
 		Buyer buyer = ticket.getBuyer();
-		ticket.getBuyer().setPoints(buyer.getPoints() + getPointValue(ticket.getPrice()));
-		userRepository.update(buyer);
+		int earnedPoints = getPointValue(ticket.getPrice());
+		updateBuyerPoints(buyer, earnedPoints);
 		
 		ticket.setStatus(TicketStatus.Reserved);
 		return repository.create(ticket);
 	}
 	
-
 	@Override
 	public Ticket cancelTicket(UUID ticketId) {
-		
 		Ticket ticket = repository.read(ticketId);
-		
-		if(ticket == null || !checkIfSevenDaysBeforeEventDate(ticket.getManifestationDate())) {
+		if(ticket == null || !checkIfNowIsSevenDaysBeforeEventDate(ticket.getManifestationDate())) {
 			return null;
 		}
 			
 		Manifestation manifestation = manifestationRepository.read(ticket.getManifestationId());
 		updateNumberOfSeatsForManifestation(manifestation, 1);
 		
-		Buyer buyer = (Buyer) userRepository.read(ticket.getBuyerId());
-		int pointsWithPenalty = buyer.getPoints() - getPointValue(ticket.getPrice())*4;
-		int newPoints = (pointsWithPenalty >= 0) ? pointsWithPenalty : 0;
-		ticket.getBuyer().setPoints(newPoints);
-		userRepository.update(buyer);
-		
+		Buyer buyer = ticket.getBuyer();
+		int penaltyPoints = getPointValue(ticket.getPrice()) * -4;
+		updateBuyerPoints(buyer, penaltyPoints);
+
 		ticket.setStatus(TicketStatus.Canceled);
-		
 		return repository.update(ticket);
 	}
 	
-	private boolean checkIfSevenDaysBeforeEventDate(LocalDateTime eventDate) {
-		return LocalDateTime.now().plusDays(7).isBefore(eventDate);
+	private boolean checkIfNowIsSevenDaysBeforeEventDate(LocalDateTime eventDate) {
+		return LocalDateTime.now()
+							.plusDays(7)
+							.isBefore(eventDate);
 	}
 	
-	private boolean addBuyerPoints() {
-		return true;
+	private void updateBuyerPoints(Buyer buyer, int additionalPoints) {
+		int newBuyerPoints = buyer.getPoints() + additionalPoints;
+		if(newBuyerPoints < 0)
+		{
+			newBuyerPoints = 0;
+		}
+		
+		buyer.setPoints(newBuyerPoints);
+		userRepository.update(buyer);
 	}
 	
-	private boolean updateNumberOfSeatsForManifestation(Manifestation manifestation, int addition) {
-		int newNumberOfManifestationSeats = manifestation.getSeats() + addition;
+	private boolean updateNumberOfSeatsForManifestation(Manifestation manifestation, int additionSeats) {
+		int newNumberOfManifestationSeats = manifestation.getSeats() + additionSeats;
 		if(newNumberOfManifestationSeats < 0) {
 			return false;
 		}
+		
 		manifestation.setSeats(newNumberOfManifestationSeats);
-		manifestationRepository.update(manifestation);
-		return true;
+		return manifestationRepository.update(manifestation) != null;
 	}
 	
 	private int getPointValue(int price) {
-		return price/1000 * 133;
+		return price / 1000 * 133;
 	}
-
-
-	
 }

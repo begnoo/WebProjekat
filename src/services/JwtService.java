@@ -12,9 +12,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 public class JwtService implements IJwtService {
-
-	static final String SECRET = "READ THIS; THIS IS NOT A REAL SECRET; CHANGE WITH REAL ONE HERE!!!";
-	static final long ONE_MINUTE_IN_MILLIS = 60000;
+	private static final String SECRET = "READ THIS; THIS IS NOT A REAL SECRET; CHANGE WITH REAL ONE HERE!!!";
+	private static final long ONE_MINUTE_IN_MILLIS = 60000;
 
 	public JwtService()
 	{

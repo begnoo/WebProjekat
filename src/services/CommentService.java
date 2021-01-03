@@ -15,62 +15,54 @@ import core.domain.models.User;
 import core.repository.IRepository;
 import core.service.ICommentService;
 
-public class CommentService extends CrudService<Comment> implements ICommentService{
-	
+public class CommentService extends CrudService<Comment> implements ICommentService {
 	private IRepository<Manifestation> manifestationRepository;
 	private IRepository<User> userRepository;
 
-	
 	public CommentService(IRepository<Comment> repository, IRepository<Manifestation> manifestationRepository,
 			IRepository<User> userRepository) {
 		super(repository);
 		this.manifestationRepository = manifestationRepository;
 		this.userRepository = userRepository;
 	}
-	
+
 	@Override
 	public Comment create(Comment comment) {
 		Manifestation manifestation = manifestationRepository.read(comment.getManifestationId());
 		Buyer buyer = (Buyer) userRepository.read(comment.getBuyerId());
-		List<Ticket> reservedTickets = buyer.getTickets()
-			.stream()
-			.filter(ticket -> ticket.getManifestationId().equals(comment.getManifestationId()))
-			.filter(ticket -> ticket.getStatus() == TicketStatus.Reserved)
-			.collect(Collectors.toList());
+		
+		List<Ticket> buyersReservedTickets = buyer.getTickets().stream()
+				.filter(ticket -> ticket.getManifestationId().equals(comment.getManifestationId()))
+				.filter(ticket -> ticket.getStatus() == TicketStatus.Reserved)
+				.collect(Collectors.toList());
 
-		if(manifestation.getEventDate().isAfter(LocalDateTime.now()) || reservedTickets.isEmpty()) {
+		if (manifestation.getEventDate().isBefore(LocalDateTime.now()) || buyersReservedTickets.isEmpty()) {
 			return null;
 		}
-		
+
 		comment.setStatus(CommentStatus.Pending);
-		
+
 		return repository.create(comment);
 	}
 
 	@Override
-	public List<Comment> readCommentsByManifestationId(UUID manifestationId) {
-		return repository.read()
-				.stream()
+	public List<Comment> readByManifestationId(UUID manifestationId) {
+		return repository.read().stream()
 				.filter(comment -> comment.getManifestationId().equals(manifestationId))
 				.collect(Collectors.toList());
 	}
 
 	@Override
 	public List<Comment> readNonPendingCommentsByManifestationId(UUID manifestationId) {
-		return readCommentsByManifestationId(manifestationId)
-				.stream()
-				.filter(comment -> comment.getStatus() != CommentStatus.Approved)
+		return readByManifestationId(manifestationId).stream()
+				.filter(comment -> comment.getStatus() != CommentStatus.Pending)
 				.collect(Collectors.toList());
 	}
 
 	@Override
-	public List<Comment> readCommentsByManifestationIdAndStatus(UUID manifestationId, CommentStatus commentStatus) {
-		return readCommentsByManifestationId(manifestationId)
-				.stream()
+	public List<Comment> readByManifestationIdAndStatus(UUID manifestationId, CommentStatus commentStatus) {
+		return readByManifestationId(manifestationId).stream()
 				.filter(comment -> comment.getStatus() == commentStatus)
 				.collect(Collectors.toList());
 	}
-
-
-
 }

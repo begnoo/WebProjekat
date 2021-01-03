@@ -1,4 +1,4 @@
-package seeders;
+package repository.utils.seeders;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

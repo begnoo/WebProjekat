@@ -39,23 +39,26 @@ public class UserService extends CrudService<User> implements IUserService {
 
 	@Override
 	public List<User> readDistrustfulBuyers() {
-		List<User> buyers = readByUserRole(UserRole.Buyer)
+		List<User> distrustfulBuyers = readByUserRole(UserRole.Buyer)
 				.stream()
-				.filter(user -> {
-					Buyer buyer = (Buyer) user;
-					return buyer.getTickets().stream()
-					.filter(ticket -> checkIfInLastMonth(ticket.getManifestationDate()))
-					.filter(ticket -> ticket.getStatus() == TicketStatus.Canceled)
-					.collect(Collectors.toList())
-					.size() > 5;
-				})
+				.filter(user -> isBuyerDistrustful((Buyer) user))
 				.collect(Collectors.toList());
 		
-		return buyers;
+		return distrustfulBuyers;
+	}
+	
+	private boolean isBuyerDistrustful(Buyer buyer)
+	{
+		int numberOfCanceledTicketsInLastMonth = buyer.getTickets().stream()
+				.filter(ticket -> ticket.getStatus() == TicketStatus.Canceled)
+				.filter(ticket -> checkIfInLastMonth(ticket.getManifestationDate()))
+				.collect(Collectors.toList())
+				.size();
+		
+		return numberOfCanceledTicketsInLastMonth > 5;
 	}
 	
 	private boolean checkIfInLastMonth(LocalDateTime eventDate) {
 		return eventDate.isAfter(LocalDateTime.now().minusMonths(1));
 	}
-
 }

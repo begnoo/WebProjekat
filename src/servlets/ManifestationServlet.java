@@ -32,12 +32,11 @@ import servlets.utils.mapper.ObjectMapper;
 
 @Path("manifestations")
 public class ManifestationServlet {
+	@Context
+	ServletContext servletContext;
 
 	private IManifestationService manifestationService;
 	private IMapper mapper;
-
-	@Context
-	ServletContext servletContext;
 
 	public ManifestationServlet() {
 		mapper = new ObjectMapper();
@@ -48,7 +47,6 @@ public class ManifestationServlet {
 		DbContext context = (DbContext) servletContext.getAttribute("DbContext");
 		IRepository<Manifestation> manifestationRepository = new ManifestationRepository(context);
 		IRepository<Location> locationRepository = new Repository<Location>(context, Location.class);
-
 		manifestationService = new ManifestationService(manifestationRepository, locationRepository);
 	}
 
@@ -89,6 +87,7 @@ public class ManifestationServlet {
 		if(manifestation == null) {
 			return null;
 		}
+		
 		Manifestation manifestationForUpdate = mapper.Map(manifestation, request);
 
 		Manifestation updatedManifestation = manifestationService.update(manifestationForUpdate);
@@ -108,5 +107,4 @@ public class ManifestationServlet {
 	{
 		return mapper.Map(new WholeManifestationObjectResponse(), manifestation);
 	}
-
 }

@@ -15,11 +15,9 @@ import core.service.ITicketOrderService;
 import core.service.ITicketService;
 
 public class TicketOrderService implements ITicketOrderService {
-
 	private ITicketService ticketService;
 	private IRepository<User> userRepository;
 	private IRepository<Manifestation> manifestationRepository;
-
 
 	public TicketOrderService(ITicketService ticketService, IRepository<User> userRepository,
 			IRepository<Manifestation> manifestationRepository) {
@@ -45,7 +43,7 @@ public class TicketOrderService implements ITicketOrderService {
 							int price = getPriceOfTicket(manifestation.getRegularTicketPrice(), ticketType);
 							int priceWithDiscount = getPriceOfTicketWithDiscount(price, buyer);
 							
-							Ticket ticket = new  Ticket(
+							Ticket ticket = new Ticket(
 									"", 
 									manifestation.getId(), 
 									manifestation, 
@@ -62,20 +60,19 @@ public class TicketOrderService implements ITicketOrderService {
 			);
 		}
 		
-		
 		return tickets;
 	}
 	
 	public int getPriceOfTicket(int regularPrice, TicketType ticketType) {
 		int typeModifier = ticketType.getModifier();
+		
 		return regularPrice * typeModifier;
 	}
 	
 	public int getPriceOfTicketWithDiscount(int price, Buyer buyer) {
 		double discount = (100 - buyer.getType().getDiscount()) / 100;
-		int priceWithDiscount = (int) (price*discount);
+		int priceWithDiscount = (int) (price * discount);
+		
 		return priceWithDiscount;
 	}
-
-
 }
