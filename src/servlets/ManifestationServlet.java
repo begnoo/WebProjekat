@@ -22,6 +22,7 @@ import core.repository.IRepository;
 import core.requests.manifestations.CreateManifestationRequest;
 import core.requests.manifestations.UpdateManifestationRequest;
 import core.responses.manifestations.WholeManifestationObjectResponse;
+import core.service.IManifestationService;
 import core.servlets.IMapper;
 import repository.DbContext;
 import repository.ManifestationRepository;
@@ -32,7 +33,7 @@ import servlets.utils.mapper.ObjectMapper;
 @Path("manifestations")
 public class ManifestationServlet {
 
-	private ManifestationService manifestationService;
+	private IManifestationService manifestationService;
 	private IMapper mapper;
 
 	@Context
@@ -45,7 +46,7 @@ public class ManifestationServlet {
 	@PostConstruct
 	public void init() {
 		DbContext context = (DbContext) servletContext.getAttribute("DbContext");
-		ManifestationRepository manifestationRepository = new ManifestationRepository(context);
+		IRepository<Manifestation> manifestationRepository = new ManifestationRepository(context);
 		IRepository<Location> locationRepository = new Repository<Location>(context, Location.class);
 
 		manifestationService = new ManifestationService(manifestationRepository, locationRepository);

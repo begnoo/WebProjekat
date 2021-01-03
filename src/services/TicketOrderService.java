@@ -12,15 +12,16 @@ import core.domain.models.Ticket;
 import core.domain.models.User;
 import core.repository.IRepository;
 import core.service.ITicketOrderService;
+import core.service.ITicketService;
 
 public class TicketOrderService implements ITicketOrderService {
 
-	private TicketService ticketService;
+	private ITicketService ticketService;
 	private IRepository<User> userRepository;
 	private IRepository<Manifestation> manifestationRepository;
 
 
-	public TicketOrderService(TicketService ticketService, IRepository<User> userRepository,
+	public TicketOrderService(ITicketService ticketService, IRepository<User> userRepository,
 			IRepository<Manifestation> manifestationRepository) {
 		this.ticketService = ticketService;
 		this.userRepository = userRepository;

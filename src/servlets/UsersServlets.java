@@ -27,9 +27,11 @@ import core.responses.users.WholeAdministratorObjectResponse;
 import core.responses.users.WholeBuyerObjectResponse;
 import core.responses.users.WholeSellerObjectResponse;
 import core.responses.users.WholeUserObjectResponseBase;
+import core.service.IUserService;
 import core.servlets.IMapper;
 import repository.DbContext;
 import repository.UserRepository;
+import services.UserService;
 import servlets.utils.mapper.ObjectMapper;
 
 @Path("users")
@@ -38,8 +40,7 @@ public class UsersServlets {
 	@Context
 	ServletContext servletContext;
 	
-	//private IUserService userService;
-	private IRepository<User> userRepository; // TODO: remove later and use service
+	private IUserService userService;
 	private IMapper mapper;
 	
 	public UsersServlets()
@@ -51,7 +52,8 @@ public class UsersServlets {
 	public void init()
 	{
 		DbContext context = (DbContext) servletContext.getAttribute("DbContext");
-		userRepository = new UserRepository(context);
+		IRepository<User> userRepository = new UserRepository(context);
+		userService = new UserService(userRepository);
 	}
 	
 	@GET
@@ -59,7 +61,7 @@ public class UsersServlets {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<User> readAll()
 	{
-		return userRepository.read();
+		return userService.read();
 	}
 	
 	@GET
@@ -67,7 +69,7 @@ public class UsersServlets {
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeUserObjectResponseBase readById(@PathParam("id") UUID id)
 	{
-		User user = userRepository.read(id);
+		User user = userService.read(id);
 		
 		return generateUserObjectResponse(user);
 	}
@@ -81,7 +83,7 @@ public class UsersServlets {
 		User user = mapper.Map(new Buyer(), request);
 		user.setRole(UserRole.Buyer);
 		
-		User createdUser = userRepository.create(user);
+		User createdUser = userService.create(user);
 		
 		return generateUserObjectResponse(createdUser);
 	}
@@ -95,7 +97,7 @@ public class UsersServlets {
 		User user = mapper.Map(new Seller(), request);
 		user.setRole(UserRole.Seller);
 		
-		User createdUser = userRepository.create(user);
+		User createdUser = userService.create(user);
 
 		return generateUserObjectResponse(createdUser);
 	}
@@ -106,7 +108,7 @@ public class UsersServlets {
 	@Produces(MediaType.APPLICATION_JSON)
 	public boolean delete(@PathParam("id") UUID id)
 	{
-		return userRepository.delete(id);
+		return userService.delete(id);
 	}
 	
 	private WholeUserObjectResponseBase generateUserObjectResponse(User user)

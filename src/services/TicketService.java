@@ -72,13 +72,13 @@ public class TicketService extends CrudService<Ticket> implements ITicketService
 	public Ticket create(Ticket ticket) {
 		//TODO: Dodati uniqeId
 		
-		Manifestation manifestation = manifestationRepository.read(ticket.getManifestationId());
+		Manifestation manifestation = ticket.getManifestation();
 		
 		if(!updateNumberOfSeatsForManifestation(manifestation, -1)) {
 			return null;
 		}
 		
-		Buyer buyer = (Buyer) userRepository.read(ticket.getBuyerId());
+		Buyer buyer = ticket.getBuyer();
 		ticket.getBuyer().setPoints(buyer.getPoints() + getPointValue(ticket.getPrice()));
 		userRepository.update(buyer);
 		
@@ -112,6 +112,10 @@ public class TicketService extends CrudService<Ticket> implements ITicketService
 	
 	private boolean checkIfSevenDaysBeforeEventDate(LocalDateTime eventDate) {
 		return LocalDateTime.now().plusDays(7).isBefore(eventDate);
+	}
+	
+	private boolean addBuyerPoints() {
+		return true;
 	}
 	
 	private boolean updateNumberOfSeatsForManifestation(Manifestation manifestation, int addition) {

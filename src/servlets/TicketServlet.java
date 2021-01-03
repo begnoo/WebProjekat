@@ -18,9 +18,14 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import core.domain.dto.TicketOrder;
+import core.domain.models.Manifestation;
 import core.domain.models.Ticket;
+import core.domain.models.User;
+import core.repository.IRepository;
 import core.requests.tickets.UpdateTicketRequest;
 import core.responses.tickets.WholeTicketObjectResponse;
+import core.service.ITicketOrderService;
+import core.service.ITicketService;
 import core.servlets.IMapper;
 import repository.DbContext;
 import repository.ManifestationRepository;
@@ -33,8 +38,8 @@ import servlets.utils.mapper.ObjectMapper;
 @Path("tickets")
 public class TicketServlet {
 
-	private TicketService ticketService;
-	private TicketOrderService ticketOrderService;
+	private ITicketService ticketService;
+	private ITicketOrderService ticketOrderService;
 	private IMapper mapper;
 
 	@Context
@@ -47,9 +52,9 @@ public class TicketServlet {
 	@PostConstruct
 	public void init() {
 		DbContext context = (DbContext) servletContext.getAttribute("DbContext");
-		TicketRepository ticketRepository = new TicketRepository(context);
-		UserRepository userRepository = new UserRepository(context);
-		ManifestationRepository manifestationRepository = new ManifestationRepository(context);
+		IRepository<Ticket> ticketRepository = new TicketRepository(context);
+		IRepository<User> userRepository = new UserRepository(context);
+		IRepository<Manifestation> manifestationRepository = new ManifestationRepository(context);
 		ticketService = new TicketService(ticketRepository, userRepository, manifestationRepository);
 		ticketOrderService = new TicketOrderService(ticketService, userRepository, manifestationRepository);
 	}

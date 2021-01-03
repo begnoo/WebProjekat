@@ -17,10 +17,13 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import core.domain.models.Comment;
+import core.domain.models.Manifestation;
+import core.domain.models.User;
 import core.repository.IRepository;
 import core.requests.comments.CreateCommentRequest;
 import core.requests.comments.UpdateCommentRequest;
 import core.responses.comments.WholeCommentObjectResponse;
+import core.service.ICommentService;
 import core.servlets.IMapper;
 import repository.DbContext;
 import repository.ManifestationRepository;
@@ -32,7 +35,7 @@ import servlets.utils.mapper.ObjectMapper;
 @Path("comments")
 public class CommentServlet {
 
-	private CommentService commentService;
+	private ICommentService commentService;
 	private IMapper mapper;
 
 	@Context
@@ -46,8 +49,8 @@ public class CommentServlet {
 	public void init() {
 		DbContext context = (DbContext) servletContext.getAttribute("DbContext");
 		IRepository<Comment> commentRepository = new Repository<Comment>(context, Comment.class);
-		ManifestationRepository manifestationRepository = new ManifestationRepository(context);
-		UserRepository userRepository = new UserRepository(context);
+		IRepository<Manifestation> manifestationRepository = new ManifestationRepository(context);
+		IRepository<User> userRepository = new UserRepository(context);
 
 		commentService = new CommentService(commentRepository, manifestationRepository, userRepository);
 		

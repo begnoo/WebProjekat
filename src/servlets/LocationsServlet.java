@@ -23,9 +23,11 @@ import core.requests.locations.CreateAddressRequest;
 import core.requests.locations.CreateLocationRequest;
 import core.requests.locations.UpdateAddressRequest;
 import core.requests.locations.UpdateLocationRequest;
+import core.service.ICrudService;
 import core.servlets.IMapper;
 import repository.DbContext;
 import repository.Repository;
+import services.CrudService;
 import servlets.utils.mapper.ObjectMapper;
 
 @Path("locations")
@@ -33,7 +35,7 @@ public class LocationsServlet {
 	@Context
 	ServletContext servletContext;
 
-	private IRepository<Location> locationRepository;
+	private ICrudService<Location> locationService;
 	private IMapper mapper;
 	
 	public LocationsServlet()
@@ -47,7 +49,8 @@ public class LocationsServlet {
 	public void init()
 	{
 		DbContext context = (DbContext) servletContext.getAttribute("DbContext");
-		locationRepository = new Repository<Location>(context, Location.class);
+		IRepository<Location> locationRepository = new Repository<Location>(context, Location.class);
+		locationService = new CrudService<Location>(locationRepository);
 	}
 
 	@GET
@@ -55,7 +58,7 @@ public class LocationsServlet {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Location> readAll()
 	{
-		return locationRepository.read();
+		return locationService.read();
 	}
 	
 	@GET
@@ -63,7 +66,7 @@ public class LocationsServlet {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Location readById(@PathParam("id") UUID id)
 	{
-		return locationRepository.read(id);
+		return locationService.read(id);
 	}
 	
 	@POST
@@ -74,7 +77,7 @@ public class LocationsServlet {
 	{
 		Location location = mapper.Map(new Location(), request);
 		
-		return locationRepository.create(location);
+		return locationService.create(location);
 	}
 	
 	@PUT
@@ -83,9 +86,9 @@ public class LocationsServlet {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Location update(UpdateLocationRequest request)
 	{
-		Location LocationForUpdate = mapper.Map(locationRepository.read(request.getId()), request);
+		Location LocationForUpdate = mapper.Map(locationService.read(request.getId()), request);
 		
-		return locationRepository.update(LocationForUpdate);
+		return locationService.update(LocationForUpdate);
 	}
 	
 	@DELETE
@@ -93,7 +96,7 @@ public class LocationsServlet {
 	@Produces(MediaType.APPLICATION_JSON)
 	public boolean delete(@PathParam("id") UUID id)
 	{
-		return locationRepository.delete(id);
+		return locationService.delete(id);
 	}
 
 }
