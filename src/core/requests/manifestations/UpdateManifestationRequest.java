@@ -89,4 +89,5 @@ public class UpdateManifestationRequest {
 	public void setSellerId(UUID sellerId) {
 		this.sellerId = sellerId;
 	}
+
 }

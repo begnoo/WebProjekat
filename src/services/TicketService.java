@@ -57,8 +57,13 @@ public class TicketService extends CrudService<Ticket> implements ITicketService
 
 		// TODO: Pogledati da li ovo moze nekako lepse da se odradi
 		List<Ticket> tickets = new ArrayList<>();
-		seller.getManifestations().forEach(manifestation -> tickets.addAll(readByManifestationId(manifestation.getId())
-				.stream().filter(ticket -> ticket.getStatus() == TicketStatus.Reserved).collect(Collectors.toList())));
+		seller.getManifestations()
+				.forEach(
+						manifestation -> tickets.addAll(readByManifestationId(manifestation.getId())
+								.stream()
+								.filter(ticket -> ticket.getStatus() == TicketStatus.Reserved)
+								.collect(Collectors.toList()))
+						);
 
 		return tickets;
 	}
@@ -81,6 +86,34 @@ public class TicketService extends CrudService<Ticket> implements ITicketService
 		return repository.create(ticket);
 	}
 	
+
+	@Override
+	public Ticket cancelTicket(UUID ticketId) {
+		
+		Ticket ticket = repository.read(ticketId);
+		
+		if(ticket == null || !checkIfSevenDaysBeforeEventDate(ticket.getManifestationDate())) {
+			return null;
+		}
+			
+		Manifestation manifestation = manifestationRepository.read(ticket.getManifestationId());
+		updateNumberOfSeatsForManifestation(manifestation, 1);
+		
+		Buyer buyer = (Buyer) userRepository.read(ticket.getBuyerId());
+		int pointsWithPenalty = buyer.getPoints() - getPointValue(ticket.getPrice())*4;
+		int newPoints = (pointsWithPenalty >= 0) ? pointsWithPenalty : 0;
+		ticket.getBuyer().setPoints(newPoints);
+		userRepository.update(buyer);
+		
+		ticket.setStatus(TicketStatus.Canceled);
+		
+		return repository.update(ticket);
+	}
+	
+	private boolean checkIfSevenDaysBeforeEventDate(LocalDateTime eventDate) {
+		return LocalDateTime.now().plusDays(7).isBefore(eventDate);
+	}
+	
 	private boolean updateNumberOfSeatsForManifestation(Manifestation manifestation, int addition) {
 		int newNumberOfManifestationSeats = manifestation.getSeats() + addition;
 		if(newNumberOfManifestationSeats < 0) {
@@ -93,29 +126,6 @@ public class TicketService extends CrudService<Ticket> implements ITicketService
 	
 	private int getPointValue(int price) {
 		return price/1000 * 133;
-	}
-
-	@Override
-	public Ticket cancelTicket(UUID ticketId) {
-		Ticket ticket = repository.read(ticketId);
-		if(ticket != null && checkIfSevenDaysBeforeEventDate(ticket.getManifestationDate())) {
-			
-			Manifestation manifestation = manifestationRepository.read(ticket.getManifestationId());
-			updateNumberOfSeatsForManifestation(manifestation, 1);
-			
-			Buyer buyer = (Buyer) userRepository.read(ticket.getBuyerId());
-			int pointsWithPenalty = buyer.getPoints() - getPointValue(ticket.getPrice())*4;
-			int newPoints = (pointsWithPenalty >= 0) ? pointsWithPenalty : 0;
-			ticket.getBuyer().setPoints(newPoints);
-			userRepository.update(buyer);
-			
-			ticket.setStatus(TicketStatus.Reserved);
-		}
-		return repository.update(ticket);
-	}
-	
-	private boolean checkIfSevenDaysBeforeEventDate(LocalDateTime eventDate) {
-		return LocalDateTime.now().plusDays(7).isBefore(eventDate);
 	}
 
 

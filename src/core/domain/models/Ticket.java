@@ -71,7 +71,7 @@ public class Ticket extends BaseEntity {
 	}
 
 	public LocalDateTime getManifestationDate() {
-		return manifestationDate;
+		return manifestation.getEventDate();
 	}
 
 	public void setManifestationDate(LocalDateTime manifestationDate) {

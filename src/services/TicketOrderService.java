@@ -9,31 +9,30 @@ import core.domain.enums.TicketType;
 import core.domain.models.Buyer;
 import core.domain.models.Manifestation;
 import core.domain.models.Ticket;
-import core.service.IManifestationService;
+import core.domain.models.User;
+import core.repository.IRepository;
 import core.service.ITicketOrderService;
-import core.service.ITicketService;
-import core.service.IUserService;
 
 public class TicketOrderService implements ITicketOrderService {
 
-	private ITicketService ticketService;
-	private IUserService userService;
-	private IManifestationService manifestationService;
+	private TicketService ticketService;
+	private IRepository<User> userRepository;
+	private IRepository<Manifestation> manifestationRepository;
 
 
-	public TicketOrderService(ITicketService ticketService, IUserService userService,
-			IManifestationService manifestationService) {
+	public TicketOrderService(TicketService ticketService, IRepository<User> userRepository,
+			IRepository<Manifestation> manifestationRepository) {
 		this.ticketService = ticketService;
-		this.userService = userService;
-		this.manifestationService = manifestationService;
+		this.userRepository = userRepository;
+		this.manifestationRepository = manifestationRepository;
 	}
 
 	@Override
 	public List<Ticket> createTicketsFromOrder(TicketOrder ticketOrder) {
 		//TODO: Proveriti slucaj kada je hash mapa prazna
 		List<Ticket> tickets = new ArrayList<>();
-		Buyer buyer = (Buyer) userService.read(ticketOrder.getBuyerId());
-		Manifestation manifestation = manifestationService.read(ticketOrder.getManifestationId());
+		Buyer buyer = (Buyer) userRepository.read(ticketOrder.getBuyerId());
+		Manifestation manifestation = manifestationRepository.read(ticketOrder.getManifestationId());
 		
 		int numberOfAllTickets = ticketOrder.getNumberOfOrderedTicketsMap().values().stream().reduce(0, Integer::sum);
 		if(numberOfAllTickets <= manifestation.getSeats()) {

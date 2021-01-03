@@ -20,9 +20,8 @@ public class CreateManifestationRequest {
 	private int regularTicketPrice;
 	private UUID locationId;
 	private UUID sellerId;
-	
-	public CreateManifestationRequest()
-	{
+
+	public CreateManifestationRequest() {
 		super();
 	}
 
@@ -81,7 +80,5 @@ public class CreateManifestationRequest {
 	public void setSellerId(UUID sellerId) {
 		this.sellerId = sellerId;
 	}
-	
-	
 
 }

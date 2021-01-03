@@ -16,6 +16,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import core.domain.models.Location;
 import core.domain.models.Manifestation;
 import core.repository.IRepository;
 import core.requests.manifestations.CreateManifestationRequest;
@@ -24,12 +25,14 @@ import core.responses.manifestations.WholeManifestationObjectResponse;
 import core.servlets.IMapper;
 import repository.DbContext;
 import repository.ManifestationRepository;
+import repository.Repository;
+import services.ManifestationService;
 import servlets.utils.mapper.ObjectMapper;
 
 @Path("manifestations")
 public class ManifestationServlet {
 
-	private IRepository<Manifestation> manifestationRepository;
+	private ManifestationService manifestationService;
 	private IMapper mapper;
 
 	@Context
@@ -42,21 +45,24 @@ public class ManifestationServlet {
 	@PostConstruct
 	public void init() {
 		DbContext context = (DbContext) servletContext.getAttribute("DbContext");
-		manifestationRepository = new ManifestationRepository(context);
+		ManifestationRepository manifestationRepository = new ManifestationRepository(context);
+		IRepository<Location> locationRepository = new Repository<Location>(context, Location.class);
+
+		manifestationService = new ManifestationService(manifestationRepository, locationRepository);
 	}
 
 	@GET
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Manifestation> readAll() {
-		return manifestationRepository.read();
+		return manifestationService.read();
 	}
 
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeManifestationObjectResponse readById(@PathParam("id") UUID id) {
-		Manifestation manifestation = manifestationRepository.read(id);
+		Manifestation manifestation = manifestationService.read(id);
 		
 		return generateManifestationObjectResponse(manifestation);
 	}
@@ -68,7 +74,7 @@ public class ManifestationServlet {
 	public WholeManifestationObjectResponse create(CreateManifestationRequest request) {
 		Manifestation manifestation = mapper.Map(new Manifestation(), request);
 		
-		Manifestation createdManifestation = manifestationRepository.create(manifestation);
+		Manifestation createdManifestation = manifestationService.create(manifestation);
 		
 		return generateManifestationObjectResponse(createdManifestation);
 	}
@@ -78,9 +84,13 @@ public class ManifestationServlet {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeManifestationObjectResponse update(UpdateManifestationRequest request) {
-		Manifestation manifestationForUpdate = mapper.Map(manifestationRepository.read(request.getId()), request);
+		Manifestation manifestation = manifestationService.read(request.getId());
+		if(manifestation == null) {
+			return null;
+		}
+		Manifestation manifestationForUpdate = mapper.Map(manifestation, request);
 
-		Manifestation updatedManifestation = manifestationRepository.update(manifestationForUpdate);
+		Manifestation updatedManifestation = manifestationService.update(manifestationForUpdate);
 		
 		return generateManifestationObjectResponse(updatedManifestation);
 	}
@@ -90,7 +100,7 @@ public class ManifestationServlet {
 	@Produces(MediaType.APPLICATION_JSON)
 	public boolean delete(@PathParam("id") UUID id)
 	{
-		return manifestationRepository.delete(id);
+		return manifestationService.delete(id);
 	}
 	
 	private WholeManifestationObjectResponse generateManifestationObjectResponse(Manifestation manifestation)

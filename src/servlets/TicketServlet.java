@@ -1,5 +1,6 @@
 package servlets;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,20 +17,24 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import core.domain.dto.TicketOrder;
 import core.domain.models.Ticket;
-import core.repository.IRepository;
-import core.requests.tickets.CreateTicketRequest;
 import core.requests.tickets.UpdateTicketRequest;
 import core.responses.tickets.WholeTicketObjectResponse;
 import core.servlets.IMapper;
 import repository.DbContext;
+import repository.ManifestationRepository;
 import repository.TicketRepository;
+import repository.UserRepository;
+import services.TicketOrderService;
+import services.TicketService;
 import servlets.utils.mapper.ObjectMapper;
 
 @Path("tickets")
 public class TicketServlet {
 
-	private IRepository<Ticket> ticketRepository;
+	private TicketService ticketService;
+	private TicketOrderService ticketOrderService;
 	private IMapper mapper;
 
 	@Context
@@ -42,21 +47,25 @@ public class TicketServlet {
 	@PostConstruct
 	public void init() {
 		DbContext context = (DbContext) servletContext.getAttribute("DbContext");
-		ticketRepository = new TicketRepository(context);
+		TicketRepository ticketRepository = new TicketRepository(context);
+		UserRepository userRepository = new UserRepository(context);
+		ManifestationRepository manifestationRepository = new ManifestationRepository(context);
+		ticketService = new TicketService(ticketRepository, userRepository, manifestationRepository);
+		ticketOrderService = new TicketOrderService(ticketService, userRepository, manifestationRepository);
 	}
 
 	@GET
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Ticket> readAll() {
-		return ticketRepository.read();
+		return ticketService.read();
 	}
 
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeTicketObjectResponse readById(@PathParam("id") UUID id) {
-		Ticket ticket = ticketRepository.read(id);
+		Ticket ticket = ticketService.read(id);
 		
 		return generateTicketObjectResponse(ticket);
 	}
@@ -65,12 +74,13 @@ public class TicketServlet {
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public WholeTicketObjectResponse create(CreateTicketRequest request) {
-		Ticket ticket = mapper.Map(new Ticket(), request);
+	public List<WholeTicketObjectResponse> create(TicketOrder ticketOrder) {
 
-		Ticket createdTicket = ticketRepository.create(ticket);
-	
-		return generateTicketObjectResponse(createdTicket);
+		List<Ticket> createdTickets = ticketOrderService.createTicketsFromOrder(ticketOrder);
+		List<WholeTicketObjectResponse> response = new ArrayList<>();
+		createdTickets.forEach(ticket -> response.add(generateTicketObjectResponse(ticket)));
+		
+		return response;
 	}
 
 	@PUT
@@ -78,9 +88,9 @@ public class TicketServlet {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeTicketObjectResponse update(UpdateTicketRequest request) {
-		Ticket ticketForUpdate = mapper.Map(ticketRepository.read(request.getId()), request);
+		Ticket ticketForUpdate = mapper.Map(ticketService.read(request.getId()), request);
 
-		Ticket updatedTicket = ticketRepository.update(ticketForUpdate);
+		Ticket updatedTicket = ticketService.update(ticketForUpdate);
 
 		return generateTicketObjectResponse(updatedTicket);
 	}
@@ -90,7 +100,7 @@ public class TicketServlet {
 	@Produces(MediaType.APPLICATION_JSON)
 	public boolean delete(@PathParam("id") UUID id)
 	{
-		return ticketRepository.delete(id);
+		return ticketService.delete(id);
 	}
 
 	private WholeTicketObjectResponse generateTicketObjectResponse(Ticket ticket)
