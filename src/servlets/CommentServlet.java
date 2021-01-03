@@ -23,7 +23,9 @@ import core.requests.comments.UpdateCommentRequest;
 import core.responses.comments.WholeCommentObjectResponse;
 import core.servlets.IMapper;
 import repository.DbContext;
+import repository.ManifestationRepository;
 import repository.Repository;
+import repository.UserRepository;
 import services.CommentService;
 import servlets.utils.mapper.ObjectMapper;
 
@@ -44,7 +46,10 @@ public class CommentServlet {
 	public void init() {
 		DbContext context = (DbContext) servletContext.getAttribute("DbContext");
 		IRepository<Comment> commentRepository = new Repository<Comment>(context, Comment.class);
-		commentService = new CommentService(commentRepository);
+		ManifestationRepository manifestationRepository = new ManifestationRepository(context);
+		UserRepository userRepository = new UserRepository(context);
+
+		commentService = new CommentService(commentRepository, manifestationRepository, userRepository);
 		
 	}
 
