@@ -2,7 +2,9 @@ package servlets.utils.mapper;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import core.servlets.IMapper;
 
@@ -20,10 +22,10 @@ public class ObjectMapper implements IMapper {
 	}
 	
 	public <T> T Map(T mappedObject, Object mappingObject)
-	{
+	{		
 		try
 		{			
-			for(Field field : mappingObject.getClass().getDeclaredFields())
+			for(Field field : getAllFieldsFromClass(mappingObject.getClass()))
 			{
 				Method getterOfMappingObject = mappingObject.getClass().getMethod(getGetterNameForField(field.getType(), field.getName()));
 				Object objectToSet = null;
@@ -50,6 +52,23 @@ public class ObjectMapper implements IMapper {
 		}
 		
 		return null;	
+	}
+	
+	private List<Field> getAllFieldsFromClass(Class<?> classType)
+	{
+		List<Field> fields = new ArrayList<Field>();
+		Class<?> currentClass = classType;
+		do
+		{
+			for(Field field : currentClass.getDeclaredFields())
+			{
+				fields.add(field);
+			}
+		
+			currentClass = currentClass.getSuperclass();
+		} while(currentClass != Object.class);
+		
+		return fields;
 	}
 	
 	private String getGetterNameForField(Class<?> classType, String fieldName)
