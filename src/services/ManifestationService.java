@@ -33,11 +33,6 @@ public class ManifestationService extends CrudService<Manifestation> implements 
 	@Override
 	public Manifestation create(Manifestation manifestation) {
 		
-		if(!checkIfSellerExists(manifestation.getSellerId())) {
-			return null;
-		}
-			
-		
 		if(!checkIfLocationExists(manifestation.getLocationId())) {
 			return null;
 		}
@@ -68,10 +63,6 @@ public class ManifestationService extends CrudService<Manifestation> implements 
 		}
 		
 		return repository.update(manifestationForUpdate);
-	}
-	
-	private boolean checkIfSellerExists(UUID sellerId) {
-		return userRepository.read(sellerId) != null;
 	}
 	
 	private boolean checkIfLocationExists(UUID locationId) {
