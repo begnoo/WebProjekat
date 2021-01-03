@@ -17,11 +17,10 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import core.domain.models.Comment;
-import core.domain.models.Manifestation;
-import core.domain.models.User;
 import core.repository.IRepository;
 import core.requests.comments.CreateCommentRequest;
 import core.requests.comments.UpdateCommentRequest;
+import core.responses.comments.WholeCommentObjectResponse;
 import core.servlets.IMapper;
 import repository.DbContext;
 import repository.Repository;
@@ -59,28 +58,35 @@ public class CommentServlet {
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Comment readById(@PathParam("id") UUID id) {
-		return commentService.read(id);
+	public WholeCommentObjectResponse readById(@PathParam("id") UUID id) {
+		Comment comment = commentService.read(id);
+		
+		return generateCommentObjectResponse(comment);
 	}
 
 	@POST
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Comment create(CreateCommentRequest request) {
+	public WholeCommentObjectResponse create(CreateCommentRequest request) {
 		Comment comment = mapper.Map(new Comment(), request);
 
-		return commentService.create(comment);
+		Comment createdComment = commentService.create(comment);
+		
+		return generateCommentObjectResponse(createdComment);
+
 	}
 
 	@PUT
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Comment update(UpdateCommentRequest request) {
+	public WholeCommentObjectResponse update(UpdateCommentRequest request) {
 		Comment commentForUpdate = mapper.Map(commentService.read(request.getId()), request);
 
-		return commentService.update(commentForUpdate);
+		Comment updatedComment = commentService.update(commentForUpdate);
+		
+		return generateCommentObjectResponse(updatedComment);
 	}
 	
 	@DELETE
@@ -89,6 +95,11 @@ public class CommentServlet {
 	public boolean delete(@PathParam("id") UUID id)
 	{
 		return commentService.delete(id);
+	}
+	
+	private WholeCommentObjectResponse generateCommentObjectResponse(Comment comment)
+	{
+		return mapper.Map(new WholeCommentObjectResponse(), comment);
 	}
 
 }

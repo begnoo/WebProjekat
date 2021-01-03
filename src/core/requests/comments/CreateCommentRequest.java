@@ -2,10 +2,6 @@ package core.requests.comments;
 
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import core.domain.enums.CommentStatus;
-
 public class CreateCommentRequest {
 
 	private UUID buyerId;

@@ -11,7 +11,6 @@ import core.domain.models.Buyer;
 import core.domain.models.Comment;
 import core.domain.models.Manifestation;
 import core.domain.models.Ticket;
-import core.domain.models.User;
 import core.repository.IRepository;
 import core.service.ICommentService;
 
