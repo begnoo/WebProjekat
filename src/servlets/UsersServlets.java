@@ -23,6 +23,10 @@ import core.domain.models.User;
 import core.repository.IRepository;
 import core.requests.users.CreateBuyerRequest;
 import core.requests.users.CreateSellerRequest;
+import core.responses.users.WholeAdministratorObjectResponse;
+import core.responses.users.WholeBuyerObjectResponse;
+import core.responses.users.WholeSellerObjectResponse;
+import core.responses.users.WholeUserObjectResponseBase;
 import core.servlets.IMapper;
 import repository.DbContext;
 import repository.UserRepository;
@@ -61,33 +65,39 @@ public class UsersServlets {
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public User readById(@PathParam("id") UUID id)
+	public WholeUserObjectResponseBase readById(@PathParam("id") UUID id)
 	{
-		return userRepository.read(id);
+		User user = userRepository.read(id);
+		
+		return generateUserObjectResponse(user);
 	}
 	
 	@POST
 	@Path("/buyer")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public User createBuyer(CreateBuyerRequest request)
+	public WholeUserObjectResponseBase createBuyer(CreateBuyerRequest request)
 	{
 		User user = mapper.Map(new Buyer(), request);
 		user.setRole(UserRole.Buyer);
 		
-		return userRepository.create(user);
+		User createdUser = userRepository.create(user);
+		
+		return generateUserObjectResponse(createdUser);
 	}
 	
 	@POST
 	@Path("/seller")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public User createBuyer(CreateSellerRequest request)
+	public WholeUserObjectResponseBase createBuyer(CreateSellerRequest request)
 	{
 		User user = mapper.Map(new Seller(), request);
 		user.setRole(UserRole.Seller);
 		
-		return userRepository.create(user);
+		User createdUser = userRepository.create(user);
+
+		return generateUserObjectResponse(createdUser);
 	}
 	
 	
@@ -99,4 +109,14 @@ public class UsersServlets {
 		return userRepository.delete(id);
 	}
 	
+	private WholeUserObjectResponseBase generateUserObjectResponse(User user)
+	{
+		if(user.getRole() == UserRole.Buyer) {
+			return mapper.Map(new WholeBuyerObjectResponse(), user);
+		} else if (user.getRole() == UserRole.Seller) {
+			return mapper.Map(new WholeSellerObjectResponse(), user);
+		} else {
+			return mapper.Map(new WholeAdministratorObjectResponse(), user);
+		}
+	}
 }

@@ -20,9 +20,10 @@ import core.domain.models.Manifestation;
 import core.repository.IRepository;
 import core.requests.manifestations.CreateManifestationRequest;
 import core.requests.manifestations.UpdateManifestationRequest;
+import core.responses.manifestations.WholeManifestationObjectResponse;
 import core.servlets.IMapper;
 import repository.DbContext;
-import repository.Repository;
+import repository.ManifestationRepository;
 import servlets.utils.mapper.ObjectMapper;
 
 @Path("manifestations")
@@ -41,7 +42,7 @@ public class ManifestationServlet {
 	@PostConstruct
 	public void init() {
 		DbContext context = (DbContext) servletContext.getAttribute("DbContext");
-		manifestationRepository = new Repository<Manifestation>(context, Manifestation.class);
+		manifestationRepository = new ManifestationRepository(context);
 	}
 
 	@GET
@@ -54,28 +55,34 @@ public class ManifestationServlet {
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Manifestation readById(@PathParam("id") UUID id) {
-		return manifestationRepository.read(id);
+	public WholeManifestationObjectResponse readById(@PathParam("id") UUID id) {
+		Manifestation manifestation = manifestationRepository.read(id);
+		
+		return generateManifestationObjectResponse(manifestation);
 	}
 
 	@POST
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Manifestation create(CreateManifestationRequest request) {
+	public WholeManifestationObjectResponse create(CreateManifestationRequest request) {
 		Manifestation manifestation = mapper.Map(new Manifestation(), request);
-
-		return manifestationRepository.create(manifestation);
+		
+		Manifestation createdManifestation = manifestationRepository.create(manifestation);
+		
+		return generateManifestationObjectResponse(createdManifestation);
 	}
 
 	@PUT
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Manifestation update(UpdateManifestationRequest request) {
+	public WholeManifestationObjectResponse update(UpdateManifestationRequest request) {
 		Manifestation manifestationForUpdate = mapper.Map(manifestationRepository.read(request.getId()), request);
 
-		return manifestationRepository.update(manifestationForUpdate);
+		Manifestation updatedManifestation = manifestationRepository.update(manifestationForUpdate);
+		
+		return generateManifestationObjectResponse(updatedManifestation);
 	}
 	
 	@DELETE
@@ -84,6 +91,11 @@ public class ManifestationServlet {
 	public boolean delete(@PathParam("id") UUID id)
 	{
 		return manifestationRepository.delete(id);
+	}
+	
+	private WholeManifestationObjectResponse generateManifestationObjectResponse(Manifestation manifestation)
+	{
+		return mapper.Map(new WholeManifestationObjectResponse(), manifestation);
 	}
 
 }

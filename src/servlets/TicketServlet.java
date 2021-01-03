@@ -20,9 +20,10 @@ import core.domain.models.Ticket;
 import core.repository.IRepository;
 import core.requests.tickets.CreateTicketRequest;
 import core.requests.tickets.UpdateTicketRequest;
+import core.responses.tickets.WholeTicketObjectResponse;
 import core.servlets.IMapper;
 import repository.DbContext;
-import repository.Repository;
+import repository.TicketRepository;
 import servlets.utils.mapper.ObjectMapper;
 
 @Path("tickets")
@@ -41,7 +42,7 @@ public class TicketServlet {
 	@PostConstruct
 	public void init() {
 		DbContext context = (DbContext) servletContext.getAttribute("DbContext");
-		ticketRepository = new Repository<Ticket>(context, Ticket.class);
+		ticketRepository = new TicketRepository(context);
 	}
 
 	@GET
@@ -54,28 +55,34 @@ public class TicketServlet {
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Ticket readById(@PathParam("id") UUID id) {
-		return ticketRepository.read(id);
+	public WholeTicketObjectResponse readById(@PathParam("id") UUID id) {
+		Ticket ticket = ticketRepository.read(id);
+		
+		return generateTicketObjectResponse(ticket);
 	}
 
 	@POST
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Ticket create(CreateTicketRequest request) {
-		Ticket manifestation = mapper.Map(new Ticket(), request);
+	public WholeTicketObjectResponse create(CreateTicketRequest request) {
+		Ticket ticket = mapper.Map(new Ticket(), request);
 
-		return ticketRepository.create(manifestation);
+		Ticket createdTicket = ticketRepository.create(ticket);
+	
+		return generateTicketObjectResponse(createdTicket);
 	}
 
 	@PUT
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Ticket update(UpdateTicketRequest request) {
+	public WholeTicketObjectResponse update(UpdateTicketRequest request) {
 		Ticket ticketForUpdate = mapper.Map(ticketRepository.read(request.getId()), request);
 
-		return ticketRepository.update(ticketForUpdate);
+		Ticket updatedTicket = ticketRepository.update(ticketForUpdate);
+
+		return generateTicketObjectResponse(updatedTicket);
 	}
 	
 	@DELETE
@@ -86,5 +93,10 @@ public class TicketServlet {
 		return ticketRepository.delete(id);
 	}
 
+	private WholeTicketObjectResponse generateTicketObjectResponse(Ticket ticket)
+	{
+		return mapper.Map(new WholeTicketObjectResponse(), ticket);
+	}
+	
 }
 
