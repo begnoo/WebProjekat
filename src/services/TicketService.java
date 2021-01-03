@@ -66,17 +66,22 @@ public class TicketService extends CrudService<Ticket> implements ITicketService
 	@Override
 	public Ticket create(Ticket ticket) {
 		//TODO: Dodati uniqeId
-		Buyer buyer = (Buyer) userRepository.read(ticket.getBuyerId());
+		Buyer buyer = ticket.getBuyer();
 		ticket.getBuyer().setPoints(buyer.getPoints() + getPointValue(ticket.getPrice()));
 		userRepository.update(buyer);
+		//sredi ovo idiote, provera mesta
 		
-		int numberOfManifestationSeats = ticket.getManifestation().getSeats();
-		int newNumberOfManifestationSeats = (numberOfManifestationSeats - 1 == 0) ?  numberOfManifestationSeats : 0;
-		ticket.getManifestation().setSeats(newNumberOfManifestationSeats);
-		manifestationRepository.update(ticket.getManifestation());
 		
 		ticket.setStatus(TicketStatus.Reserved);
 		return repository.create(ticket);
+	}
+	
+	private boolean updateNumberOfSeatsForManifestation() {
+		int numberOfManifestationSeats = ticket.getManifestation().getSeats();
+		int newNumberOfManifestationSeats = (numberOfManifestationSeats - 1 >= 0) ?  numberOfManifestationSeats : 0;
+		ticket.getManifestation().setSeats(newNumberOfManifestationSeats);
+		manifestationRepository.update(ticket.getManifestation());
+		return true;
 	}
 	
 	private int getPointValue(int price) {
@@ -92,7 +97,7 @@ public class TicketService extends CrudService<Ticket> implements ITicketService
 			int newPoints = (pointsWithPenalty >= 0) ? pointsWithPenalty : 0;
 			ticket.getBuyer().setPoints(newPoints);
 			userRepository.update(buyer);
-			
+			//sredi ovo idiote
 			int numberOfManifestationSeats = ticket.getManifestation().getSeats();
 			ticket.getManifestation().setSeats(numberOfManifestationSeats + 1);
 			manifestationRepository.update(ticket.getManifestation());
