@@ -22,6 +22,7 @@ public class Buyer extends User {
 	{
 		super();
 		this.tickets = new ArrayList<Ticket>(); 
+		this.setRole(UserRole.Buyer);
 	}
 	
 	public Buyer(String username, String password, String name, String surname,

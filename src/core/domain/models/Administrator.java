@@ -9,6 +9,7 @@ public class Administrator extends User {
 	public Administrator()
 	{
 		super();
+		this.setRole(UserRole.Administrator);
 	}
 	
 	public Administrator(String username, String password, String name, String surname,

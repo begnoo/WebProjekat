@@ -19,7 +19,6 @@ public class CreateBuyerRequest {
 	@JsonSerialize(using = JsonDateSerializer.class)
 	@JsonDeserialize(using = JsonDateDeserializer.class)
 	private LocalDateTime birthdate;
-	private UUID buyerTypeId;
 	
 	public CreateBuyerRequest() {
 		super();
@@ -34,7 +33,6 @@ public class CreateBuyerRequest {
 		Surname = surname;
 		this.gender = gender;
 		this.birthdate = birthdate;
-		this.buyerTypeId = buyerTypeId;
 	}
 	
 	public String getUsername() {
@@ -83,13 +81,5 @@ public class CreateBuyerRequest {
 	
 	public void setBirthdate(LocalDateTime birthdate) {
 		this.birthdate = birthdate;
-	}
-	
-	public UUID getBuyerTypeId() {
-		return buyerTypeId;
-	}
-	
-	public void setBuyerTypeId(UUID buyerTypeId) {
-		this.buyerTypeId = buyerTypeId;
 	}
 }

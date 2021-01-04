@@ -16,7 +16,8 @@ public class Seller extends User {
 	public Seller()
 	{
 		super();
-		this.manifestations = new ArrayList<Manifestation>(); 
+		this.manifestations = new ArrayList<Manifestation>();
+		this.setRole(UserRole.Seller);
 	}
 	
 	public Seller(String username, String password, String name, String surname,
