@@ -29,6 +29,7 @@ public class Manifestation extends BaseEntity {
 	private UUID sellerId;
 	@JsonIgnore
 	private Seller seller;
+	private String imagePath;
 
 	public Manifestation() {
 		super();
@@ -137,6 +138,14 @@ public class Manifestation extends BaseEntity {
 
 	public void setEventEndDate(LocalDateTime eventEndDate) {
 		this.eventEndDate = eventEndDate;
+	}
+
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
 	}
 
 }
