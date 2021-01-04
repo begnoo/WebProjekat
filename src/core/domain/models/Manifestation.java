@@ -18,6 +18,9 @@ public class Manifestation extends BaseEntity {
 	@JsonSerialize(using = JsonDateSerializer.class)
 	@JsonDeserialize(using = JsonDateDeserializer.class)
 	private LocalDateTime eventDate;
+	@JsonSerialize(using = JsonDateSerializer.class)
+	@JsonDeserialize(using = JsonDateDeserializer.class)
+	private LocalDateTime eventEndDate;
 	private int regularTicketPrice;
 	private boolean status;
 	private UUID locationId;
@@ -26,27 +29,26 @@ public class Manifestation extends BaseEntity {
 	private UUID sellerId;
 	@JsonIgnore
 	private Seller seller;
-	private int duration;
 
 	public Manifestation() {
 		super();
 	}
 
 	public Manifestation(String name, ManifestationType type, int seats, LocalDateTime eventDate,
-			int regularTicketPrice, boolean status, UUID locationId, Location location, UUID sellerId, Seller seller,
-			int duration) {
+			LocalDateTime eventEndDate, int regularTicketPrice, boolean status, UUID locationId, Location location,
+			UUID sellerId, Seller seller) {
 		super();
 		this.name = name;
 		this.type = type;
 		this.seats = seats;
 		this.eventDate = eventDate;
+		this.eventEndDate = eventEndDate;
 		this.regularTicketPrice = regularTicketPrice;
 		this.status = status;
 		this.locationId = locationId;
 		this.location = location;
 		this.sellerId = sellerId;
 		this.seller = seller;
-		this.duration = duration;
 	}
 
 	public String getName() {
@@ -129,12 +131,12 @@ public class Manifestation extends BaseEntity {
 		this.seller = seller;
 	}
 
-	public int getDuration() {
-		return duration;
+	public LocalDateTime getEventEndDate() {
+		return eventEndDate;
 	}
 
-	public void setDuration(int duration) {
-		this.duration = duration;
+	public void setEventEndDate(LocalDateTime eventEndDate) {
+		this.eventEndDate = eventEndDate;
 	}
 
 }

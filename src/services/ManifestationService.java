@@ -29,6 +29,10 @@ public class ManifestationService extends CrudService<Manifestation> implements 
 	@Override
 	public Manifestation create(Manifestation manifestation) {
 		
+		if(manifestation.getEventDate().isAfter(manifestation.getEventEndDate())) {
+			return null;
+		}
+		
 		if(!checkIfLocationExists(manifestation.getLocationId())) {
 			return null;
 		}
@@ -44,6 +48,10 @@ public class ManifestationService extends CrudService<Manifestation> implements 
 
 	@Override
 	public Manifestation update(Manifestation manifestationForUpdate) {
+		
+		if(manifestationForUpdate.getEventDate().isAfter(manifestationForUpdate.getEventEndDate())) {
+			return null;
+		}
 
 		if(!checkIfLocationExists(manifestationForUpdate.getLocationId())) {
 			return null;
@@ -65,6 +73,7 @@ public class ManifestationService extends CrudService<Manifestation> implements 
 		return locationRepository.read(locationId) != null;
 	}
 	
+	
 	private List<Manifestation> readWithSameLocationAndOverlapingEventDate(Manifestation queryManifestation) {
 		return repository.read()
 				.stream()
@@ -76,10 +85,10 @@ public class ManifestationService extends CrudService<Manifestation> implements 
 	private boolean checkIfOverlapingManifestationDate(Manifestation firstManifestation, Manifestation secondManifestation) {
 		//TODO: srediti ovo
 		LocalDateTime firstManifestationStart = firstManifestation.getEventDate();
-		LocalDateTime firstManifestationEnd = firstManifestation.getEventDate().plusMinutes(firstManifestation.getDuration());
+		LocalDateTime firstManifestationEnd = firstManifestation.getEventEndDate();
 	
 		LocalDateTime secondManifestationStart = secondManifestation.getEventDate();
-		LocalDateTime secondManifestationEnd = secondManifestation.getEventDate().plusMinutes(secondManifestation.getDuration());
+		LocalDateTime secondManifestationEnd = secondManifestation.getEventEndDate();
 		
 		boolean firstManifestationStartNotOverlaping = firstManifestationStart.compareTo(secondManifestationEnd) >= 0;
 		boolean secondManifestationStartNotOverlaping = secondManifestationStart.compareTo(firstManifestationEnd) >= 0;

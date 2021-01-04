@@ -100,14 +100,17 @@ public class Seeder {
 		Repository<Manifestation> manifestationRepository = new Repository<>(context, Manifestation.class);
 
 		Manifestation manifestation1 = new Manifestation("MF DOOM Memorial", ManifestationType.Concert, 5000,
-				LocalDateTime.now(), 1000, true, location1.getId(), location1, seller1.getId(), seller1, 100);
+				LocalDateTime.now(), LocalDateTime.now().plusMinutes(100), 1000, true, location1.getId(), location1,
+				seller1.getId(), seller1);
 		Manifestation manifestation2 = new Manifestation("Bajaga i instuktori, previse godina",
-				ManifestationType.Concert, 500, LocalDateTime.now(), 400, true, location2.getId(), location2,
-				seller2.getId(), seller2, 100);
+				ManifestationType.Concert, 500, LocalDateTime.now(), LocalDateTime.now().plusMinutes(100), 400, true,
+				location2.getId(), location2, seller2.getId(), seller2);
 		Manifestation manifestation3 = new Manifestation("Ujka Vanja", ManifestationType.Theater, 200,
-				LocalDateTime.now(), 800, true, location4.getId(), location4, seller2.getId(), seller2, 100);
+				LocalDateTime.now(), LocalDateTime.now().plusMinutes(100), 800, true, location4.getId(), location4,
+				seller2.getId(), seller2);
 		Manifestation manifestation4 = new Manifestation("Exit Festival", ManifestationType.Festival, 10000,
-				LocalDateTime.now(), 1400, true, location3.getId(), location3, seller3.getId(), seller3, 100);
+				LocalDateTime.now(), LocalDateTime.now().plusMinutes(100), 1400, true, location3.getId(), location3,
+				seller3.getId(), seller3);
 
 		manifestationRepository.create(manifestation1);
 		manifestationRepository.create(manifestation2);
@@ -159,9 +162,8 @@ public class Seeder {
 		ticketRepository.create(ticket6);
 		ticketRepository.create(ticket7);
 		ticketRepository.create(ticket8);
-		
-		Repository<Comment> commentRepository = new Repository<>(context, Comment.class);
 
+		Repository<Comment> commentRepository = new Repository<>(context, Comment.class);
 
 		Comment comment1 = new Comment(buyer1.getId(), buyer1, manifestation1.getId(), manifestation1,
 				"It was pretty good", 4, CommentStatus.Approved);
@@ -173,7 +175,7 @@ public class Seeder {
 				"Best festival I've been to!!!", 5, CommentStatus.Approved);
 		Comment comment5 = new Comment(buyer1.getId(), buyer3, manifestation2.getId(), manifestation2,
 				"The absoulte worst thing I have ever seen", 1, CommentStatus.Refused);
-		
+
 		commentRepository.create(comment1);
 		commentRepository.create(comment2);
 		commentRepository.create(comment3);

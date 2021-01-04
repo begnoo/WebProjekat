@@ -17,10 +17,12 @@ public class CreateManifestationRequest {
 	@JsonSerialize(using = JsonDateSerializer.class)
 	@JsonDeserialize(using = JsonDateDeserializer.class)
 	private LocalDateTime eventDate;
+	@JsonSerialize(using = JsonDateSerializer.class)
+	@JsonDeserialize(using = JsonDateDeserializer.class)
+	private LocalDateTime eventEndDate;
 	private int regularTicketPrice;
 	private UUID locationId;
 	private UUID sellerId;
-	private int duration;
 
 	public CreateManifestationRequest() {
 		super();
@@ -82,12 +84,12 @@ public class CreateManifestationRequest {
 		this.sellerId = sellerId;
 	}
 
-	public int getDuration() {
-		return duration;
+	public LocalDateTime getEventEndDate() {
+		return eventEndDate;
 	}
 
-	public void setDuration(int duration) {
-		this.duration = duration;
+	public void setEventEndDate(LocalDateTime eventEndDate) {
+		this.eventEndDate = eventEndDate;
 	}
 
 }

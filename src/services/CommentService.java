@@ -35,8 +35,8 @@ public class CommentService extends CrudService<Comment> implements ICommentServ
 				.filter(ticket -> ticket.getManifestationId().equals(comment.getManifestationId()))
 				.filter(ticket -> ticket.getStatus() == TicketStatus.Reserved)
 				.collect(Collectors.toList());
-
-		if (manifestation.getEventDate().isBefore(LocalDateTime.now()) || buyersReservedTickets.isEmpty()) {
+		
+		if (manifestation.getEventEndDate().isBefore(LocalDateTime.now()) || buyersReservedTickets.isEmpty()) {
 			return null;
 		}
 
