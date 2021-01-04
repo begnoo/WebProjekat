@@ -7,6 +7,7 @@ import core.domain.enums.UserRole;
 import core.domain.models.User;
 
 public interface IUserService extends ICrudService<User>{
+	User changePassword(UUID userId, String newPassword, String currentPassword);
 	User blockUser(UUID userId);
 	List<User> readByUserRole(UserRole userRole);
 	List<User> readDistrustfulBuyers();

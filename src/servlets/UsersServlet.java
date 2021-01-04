@@ -10,6 +10,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -21,8 +22,10 @@ import core.domain.models.Buyer;
 import core.domain.models.Seller;
 import core.domain.models.User;
 import core.repository.IRepository;
+import core.requests.users.ChangePasswordRequest;
 import core.requests.users.CreateBuyerRequest;
 import core.requests.users.CreateSellerRequest;
+import core.requests.users.UpdateUserRequest;
 import core.responses.users.WholeAdministratorObjectResponse;
 import core.responses.users.WholeBuyerObjectResponse;
 import core.responses.users.WholeSellerObjectResponse;
@@ -102,6 +105,39 @@ public class UsersServlet extends AbstractServletBase {
 		User createdUser = userService.create(user);
 
 		return generateUserObjectResponse(createdUser);
+	}
+	
+	@PUT
+	@Path("/")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public WholeUserObjectResponseBase update(UpdateUserRequest request)
+	{
+		User user = userService.read(request.getId());
+		if(user == null) {
+			return null;
+		}
+		
+		User userForUpdate = mapper.Map(user, request);
+
+		User updatedUser = userService.update(userForUpdate);
+		
+		return generateUserObjectResponse(updatedUser);
+	}
+	
+	@PUT
+	@Path("/{id}/password")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public WholeUserObjectResponseBase changePassword(@PathParam("id") UUID id, ChangePasswordRequest request)
+	{
+		User updatedUser = userService.changePassword(id, request.getNewPassword(), request.getCurrentPassword());
+		
+		if(updatedUser == null) {
+			return null;
+		}
+		
+		return generateUserObjectResponse(updatedUser);
 	}
 	
 	@DELETE

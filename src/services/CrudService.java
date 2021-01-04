@@ -38,5 +38,4 @@ public class CrudService<T extends BaseEntity> implements ICrudService<T> {
 	public boolean delete(UUID entityID) {
 		return repository.delete(entityID);
 	}
-
 }

@@ -19,6 +19,22 @@ public class UserService extends CrudService<User> implements IUserService {
 	}
 
 	@Override
+	public User changePassword(UUID userId, String newPassword, String currentPassword) {
+		User user = repository.read(userId);
+		if(user == null) {
+			return null;
+		}
+		
+		if(!user.getPassword().equals(currentPassword))
+		{
+			return null; // TODO: THROW BAD LOGIC EXCEPTION
+		}
+		
+		user.setPassword(newPassword);
+		return update(user);
+	}
+
+	@Override
 	public User blockUser(UUID userId) {
 		User user = repository.read(userId);
 		if(user == null || user.getRole() == UserRole.Administrator) {
@@ -61,4 +77,5 @@ public class UserService extends CrudService<User> implements IUserService {
 	private boolean checkIfInLastMonth(LocalDateTime eventDate) {
 		return eventDate.isAfter(LocalDateTime.now().minusMonths(1));
 	}
+
 }
