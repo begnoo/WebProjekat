@@ -15,34 +15,26 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
-import core.domain.models.Address;
 import core.domain.models.Manifestation;
 import core.repository.IRepository;
 import core.requests.images.Base64ImageForManifestation;
-import core.requests.locations.CreateAddressRequest;
-import core.requests.locations.UpdateAddressRequest;
 import core.responses.manifestations.WholeManifestationObjectResponse;
 import core.service.IImageService;
-import core.servlets.mappers.IMapper;
 import repository.DbContext;
 import repository.ManifestationRepository;
 import services.ImageService;
-import servlets.utils.mapper.objects.ObjectMapper;
 
 @Path("images")
-public class ImageServlet {
+public class ImageServlet extends AbstractServletBase {
 	
 	@Context
 	ServletContext servletContext;
 
 	private IImageService imageService;
-	private IMapper mapper;
 	
 	public ImageServlet()
 	{
-		mapper = new ObjectMapper();
-		mapper.addNestedMapping(CreateAddressRequest.class, Address.class);
-		mapper.addNestedMapping(UpdateAddressRequest.class, Address.class);
+		super();
 	}
 	
 	@PostConstruct
@@ -71,11 +63,10 @@ public class ImageServlet {
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeManifestationObjectResponse updateImageForManifestation(Base64ImageForManifestation request) {
 		Manifestation manifestationWithImage = imageService.updateImageForManifestation(request);
+		
 		return generateManifestationObjectResponse(manifestationWithImage);
-
 	}
-	
-	
+		
 	private WholeManifestationObjectResponse generateManifestationObjectResponse(Manifestation manifestation)
 	{
 		return mapper.Map(new WholeManifestationObjectResponse(), manifestation);

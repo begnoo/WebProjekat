@@ -24,25 +24,23 @@ import core.requests.comments.CreateCommentRequest;
 import core.requests.comments.UpdateCommentRequest;
 import core.responses.comments.WholeCommentObjectResponse;
 import core.service.ICommentService;
-import core.servlets.mappers.IMapper;
 import repository.CommentRepository;
 import repository.DbContext;
 import repository.ManifestationRepository;
 import repository.UserRepository;
 import services.CommentService;
-import servlets.utils.mapper.objects.ObjectMapper;
 
 @Path("comments")
-public class CommentServlet {
+public class CommentServlet extends AbstractServletBase {
 
 	@Context
 	ServletContext servletContext;
 
 	private ICommentService commentService;
-	private IMapper mapper;
 	
-	public CommentServlet() {
-		mapper = new ObjectMapper();
+	public CommentServlet()
+	{
+		super();
 	}
 
 	@PostConstruct
@@ -112,4 +110,3 @@ public class CommentServlet {
 	}
 
 }
-

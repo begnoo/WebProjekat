@@ -23,23 +23,21 @@ import core.requests.manifestations.CreateManifestationRequest;
 import core.requests.manifestations.UpdateManifestationRequest;
 import core.responses.manifestations.WholeManifestationObjectResponse;
 import core.service.IManifestationService;
-import core.servlets.mappers.IMapper;
 import repository.DbContext;
 import repository.ManifestationRepository;
 import repository.Repository;
 import services.ManifestationService;
-import servlets.utils.mapper.objects.ObjectMapper;
 
 @Path("manifestations")
-public class ManifestationServlet {
+public class ManifestationServlet extends AbstractServletBase {
 	@Context
 	ServletContext servletContext;
 
 	private IManifestationService manifestationService;
-	private IMapper mapper;
 
-	public ManifestationServlet() {
-		mapper = new ObjectMapper();
+	public ManifestationServlet()
+	{
+		super();
 	}
 
 	@PostConstruct

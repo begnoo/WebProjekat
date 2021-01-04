@@ -29,25 +29,21 @@ import core.responses.users.WholeSellerObjectResponse;
 import core.responses.users.WholeUserObjectResponseBase;
 import core.service.IUserService;
 import core.servlets.exceptions.NotFoundException;
-import core.servlets.mappers.IMapper;
 import repository.DbContext;
 import repository.UserRepository;
 import services.UserService;
-import servlets.utils.mapper.objects.ObjectMapper;
-import servlets.utils.validators.CreateBuyerRequestValidator;
 
 @Path("users")
-public class UsersServlet {
+public class UsersServlet extends AbstractServletBase {
 
 	@Context
 	ServletContext servletContext;
 	
 	private IUserService userService;
-	private IMapper mapper;
 	
 	public UsersServlet()
 	{
-		mapper = new ObjectMapper();
+		super();
 	}
 	
 	@PostConstruct
@@ -86,8 +82,7 @@ public class UsersServlet {
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeUserObjectResponseBase createBuyer(CreateBuyerRequest request)
 	{
-		CreateBuyerRequestValidator validator = new CreateBuyerRequestValidator(request);
-		validator.validate();
+		validateRequest(request);
 		
 		User user = mapper.Map(new Buyer(), request);
 		
@@ -108,7 +103,6 @@ public class UsersServlet {
 
 		return generateUserObjectResponse(createdUser);
 	}
-	
 	
 	@DELETE
 	@Path("/{id}")

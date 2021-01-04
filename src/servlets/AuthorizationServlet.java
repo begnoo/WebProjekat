@@ -22,13 +22,16 @@ import services.AuthorizationService;
 import services.JwtService;
 
 @Path("auhtorization")
-public class AuthorizationServlet {
+public class AuthorizationServlet extends AbstractServletBase {
+	
 	@Context
 	ServletContext servletContext;
 
 	private IAuthorizationService authorizationService;
 
-	public AuthorizationServlet() {
+	public AuthorizationServlet()
+	{
+		super();
 	}
 
 	@PostConstruct

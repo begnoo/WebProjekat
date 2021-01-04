@@ -27,7 +27,6 @@ import core.requests.tickets.UpdateTicketRequest;
 import core.responses.tickets.WholeTicketObjectResponse;
 import core.service.ITicketOrderService;
 import core.service.ITicketService;
-import core.servlets.mappers.IMapper;
 import repository.DbContext;
 import repository.ManifestationRepository;
 import repository.Repository;
@@ -35,19 +34,18 @@ import repository.TicketRepository;
 import repository.UserRepository;
 import services.TicketOrderService;
 import services.TicketService;
-import servlets.utils.mapper.objects.ObjectMapper;
 
 @Path("tickets")
-public class TicketServlet {
+public class TicketServlet extends AbstractServletBase {
 	@Context
 	ServletContext servletContext;
 
 	private ITicketService ticketService;
 	private ITicketOrderService ticketOrderService;
-	private IMapper mapper;
 
-	public TicketServlet() {
-		mapper = new ObjectMapper();
+	public TicketServlet()
+	{
+		super();
 	}
 
 	@PostConstruct
@@ -132,4 +130,3 @@ public class TicketServlet {
 	}
 	
 }
-

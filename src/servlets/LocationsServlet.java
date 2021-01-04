@@ -16,33 +16,25 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
-import core.domain.models.Address;
 import core.domain.models.Location;
 import core.repository.IRepository;
-import core.requests.locations.CreateAddressRequest;
 import core.requests.locations.CreateLocationRequest;
-import core.requests.locations.UpdateAddressRequest;
 import core.requests.locations.UpdateLocationRequest;
 import core.service.ICrudService;
-import core.servlets.mappers.IMapper;
 import repository.DbContext;
 import repository.Repository;
 import services.CrudService;
-import servlets.utils.mapper.objects.ObjectMapper;
 
 @Path("locations")
-public class LocationsServlet {
+public class LocationsServlet extends AbstractServletBase {
 	@Context
 	ServletContext servletContext;
 
 	private ICrudService<Location> locationService;
-	private IMapper mapper;
 	
 	public LocationsServlet()
 	{
-		mapper = new ObjectMapper();
-		mapper.addNestedMapping(CreateAddressRequest.class, Address.class);
-		mapper.addNestedMapping(UpdateAddressRequest.class, Address.class);
+		super();
 	}
 	
 	@PostConstruct

@@ -21,23 +21,20 @@ import core.repository.IRepository;
 import core.requests.buyerTypes.CreateBuyerTypeRequest;
 import core.requests.buyerTypes.UpdateBuyerTypeRequest;
 import core.service.ICrudService;
-import core.servlets.mappers.IMapper;
 import repository.DbContext;
 import repository.Repository;
 import services.CrudService;
-import servlets.utils.mapper.objects.ObjectMapper;
 
 @Path("buyer-type")
-public class BuyerTypesServlet {
+public class BuyerTypesServlet extends AbstractServletBase {
 	@Context
 	ServletContext servletContext;
 	
 	private ICrudService<BuyerType> buyerTypeService;
-	private IMapper mapper;
 
 	public BuyerTypesServlet()
 	{
-		mapper = new ObjectMapper();
+		super();
 	}
 	
 	@PostConstruct
