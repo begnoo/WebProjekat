@@ -81,8 +81,3 @@ Vue.component('register-form', {
         }
     }
 });
-
-
-new Vue({
-    el: '#register-page'
-});

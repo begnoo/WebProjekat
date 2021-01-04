@@ -45,10 +45,4 @@ Vue.component('login-form', {
               });
         }
     }
-    
-    
-});
-
-new Vue({
-    el: '#login-page' 
 });
