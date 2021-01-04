@@ -29,10 +29,11 @@ import core.responses.users.WholeSellerObjectResponse;
 import core.responses.users.WholeUserObjectResponseBase;
 import core.service.IUserService;
 import core.servlets.IMapper;
+import core.servlets.exceptions.NotFoundException;
 import repository.DbContext;
 import repository.UserRepository;
 import services.UserService;
-import servlets.utils.mapper.ObjectMapper;
+import servlets.utils.mapper.objects.ObjectMapper;
 
 @Path("users")
 public class UsersServlet {
@@ -70,7 +71,11 @@ public class UsersServlet {
 	public WholeUserObjectResponseBase readById(@PathParam("id") UUID id)
 	{
 		User user = userService.read(id);
-		
+		if(user == null)
+		{
+			throw new NotFoundException("User not found.");
+		}
+				
 		return generateUserObjectResponse(user);
 	}
 	

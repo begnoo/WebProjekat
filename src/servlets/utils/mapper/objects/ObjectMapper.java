@@ -1,4 +1,4 @@
-package servlets.utils.mapper;
+package servlets.utils.mapper.objects;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

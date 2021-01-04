@@ -30,7 +30,7 @@ import repository.DbContext;
 import repository.ManifestationRepository;
 import repository.UserRepository;
 import services.CommentService;
-import servlets.utils.mapper.ObjectMapper;
+import servlets.utils.mapper.objects.ObjectMapper;
 
 @Path("comments")
 public class CommentServlet {

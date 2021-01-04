@@ -33,7 +33,7 @@ import repository.TicketRepository;
 import repository.UserRepository;
 import services.TicketOrderService;
 import services.TicketService;
-import servlets.utils.mapper.ObjectMapper;
+import servlets.utils.mapper.objects.ObjectMapper;
 
 @Path("tickets")
 public class TicketServlet {

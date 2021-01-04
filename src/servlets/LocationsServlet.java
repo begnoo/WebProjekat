@@ -28,7 +28,7 @@ import core.servlets.IMapper;
 import repository.DbContext;
 import repository.Repository;
 import services.CrudService;
-import servlets.utils.mapper.ObjectMapper;
+import servlets.utils.mapper.objects.ObjectMapper;
 
 @Path("locations")
 public class LocationsServlet {

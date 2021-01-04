@@ -28,7 +28,7 @@ import repository.DbContext;
 import repository.ManifestationRepository;
 import repository.Repository;
 import services.ManifestationService;
-import servlets.utils.mapper.ObjectMapper;
+import servlets.utils.mapper.objects.ObjectMapper;
 
 @Path("manifestations")
 public class ManifestationServlet {
