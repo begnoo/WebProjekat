@@ -33,32 +33,10 @@ public class WholeManifestationObjectResponse {
 	private Location location;
 	private UUID sellerId;
 	private Seller seller;
-	private int duration;
+	private String imagePath;
 
 	public WholeManifestationObjectResponse() {
 		super();
-	}
-
-	public WholeManifestationObjectResponse(UUID id, LocalDateTime createdAt, boolean active, String name,
-			ManifestationType type, int seats, LocalDateTime eventDate, LocalDateTime eventEndDate,
-			int regularTicketPrice, boolean status, UUID locationId, Location location, UUID sellerId, Seller seller,
-			int duration) {
-		super();
-		this.id = id;
-		this.createdAt = createdAt;
-		this.active = active;
-		this.name = name;
-		this.type = type;
-		this.seats = seats;
-		this.eventDate = eventDate;
-		this.eventEndDate = eventEndDate;
-		this.regularTicketPrice = regularTicketPrice;
-		this.status = status;
-		this.locationId = locationId;
-		this.location = location;
-		this.sellerId = sellerId;
-		this.seller = seller;
-		this.duration = duration;
 	}
 
 	public UUID getId() {
@@ -165,14 +143,6 @@ public class WholeManifestationObjectResponse {
 		this.seller = seller;
 	}
 
-	public int getDuration() {
-		return duration;
-	}
-
-	public void setDuration(int duration) {
-		this.duration = duration;
-	}
-
 	public LocalDateTime getEventEndDate() {
 		return eventEndDate;
 	}
@@ -180,5 +150,15 @@ public class WholeManifestationObjectResponse {
 	public void setEventEndDate(LocalDateTime eventEndDate) {
 		this.eventEndDate = eventEndDate;
 	}
+
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
+	
+	
 
 }
