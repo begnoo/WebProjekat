@@ -1,36 +1,54 @@
-window.onload = function () {
-    let loginForm = new Vue({
-        el: "#loginApp",
-        data: {
+Vue.component('login-form', {
+    template:
+    `
+	<div class="d-flex justify-content-center min-vh-100 align-items-center">
+		<div class="row">
+			<form>
+			<div class="mb-3">
+				<label for="textField" class="form-label">Username</label>
+				<input type="text" class="form-control" id="textField" v-model="username">
+			</div>
+			<div class="mb-3">
+				<label for="inputPassword" class="form-label">Password</label>
+				<input type="password" class="form-control" id="inputPassword" v-model="password">
+            </div>
+            <div class="d-flex d-flex justify-content-between">
+            <button v-on:click="login" class="btn btn-primary">Login</button>
+            <button class="btn btn-primary">Register</button>
+            </div>
+			</form>
+		</div>
+	</div>
+    `,
+
+    data: function() {
+        return {
             username: null,
             password: null,
-            randomData: null,
-        },
-        methods: {
-            reportLogin: function (sumbitEvent) {
-                alert(this.username + " " + this.password);
-                sumbitEvent.preventDefault();
-            },
+        }
+    },
 
-            getRandomData: function () {
-                fetch("https://random-data-api.com/api/beer/random_beer")
-                    .then((response) => response.json())
-                    .then((data) => (this.randomData = data));
-            },
-        },
-    });
+    methods:
+    {
+        login: function(event)
+        {
+            event.preventDefault();
+            axios.post('/WebProjekat/rest/auhtorization', 
+            {
+                'username': this.username,
+                'password': this.password
+            }).then(response => alert("Uspesno") )
+              .catch(function(error)
+              {
+  	              	alert(error.response.data.errorMessage);
+              	
+              });
+        }
+    }
+    
+    
+});
 
-    // let randomDataApp = new Vue({
-    //     el: "#randomDataPar",
-    //     data: {
-    //         randomData: null,
-    //     },
-    //     methods: {
-    //         getRandomData: function () {
-    //             fetch("https://random-data-api.com/api/beer/random_beer")
-    //                 .then((response) => response.json())
-    //                 .then((data) => (this.randomData = data));
-    //         },
-    //     },
-    // });
-};
+new Vue({
+    el: '#login-page' 
+});

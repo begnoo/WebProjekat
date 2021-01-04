@@ -15,6 +15,7 @@ import core.domain.models.User;
 import core.repository.IRepository;
 import core.service.IAuthorizationService;
 import core.service.IJwtService;
+import core.servlets.exceptions.UnauthorizedException;
 import repository.DbContext;
 import repository.UserRepository;
 import services.AuthorizationService;
@@ -42,6 +43,12 @@ public class AuthorizationServlet {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public AuthorizedUser authorize(Credidentals credidentals) {
-		return authorizationService.authorize(credidentals);
+		AuthorizedUser authorizedUser = authorizationService.authorize(credidentals);
+		if(authorizedUser == null)
+		{
+			throw new UnauthorizedException("Combination of username and password does not match any account.");
+		}
+		
+		return authorizedUser;
 	}
 }
