@@ -30,6 +30,7 @@ public class WholeManifestationObjectResponse {
 	private Location location;
 	private UUID sellerId;
 	private Seller seller;
+	private int duration;
 
 	public WholeManifestationObjectResponse() {
 		super();
@@ -37,7 +38,7 @@ public class WholeManifestationObjectResponse {
 
 	public WholeManifestationObjectResponse(UUID id, LocalDateTime createdAt, boolean active, String name,
 			ManifestationType type, int seats, LocalDateTime eventDate, int regularTicketPrice, boolean status,
-			UUID locationId, Location location, UUID sellerId, Seller seller) {
+			UUID locationId, Location location, UUID sellerId, Seller seller, int duration) {
 		super();
 		this.id = id;
 		this.createdAt = createdAt;
@@ -52,6 +53,7 @@ public class WholeManifestationObjectResponse {
 		this.location = location;
 		this.sellerId = sellerId;
 		this.seller = seller;
+		this.duration = duration;
 	}
 
 	public UUID getId() {
@@ -157,4 +159,13 @@ public class WholeManifestationObjectResponse {
 	public void setSeller(Seller seller) {
 		this.seller = seller;
 	}
+
+	public int getDuration() {
+		return duration;
+	}
+
+	public void setDuration(int duration) {
+		this.duration = duration;
+	}
+	
 }

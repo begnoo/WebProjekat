@@ -100,14 +100,14 @@ public class Seeder {
 		Repository<Manifestation> manifestationRepository = new Repository<>(context, Manifestation.class);
 
 		Manifestation manifestation1 = new Manifestation("MF DOOM Memorial", ManifestationType.Concert, 5000,
-				LocalDateTime.now(), 1000, true, location1.getId(), location1, seller1.getId(), seller1);
+				LocalDateTime.now(), 1000, true, location1.getId(), location1, seller1.getId(), seller1, 100);
 		Manifestation manifestation2 = new Manifestation("Bajaga i instuktori, previse godina",
 				ManifestationType.Concert, 500, LocalDateTime.now(), 400, true, location2.getId(), location2,
-				seller2.getId(), seller2);
+				seller2.getId(), seller2, 100);
 		Manifestation manifestation3 = new Manifestation("Ujka Vanja", ManifestationType.Theater, 200,
-				LocalDateTime.now(), 800, true, location4.getId(), location4, seller2.getId(), seller2);
+				LocalDateTime.now(), 800, true, location4.getId(), location4, seller2.getId(), seller2, 100);
 		Manifestation manifestation4 = new Manifestation("Exit Festival", ManifestationType.Festival, 10000,
-				LocalDateTime.now(), 1400, true, location3.getId(), location3, seller3.getId(), seller3);
+				LocalDateTime.now(), 1400, true, location3.getId(), location3, seller3.getId(), seller3, 100);
 
 		manifestationRepository.create(manifestation1);
 		manifestationRepository.create(manifestation2);

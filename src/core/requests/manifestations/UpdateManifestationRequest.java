@@ -20,6 +20,7 @@ public class UpdateManifestationRequest {
 	private LocalDateTime eventDate;
 	private int regularTicketPrice;
 	private UUID locationId;
+	private int duration;
 
 	public UpdateManifestationRequest() {
 		super();
@@ -79,6 +80,14 @@ public class UpdateManifestationRequest {
 
 	public void setLocationId(UUID locationId) {
 		this.locationId = locationId;
+	}
+
+	public int getDuration() {
+		return duration;
+	}
+
+	public void setDuration(int duration) {
+		this.duration = duration;
 	}
 
 }

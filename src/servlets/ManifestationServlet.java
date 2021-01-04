@@ -18,7 +18,6 @@ import javax.ws.rs.core.MediaType;
 
 import core.domain.models.Location;
 import core.domain.models.Manifestation;
-import core.domain.models.User;
 import core.repository.IRepository;
 import core.requests.manifestations.CreateManifestationRequest;
 import core.requests.manifestations.UpdateManifestationRequest;
@@ -28,7 +27,6 @@ import core.servlets.IMapper;
 import repository.DbContext;
 import repository.ManifestationRepository;
 import repository.Repository;
-import repository.UserRepository;
 import services.ManifestationService;
 import servlets.utils.mapper.ObjectMapper;
 
@@ -49,8 +47,7 @@ public class ManifestationServlet {
 		DbContext context = (DbContext) servletContext.getAttribute("DbContext");
 		IRepository<Manifestation> manifestationRepository = new ManifestationRepository(context);
 		IRepository<Location> locationRepository = new Repository<Location>(context, Location.class);
-		IRepository<User> userRepository = new UserRepository(context);
-		manifestationService = new ManifestationService(manifestationRepository, locationRepository, userRepository);
+		manifestationService = new ManifestationService(manifestationRepository, locationRepository);
 	}
 
 	@GET

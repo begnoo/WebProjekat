@@ -7,20 +7,16 @@ import java.util.stream.Collectors;
 
 import core.domain.models.Location;
 import core.domain.models.Manifestation;
-import core.domain.models.User;
 import core.repository.IRepository;
 import core.service.IManifestationService;
 
 public class ManifestationService extends CrudService<Manifestation> implements IManifestationService {
 	private IRepository<Location> locationRepository;
-	private IRepository<User> userRepository;
 
 
-	public ManifestationService(IRepository<Manifestation> repository, IRepository<Location> locationRepository,
-			IRepository<User> userRepository) {
+	public ManifestationService(IRepository<Manifestation> repository, IRepository<Location> locationRepository) {
 		super(repository);
 		this.locationRepository = locationRepository;
-		this.userRepository = userRepository;
 	}
 
 	public List<Manifestation> readOrderedByDescendingDate() {
@@ -37,8 +33,8 @@ public class ManifestationService extends CrudService<Manifestation> implements 
 			return null;
 		}
 		
-		List<Manifestation> manifestationsOnLocationAtEventDate = readByLocationAndEventDate(manifestation.getLocationId(), manifestation.getEventDate());
-		if (!manifestationsOnLocationAtEventDate.isEmpty()) {
+		List<Manifestation> manifestationsWithSameLocationAndOverlapingEventDate = readWithSameLocationAndOverlapingEventDate(manifestation);
+		if (!manifestationsWithSameLocationAndOverlapingEventDate.isEmpty()) {
 			return null;
 		}
 		
@@ -52,13 +48,13 @@ public class ManifestationService extends CrudService<Manifestation> implements 
 		if(!checkIfLocationExists(manifestationForUpdate.getLocationId())) {
 			return null;
 		}
-		
-		List<Manifestation> manifestationsOnLocationAtEventDateWithoutThisOne = readByLocationAndEventDate(manifestationForUpdate.getLocationId(), manifestationForUpdate.getEventDate())
+		//TODO: ;(
+		List<Manifestation> manifestationsWithSameLocationAndOverlapingEventDateWithoutThisOne = readWithSameLocationAndOverlapingEventDate(manifestationForUpdate)
 				.stream()
 				.filter(manifestation -> manifestation.getId() != manifestationForUpdate.getId())
 				.collect(Collectors.toList());
 		
-		if (!manifestationsOnLocationAtEventDateWithoutThisOne.isEmpty()) {
+		if (!manifestationsWithSameLocationAndOverlapingEventDateWithoutThisOne.isEmpty()) {
 			return null;
 		}
 		
@@ -68,13 +64,27 @@ public class ManifestationService extends CrudService<Manifestation> implements 
 	private boolean checkIfLocationExists(UUID locationId) {
 		return locationRepository.read(locationId) != null;
 	}
-
-	private List<Manifestation> readByLocationAndEventDate(UUID locationId, LocalDateTime eventDate) {
+	
+	private List<Manifestation> readWithSameLocationAndOverlapingEventDate(Manifestation queryManifestation) {
 		return repository.read()
 				.stream()
-				.filter(manifestation -> locationId.equals(manifestation.getLocationId()))
-				.filter(manifestation -> eventDate.compareTo(manifestation.getEventDate()) == 0)
+				.filter(manifestation -> queryManifestation.getLocationId().equals(manifestation.getLocationId()))
+				.filter(manifestation -> checkIfOverlapingManifestationDate(queryManifestation, manifestation))
 				.collect(Collectors.toList());
+	}
+	
+	private boolean checkIfOverlapingManifestationDate(Manifestation firstManifestation, Manifestation secondManifestation) {
+		//TODO: srediti ovo
+		LocalDateTime firstManifestationStart = firstManifestation.getEventDate();
+		LocalDateTime firstManifestationEnd = firstManifestation.getEventDate().plusMinutes(firstManifestation.getDuration());
+	
+		LocalDateTime secondManifestationStart = secondManifestation.getEventDate();
+		LocalDateTime secondManifestationEnd = secondManifestation.getEventDate().plusMinutes(secondManifestation.getDuration());
+		
+		boolean firstManifestationStartNotOverlaping = firstManifestationStart.compareTo(secondManifestationEnd) >= 0;
+		boolean secondManifestationStartNotOverlaping = secondManifestationStart.compareTo(firstManifestationEnd) >= 0;
+		
+		return !firstManifestationStartNotOverlaping && !secondManifestationStartNotOverlaping;
 	}
 
 }
