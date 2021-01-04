@@ -30,8 +30,13 @@ public class TicketOrderService implements ITicketOrderService {
 	public List<Ticket> createTicketsFromOrder(TicketOrder ticketOrder) {
 		//TODO: Proveriti slucaj kada je hash mapa prazna
 		List<Ticket> tickets = new ArrayList<>();
+		
 		Buyer buyer = (Buyer) userRepository.read(ticketOrder.getBuyerId());
+		
 		Manifestation manifestation = manifestationRepository.read(ticketOrder.getManifestationId());
+		if(manifestation == null) {
+			return tickets;
+		}
 		
 		int numberOfAllTickets = ticketOrder.getNumberOfOrderedTicketsMap().values().stream().reduce(0, Integer::sum);
 		if(numberOfAllTickets <= manifestation.getSeats()) {
@@ -70,9 +75,8 @@ public class TicketOrderService implements ITicketOrderService {
 	}
 	
 	public int getPriceOfTicketWithDiscount(int price, Buyer buyer) {
-		double discount = (100 - buyer.getType().getDiscount()) / 100;
+		double discount = (100.0 - buyer.getType().getDiscount()) / 100;
 		int priceWithDiscount = (int) (price * discount);
-		
 		return priceWithDiscount;
 	}
 }

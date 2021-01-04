@@ -87,7 +87,11 @@ public class CommentServlet {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeCommentObjectResponse update(UpdateCommentRequest request) {
-		Comment commentForUpdate = mapper.Map(commentService.read(request.getId()), request);
+		Comment comment = commentService.read(request.getId());
+		if(comment == null) {
+			return null;
+		}
+		Comment commentForUpdate = mapper.Map(comment, request);
 
 		Comment updatedComment = commentService.update(commentForUpdate);
 		

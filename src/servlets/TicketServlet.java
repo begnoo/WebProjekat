@@ -18,6 +18,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import core.domain.dto.TicketOrder;
+import core.domain.models.BuyerType;
 import core.domain.models.Manifestation;
 import core.domain.models.Ticket;
 import core.domain.models.User;
@@ -29,6 +30,7 @@ import core.service.ITicketService;
 import core.servlets.IMapper;
 import repository.DbContext;
 import repository.ManifestationRepository;
+import repository.Repository;
 import repository.TicketRepository;
 import repository.UserRepository;
 import services.TicketOrderService;
@@ -54,7 +56,8 @@ public class TicketServlet {
 		IRepository<Ticket> ticketRepository = new TicketRepository(context);
 		IRepository<User> userRepository = new UserRepository(context);
 		IRepository<Manifestation> manifestationRepository = new ManifestationRepository(context);
-		ticketService = new TicketService(ticketRepository, userRepository, manifestationRepository);
+		IRepository<BuyerType> buyerTypeRepository = new Repository<>(context, BuyerType.class);
+		ticketService = new TicketService(ticketRepository, userRepository, manifestationRepository, buyerTypeRepository);
 		ticketOrderService = new TicketOrderService(ticketService, userRepository, manifestationRepository);
 	}
 
@@ -93,7 +96,11 @@ public class TicketServlet {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeTicketObjectResponse update(UpdateTicketRequest request) {
-		Ticket ticketForUpdate = mapper.Map(ticketService.read(request.getId()), request);
+		Ticket ticket = ticketService.read(request.getId());
+		if(ticket == null) {
+			return null;
+		}
+		Ticket ticketForUpdate = mapper.Map(ticket, request);
 
 		Ticket updatedTicket = ticketService.update(ticketForUpdate);
 
@@ -111,6 +118,17 @@ public class TicketServlet {
 	private WholeTicketObjectResponse generateTicketObjectResponse(Ticket ticket)
 	{
 		return mapper.Map(new WholeTicketObjectResponse(), ticket);
+	}
+	
+	@PUT
+	@Path("cancel-ticket/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public WholeTicketObjectResponse cancelTicket(@PathParam("id") UUID id) {
+		Ticket canceledTicket = ticketService.cancelTicket(id);
+		if(canceledTicket == null) {
+			return null;
+		}
+		return generateTicketObjectResponse(canceledTicket);
 	}
 	
 }

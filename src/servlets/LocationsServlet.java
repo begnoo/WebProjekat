@@ -86,7 +86,11 @@ public class LocationsServlet {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Location update(UpdateLocationRequest request)
 	{
-		Location LocationForUpdate = mapper.Map(locationService.read(request.getId()), request);
+		Location location = locationService.read(request.getId());
+		if(location == null) {
+			return null;
+		}
+		Location LocationForUpdate = mapper.Map(location, request);
 		
 		return locationService.update(LocationForUpdate);
 	}
