@@ -24,7 +24,7 @@ import core.requests.locations.CreateLocationRequest;
 import core.requests.locations.UpdateAddressRequest;
 import core.requests.locations.UpdateLocationRequest;
 import core.service.ICrudService;
-import core.servlets.IMapper;
+import core.servlets.mappers.IMapper;
 import repository.DbContext;
 import repository.Repository;
 import services.CrudService;

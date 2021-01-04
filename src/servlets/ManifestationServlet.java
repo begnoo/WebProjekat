@@ -23,7 +23,7 @@ import core.requests.manifestations.CreateManifestationRequest;
 import core.requests.manifestations.UpdateManifestationRequest;
 import core.responses.manifestations.WholeManifestationObjectResponse;
 import core.service.IManifestationService;
-import core.servlets.IMapper;
+import core.servlets.mappers.IMapper;
 import repository.DbContext;
 import repository.ManifestationRepository;
 import repository.Repository;

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import core.servlets.IMapper;
+import core.servlets.mappers.IMapper;
 
 public class ObjectMapper implements IMapper {
 	private HashMap<Class<?>, Class<?>> nestedMappings;

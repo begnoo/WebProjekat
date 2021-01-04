@@ -24,7 +24,7 @@ import core.requests.comments.CreateCommentRequest;
 import core.requests.comments.UpdateCommentRequest;
 import core.responses.comments.WholeCommentObjectResponse;
 import core.service.ICommentService;
-import core.servlets.IMapper;
+import core.servlets.mappers.IMapper;
 import repository.CommentRepository;
 import repository.DbContext;
 import repository.ManifestationRepository;

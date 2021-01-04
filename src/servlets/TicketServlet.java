@@ -27,7 +27,7 @@ import core.requests.tickets.UpdateTicketRequest;
 import core.responses.tickets.WholeTicketObjectResponse;
 import core.service.ITicketOrderService;
 import core.service.ITicketService;
-import core.servlets.IMapper;
+import core.servlets.mappers.IMapper;
 import repository.DbContext;
 import repository.ManifestationRepository;
 import repository.Repository;

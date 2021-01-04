@@ -23,7 +23,7 @@ import core.requests.locations.CreateAddressRequest;
 import core.requests.locations.UpdateAddressRequest;
 import core.responses.manifestations.WholeManifestationObjectResponse;
 import core.service.IImageService;
-import core.servlets.IMapper;
+import core.servlets.mappers.IMapper;
 import repository.DbContext;
 import repository.ManifestationRepository;
 import services.ImageService;

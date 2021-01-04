@@ -21,7 +21,7 @@ import core.repository.IRepository;
 import core.requests.buyerTypes.CreateBuyerTypeRequest;
 import core.requests.buyerTypes.UpdateBuyerTypeRequest;
 import core.service.ICrudService;
-import core.servlets.IMapper;
+import core.servlets.mappers.IMapper;
 import repository.DbContext;
 import repository.Repository;
 import services.CrudService;
