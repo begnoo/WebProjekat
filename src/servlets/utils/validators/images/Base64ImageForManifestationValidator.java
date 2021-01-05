@@ -14,10 +14,7 @@ public class Base64ImageForManifestationValidator extends AbstractObjectValidato
 		ruleFor(validatedObject.getBase64Representation()).notNull()
 														  .notEmpty()
 														  .supplyErrorMessage("Base 64 string representation of image can not be empty.");
-		
-		ruleFor(validatedObject.getExtension()).notNull()
-											   .notEmpty()
-											   .supplyErrorMessage("Image extension can not be empty.");
+
 
 	}
 }
