@@ -11,45 +11,39 @@ import core.domain.models.Buyer;
 import core.domain.models.BuyerType;
 import core.domain.models.User;
 import core.repository.IRepository;
+import core.service.IBuyerTypeService;
 import core.service.IUserService;
 
 public class UserService extends CrudService<User> implements IUserService {
 
-	IRepository<BuyerType> buyerTypeRepository;
+	IBuyerTypeService buyerTypeService;
 	
-	public UserService(IRepository<User> repository, IRepository<BuyerType> buyerTypeRepository) {
+	public UserService(IRepository<User> repository, IBuyerTypeService buyerTypeService) {
 		super(repository);
-		this.buyerTypeRepository = buyerTypeRepository;
+		this.buyerTypeService = buyerTypeService;
 	}
 	
 	@Override
 	public User create(User user) {
 		
-		if(!checkIfUsernameUnique(user.getUsername())) {
+		if(!isUsernameUnique(user.getUsername())) {
 			return null;
 		}
 		
 		if(user.getRole() == UserRole.Buyer) {
-			((Buyer) user).setBuyerTypeId(getDefaultBuyerType().getId()); 
+			((Buyer) user).setBuyerTypeId(buyerTypeService.getDefaultBuyerType().getId()); 
 		}
 		
 		return repository.create(user);
 	}
 	
-	private boolean checkIfUsernameUnique(String username) {
+	private boolean isUsernameUnique(String username) {
 		return repository.read()
 				.stream()
 				.filter(user -> user.getUsername().equals(username))
 				.collect(Collectors.toList()).size() == 0;
 	}
 	
-	private BuyerType getDefaultBuyerType() {
-		return buyerTypeRepository.read()
-				.stream()
-				.filter(buyerType -> buyerType.getName().equals("Default"))
-				.collect(Collectors.toList()).get(0);
-	}
-
 	@Override
 	public User changePassword(UUID userId, String newPassword, String currentPassword) {
 		User user = repository.read(userId);
@@ -108,6 +102,24 @@ public class UserService extends CrudService<User> implements IUserService {
 	
 	private boolean checkIfInLastMonth(LocalDateTime eventDate) {
 		return eventDate.isAfter(LocalDateTime.now().minusMonths(1));
+	}
+
+	@Override
+	public User updateBuyerPointsFor(Buyer buyer, int additionalPoints) {
+		int newBuyerPoints = calculateNewPoints(buyer.getPoints(), additionalPoints);
+		buyer.setPoints(newBuyerPoints);
+		
+		BuyerType buyerTypeForNewPoints = buyerTypeService.findAppropriateTypeForPoints(buyer.getPoints());
+		buyer.setBuyerTypeId(buyerTypeForNewPoints.getId());
+		
+		return repository.update(buyer);
+
+	}
+	
+	private int calculateNewPoints(int currentPoints, int additionalPoints) {
+		int newPoints = currentPoints + additionalPoints;
+		
+		return Math.max(0, newPoints);
 	}
 
 }

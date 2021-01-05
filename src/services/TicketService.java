@@ -8,26 +8,24 @@ import java.util.stream.Collectors;
 
 import core.domain.enums.TicketStatus;
 import core.domain.models.Buyer;
-import core.domain.models.BuyerType;
 import core.domain.models.Manifestation;
 import core.domain.models.Seller;
 import core.domain.models.Ticket;
-import core.domain.models.User;
 import core.repository.IRepository;
+import core.service.IManifestationService;
 import core.service.ITicketService;
+import core.service.IUserService;
 
 public class TicketService extends CrudService<Ticket> implements ITicketService {
 
-	IRepository<User> userRepository;
-	IRepository<Manifestation> manifestationRepository;
-	IRepository<BuyerType> buyerTypeRepository;
-
-	public TicketService(IRepository<Ticket> repository, IRepository<User> userRepository,
-			IRepository<Manifestation> manifestationRepository, IRepository<BuyerType> buyerTypeRepository) {
+	IUserService userService;
+	IManifestationService manifestationService;
+	
+	public TicketService(IRepository<Ticket> repository, IUserService userService,
+			IManifestationService manifestationService) {
 		super(repository);
-		this.userRepository = userRepository;
-		this.manifestationRepository = manifestationRepository;
-		this.buyerTypeRepository = buyerTypeRepository;
+		this.userService = userService;
+		this.manifestationService = manifestationService;
 	}
 
 	@Override
@@ -53,7 +51,7 @@ public class TicketService extends CrudService<Ticket> implements ITicketService
 
 	@Override
 	public List<Ticket> readReservedTicketsOfSellersManifestations(UUID sellerId) {
-		Seller seller = (Seller) userRepository.read(sellerId);
+		Seller seller = (Seller) userService.read(sellerId);
 		if (seller == null) {
 			return null;
 		}
@@ -79,19 +77,14 @@ public class TicketService extends CrudService<Ticket> implements ITicketService
 	public Ticket create(Ticket ticket) {
 		//TODO: Dodati uniqeId
 		
-		Manifestation manifestation = ticket.getManifestation();
-		
-		if(manifestation.getEventDate().isBefore(LocalDateTime.now())) {
-			return null;
-		}
-		
-		if(!updateNumberOfSeatsForManifestation(manifestation, -1)) {
+		Manifestation manifestation = ticket.getManifestation();		
+		if(manifestationService.updateNumberOfSeats(manifestation, -1) == null) {
 			return null;
 		}
 		
 		Buyer buyer = ticket.getBuyer();
 		int earnedPoints = getPointValue(ticket.getPrice());
-		updateBuyerPointsAndUpgradeBuyerType(buyer, earnedPoints);
+		userService.updateBuyerPointsFor(buyer, earnedPoints);
 		
 		ticket.setStatus(TicketStatus.Reserved);
 		return repository.create(ticket);
@@ -104,12 +97,12 @@ public class TicketService extends CrudService<Ticket> implements ITicketService
 			return null;
 		}
 			
-		Manifestation manifestation = manifestationRepository.read(ticket.getManifestationId());
-		updateNumberOfSeatsForManifestation(manifestation, 1);
+		Manifestation manifestation = manifestationService.read(ticket.getManifestationId());
+		manifestationService.updateNumberOfSeats(manifestation, 1);
 		
 		Buyer buyer = ticket.getBuyer();
 		int penaltyPoints = getPointValue(ticket.getPrice()) * -4;
-		updateBuyerPointsAndUpgradeBuyerType(buyer, penaltyPoints);
+		userService.updateBuyerPointsFor(buyer, penaltyPoints);
 
 		ticket.setStatus(TicketStatus.Canceled);
 		return repository.update(ticket);
@@ -119,42 +112,6 @@ public class TicketService extends CrudService<Ticket> implements ITicketService
 		return LocalDateTime.now()
 							.plusDays(7)
 							.isBefore(eventDate);
-	}
-	
-	private void updateBuyerPointsAndUpgradeBuyerType(Buyer buyer, int additionalPoints) {
-		updateBuyerPoints(buyer, additionalPoints);
-		upgradeBuyerType(buyer, buyer.getPoints());
-		userRepository.update(buyer);
-	}
-	
-	private void updateBuyerPoints(Buyer buyer, int additionalPoints) {
-		int newBuyerPoints = buyer.getPoints() + additionalPoints;
-		if(newBuyerPoints < 0)
-		{
-			newBuyerPoints = 0;
-		}
-		buyer.setPoints(newBuyerPoints);
-	}
-	
-	private void upgradeBuyerType(Buyer buyer, int points) {
-		List<BuyerType> buyerTypes = buyerTypeRepository.read();
-		buyerTypes.sort((buyerType1, buyerType2) -> buyerType1.getMinimumPoints() - buyerType2.getMinimumPoints());
-		
-		for(BuyerType buyerType : buyerTypes) {
-			if(buyerType.getMinimumPoints() <= points) {
-				buyer.setBuyerTypeId(buyerType.getId());
-			}
-		}
-	}
-	
-	private boolean updateNumberOfSeatsForManifestation(Manifestation manifestation, int additionalSeats) {
-		int newNumberOfManifestationSeats = manifestation.getSeats() + additionalSeats;
-		if(newNumberOfManifestationSeats < 0) {
-			return false;
-		}
-		
-		manifestation.setSeats(newNumberOfManifestationSeats);
-		return manifestationRepository.update(manifestation) != null;
 	}
 	
 	private int getPointValue(int price) {

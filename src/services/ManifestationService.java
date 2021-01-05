@@ -28,15 +28,7 @@ public class ManifestationService extends CrudService<Manifestation> implements 
 
 	@Override
 	public Manifestation create(Manifestation manifestation) {
-		
-		if(manifestation.getEventDate().isBefore(LocalDateTime.now())) {
-			return null;
-		}
-		
-		if(manifestation.getEventDate().isAfter(manifestation.getEventEndDate())) {
-			return null;
-		}
-		
+				
 		if(!checkIfLocationExists(manifestation.getLocationId())) {
 			return null;
 		}
@@ -53,18 +45,10 @@ public class ManifestationService extends CrudService<Manifestation> implements 
 	@Override
 	public Manifestation update(Manifestation manifestationForUpdate) {
 		
-		if(manifestationForUpdate.getEventDate().isBefore(LocalDateTime.now())) {
-			return null;
-		}
-		
-		if(manifestationForUpdate.getEventDate().isAfter(manifestationForUpdate.getEventEndDate())) {
-			return null;
-		}
-
 		if(!checkIfLocationExists(manifestationForUpdate.getLocationId())) {
 			return null;
 		}
-		//TODO: ;(
+
 		List<Manifestation> manifestationsWithSameLocationAndOverlapingEventDateWithoutThisOne = readWithSameLocationAndOverlapingEventDate(manifestationForUpdate)
 				.stream()
 				.filter(manifestation -> manifestation.getId() != manifestationForUpdate.getId())
@@ -102,6 +86,19 @@ public class ManifestationService extends CrudService<Manifestation> implements 
 		boolean secondManifestationStartNotOverlaping = secondManifestationStart.compareTo(firstManifestationEnd) >= 0;
 		
 		return !firstManifestationStartNotOverlaping && !secondManifestationStartNotOverlaping;
+	}
+
+	@Override
+	public Manifestation updateNumberOfSeats(Manifestation manifestation, int additionalSeats) {
+		int newNumberOfManifestationSeats = manifestation.getSeats() + additionalSeats;
+		if(newNumberOfManifestationSeats < 0) {
+			return null;
+		}
+		
+		manifestation.setSeats(newNumberOfManifestationSeats);
+		
+		return repository.update(manifestation);
+
 	}
 
 }

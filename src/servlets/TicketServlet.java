@@ -20,20 +20,27 @@ import javax.ws.rs.core.MediaType;
 
 import core.domain.dto.TicketOrder;
 import core.domain.models.BuyerType;
+import core.domain.models.Location;
 import core.domain.models.Manifestation;
 import core.domain.models.Ticket;
 import core.domain.models.User;
 import core.repository.IRepository;
 import core.responses.tickets.WholeTicketObjectResponse;
+import core.service.IBuyerTypeService;
+import core.service.IManifestationService;
 import core.service.ITicketOrderService;
 import core.service.ITicketService;
+import core.service.IUserService;
 import repository.DbContext;
 import repository.ManifestationRepository;
 import repository.Repository;
 import repository.TicketRepository;
 import repository.UserRepository;
+import services.BuyerTypeService;
+import services.ManifestationService;
 import services.TicketOrderService;
 import services.TicketService;
+import services.UserService;
 
 @Path("/")
 public class TicketServlet extends AbstractServletBase {
@@ -53,9 +60,14 @@ public class TicketServlet extends AbstractServletBase {
 		DbContext context = (DbContext) servletContext.getAttribute("DbContext");
 		IRepository<Ticket> ticketRepository = new TicketRepository(context);
 		IRepository<User> userRepository = new UserRepository(context);
+		IRepository<BuyerType> buyerTypeRepository = new Repository<BuyerType>(context, BuyerType.class);
 		IRepository<Manifestation> manifestationRepository = new ManifestationRepository(context);
-		IRepository<BuyerType> buyerTypeRepository = new Repository<>(context, BuyerType.class);
-		ticketService = new TicketService(ticketRepository, userRepository, manifestationRepository, buyerTypeRepository);
+		IRepository<Location> locationRepository = new Repository<Location>(context, Location.class);
+		
+		IBuyerTypeService buyerTypeService = new BuyerTypeService(buyerTypeRepository);
+		IUserService userService = new UserService(userRepository, buyerTypeService);
+		IManifestationService manifestationService = new ManifestationService(manifestationRepository, locationRepository);
+		ticketService = new TicketService(ticketRepository, userService, manifestationService);
 		ticketOrderService = new TicketOrderService(ticketService, userRepository, manifestationRepository);
 	}
 

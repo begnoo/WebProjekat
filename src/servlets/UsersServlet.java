@@ -33,12 +33,14 @@ import core.responses.users.WholeAdministratorObjectResponse;
 import core.responses.users.WholeBuyerObjectResponse;
 import core.responses.users.WholeSellerObjectResponse;
 import core.responses.users.WholeUserObjectResponseBase;
+import core.service.IBuyerTypeService;
 import core.service.IPaginationService;
 import core.service.IUserService;
 import core.servlets.exceptions.NotFoundException;
 import repository.DbContext;
 import repository.Repository;
 import repository.UserRepository;
+import services.BuyerTypeService;
 import services.PaginationService;
 import services.UserService;
 
@@ -62,8 +64,10 @@ public class UsersServlet extends AbstractServletBase {
 		DbContext context = (DbContext) servletContext.getAttribute("DbContext");
 		IRepository<User> userRepository = new UserRepository(context);
 		IRepository<BuyerType> buyerTypeRepository = new Repository<BuyerType>(context, BuyerType.class);
-
-		userService = new UserService(userRepository, buyerTypeRepository);
+		
+		IBuyerTypeService buyerTypeService = new BuyerTypeService(buyerTypeRepository);
+		
+		userService = new UserService(userRepository, buyerTypeService);
 		
 		paginationService = new PaginationService<User>(userRepository);
 	}
