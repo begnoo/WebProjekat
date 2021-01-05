@@ -92,7 +92,7 @@ public class UsersServlet extends AbstractServletBase {
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeUserObjectResponseBase createBuyer(CreateBuyerRequest request)
 	{
-		validateRequest(request);
+		super.validateRequest(request);
 		
 		User user = mapper.Map(new Buyer(), request);
 		
@@ -107,6 +107,8 @@ public class UsersServlet extends AbstractServletBase {
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeUserObjectResponseBase createSeller(CreateSellerRequest request)
 	{
+		super.validateRequest(request);
+
 		User user = mapper.Map(new Seller(), request);
 		
 		User createdUser = userService.create(user);
@@ -120,6 +122,8 @@ public class UsersServlet extends AbstractServletBase {
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeUserObjectResponseBase update(UpdateUserRequest request)
 	{
+		super.validateRequest(request);
+
 		User user = userService.read(request.getId());
 		if(user == null) {
 			return null;
@@ -138,6 +142,8 @@ public class UsersServlet extends AbstractServletBase {
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeUserObjectResponseBase changePassword(@PathParam("id") UUID id, ChangePasswordRequest request)
 	{
+		super.validateRequest(request);
+		
 		User updatedUser = userService.changePassword(id, request.getNewPassword(), request.getCurrentPassword());
 		
 		if(updatedUser == null) {

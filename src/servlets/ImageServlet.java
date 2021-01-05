@@ -62,6 +62,8 @@ public class ImageServlet extends AbstractServletBase {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeManifestationObjectResponse updateImageForManifestation(Base64ImageForManifestation request) {
+		super.validateRequest(request);
+		
 		Manifestation manifestationWithImage = imageService.updateImageForManifestation(request);
 		
 		return generateManifestationObjectResponse(manifestationWithImage);

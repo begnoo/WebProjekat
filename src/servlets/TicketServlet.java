@@ -23,7 +23,6 @@ import core.domain.models.Manifestation;
 import core.domain.models.Ticket;
 import core.domain.models.User;
 import core.repository.IRepository;
-import core.requests.tickets.UpdateTicketRequest;
 import core.responses.tickets.WholeTicketObjectResponse;
 import core.service.ITicketOrderService;
 import core.service.ITicketService;
@@ -80,6 +79,8 @@ public class TicketServlet extends AbstractServletBase {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<WholeTicketObjectResponse> create(TicketOrder ticketOrder) {
+		super.validateRequest(ticketOrder);
+		
 		List<Ticket> createdTickets = ticketOrderService.createTicketsFromOrder(ticketOrder);
 		
 		List<WholeTicketObjectResponse> response = createdTickets.stream()
@@ -90,19 +91,14 @@ public class TicketServlet extends AbstractServletBase {
 	}
 
 	@PUT
-	@Path("/")
-	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/{id}/cancel")
 	@Produces(MediaType.APPLICATION_JSON)
-	public WholeTicketObjectResponse update(UpdateTicketRequest request) {
-		Ticket ticket = ticketService.read(request.getId());
-		if(ticket == null) {
+	public WholeTicketObjectResponse cancelTicket(@PathParam("id") UUID id) {
+		Ticket canceledTicket = ticketService.cancelTicket(id);
+		if(canceledTicket == null) {
 			return null;
 		}
-		Ticket ticketForUpdate = mapper.Map(ticket, request);
-
-		Ticket updatedTicket = ticketService.update(ticketForUpdate);
-
-		return generateTicketObjectResponse(updatedTicket);
+		return generateTicketObjectResponse(canceledTicket);
 	}
 	
 	@DELETE
@@ -117,16 +113,5 @@ public class TicketServlet extends AbstractServletBase {
 	{
 		return mapper.Map(new WholeTicketObjectResponse(), ticket);
 	}
-	
-	@PUT
-	@Path("cancel-ticket/{id}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public WholeTicketObjectResponse cancelTicket(@PathParam("id") UUID id) {
-		Ticket canceledTicket = ticketService.cancelTicket(id);
-		if(canceledTicket == null) {
-			return null;
-		}
-		return generateTicketObjectResponse(canceledTicket);
-	}
-	
+		
 }

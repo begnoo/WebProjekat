@@ -28,7 +28,6 @@ public class TicketOrderService implements ITicketOrderService {
 
 	@Override
 	public List<Ticket> createTicketsFromOrder(TicketOrder ticketOrder) {
-		//TODO: Proveriti slucaj kada je hash mapa prazna
 		List<Ticket> tickets = new ArrayList<>();
 		
 		Buyer buyer = (Buyer) userRepository.read(ticketOrder.getBuyerId());

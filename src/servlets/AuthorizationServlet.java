@@ -46,6 +46,8 @@ public class AuthorizationServlet extends AbstractServletBase {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public AuthorizedUser authorize(Credidentals credidentals) {
+		super.validateRequest(credidentals);
+		
 		AuthorizedUser authorizedUser = authorizationService.authorize(credidentals);
 		if(authorizedUser == null)
 		{

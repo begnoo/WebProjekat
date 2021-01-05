@@ -67,6 +67,8 @@ public class LocationsServlet extends AbstractServletBase {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Location create(CreateLocationRequest request)
 	{
+		super.validateRequest(request);
+
 		Location location = mapper.Map(new Location(), request);
 		
 		return locationService.create(location);
@@ -78,6 +80,8 @@ public class LocationsServlet extends AbstractServletBase {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Location update(UpdateLocationRequest request)
 	{
+		super.validateRequest(request);
+
 		Location location = locationService.read(request.getId());
 		if(location == null) {
 			return null;
