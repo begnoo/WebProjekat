@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -60,8 +61,10 @@ public class UsersServlet extends AbstractServletBase {
 	@GET
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<User> readAll()
+	public List<User> readAll(@Context HttpServletRequest request)
 	{
+		super.isAuthorized(request);
+		
 		return userService.read();
 	}
 	

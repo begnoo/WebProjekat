@@ -50,6 +50,6 @@ public class JwtService implements IJwtService {
 			System.out.println("Bad jwt token");
 		}
 		
-		return new UUID(0, 0);
+		return null;
 	}
 }
