@@ -38,7 +38,7 @@ public class ImageService implements IImageService {
 	}
 	
 	private String getImagePath(Base64ImageForManifestation base64ImageForManifestaion) {
-		return "images/" + base64ImageForManifestaion.getManifestationId().toString() + "." + base64ImageForManifestaion.getExtension();
+		return "images/" + base64ImageForManifestaion.getManifestationId().toString() + ".jpg";
 	}
 
 	private byte[] getImageByteArray(String base64string) {
