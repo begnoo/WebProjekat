@@ -14,6 +14,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
@@ -34,7 +35,7 @@ import repository.UserRepository;
 import services.TicketOrderService;
 import services.TicketService;
 
-@Path("tickets")
+@Path("/")
 public class TicketServlet extends AbstractServletBase {
 	@Context
 	ServletContext servletContext;
@@ -59,14 +60,14 @@ public class TicketServlet extends AbstractServletBase {
 	}
 
 	@GET
-	@Path("/")
+	@Path("tickets/")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Ticket> readAll() {
 		return ticketService.read();
 	}
 
 	@GET
-	@Path("/{id}")
+	@Path("tickets/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeTicketObjectResponse readById(@PathParam("id") UUID id) {
 		Ticket ticket = ticketService.read(id);
@@ -74,8 +75,52 @@ public class TicketServlet extends AbstractServletBase {
 		return generateTicketObjectResponse(ticket);
 	}
 
+	@GET
+	@Path("manifestations/{manifestationId}/tickets")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<WholeTicketObjectResponse> readByManifestationId(@PathParam("manifestationId") UUID manifestationId) {
+		List<Ticket> ticketsForManifestation = ticketService.readByManifestationId(manifestationId);
+		
+		List<WholeTicketObjectResponse> wholeTicketObjectsForManifestation = ticketsForManifestation.stream()
+				.map(ticket -> generateTicketObjectResponse(ticket))
+				.collect(Collectors.toList());
+		
+		return wholeTicketObjectsForManifestation;
+	}
+	
+	@GET
+	@Path("users/sellers/{sellerId}/manifestations/tickets/reserved")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<WholeTicketObjectResponse> readReservedTicketsOfSellersManifestations(@PathParam("sellerId") UUID sellerId) {
+		List<Ticket> ticketsForSellersManifestation = ticketService.readReservedTicketsOfSellersManifestations(sellerId);
+		
+		List<WholeTicketObjectResponse> wholeTicketObjectsForSellersManifestation = ticketsForSellersManifestation.stream()
+				.map(ticket -> generateTicketObjectResponse(ticket))
+				.collect(Collectors.toList());
+		
+		return wholeTicketObjectsForSellersManifestation;
+	}
+	
+	@GET
+	@Path("users/buyers/{buyerId}/tickets")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<WholeTicketObjectResponse> readByBuyerId(@PathParam("buyerId") UUID buyerId, @QueryParam("only-reserved") boolean onlyReserved) {
+		List<Ticket> ticketsOfBuyer;
+		if(onlyReserved) {
+			ticketsOfBuyer = ticketService.readReservedTicketsOfBuyer(buyerId);
+		} else {
+			ticketsOfBuyer = ticketService.readByBuyerId(buyerId);
+		}
+		
+		List<WholeTicketObjectResponse> wholeTicketObjectsOfBuyers = ticketsOfBuyer.stream()
+				.map(ticket -> generateTicketObjectResponse(ticket))
+				.collect(Collectors.toList());
+		
+		return wholeTicketObjectsOfBuyers;
+	}
+	
 	@POST
-	@Path("/")
+	@Path("tickets/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<WholeTicketObjectResponse> create(TicketOrder ticketOrder) {
@@ -91,7 +136,7 @@ public class TicketServlet extends AbstractServletBase {
 	}
 
 	@PUT
-	@Path("/{id}/cancel")
+	@Path("tickets/{id}/cancel")
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeTicketObjectResponse cancelTicket(@PathParam("id") UUID id) {
 		Ticket canceledTicket = ticketService.cancelTicket(id);
@@ -102,7 +147,7 @@ public class TicketServlet extends AbstractServletBase {
 	}
 	
 	@DELETE
-	@Path("/{id}")
+	@Path("tickets/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public boolean delete(@PathParam("id") UUID id)
 	{

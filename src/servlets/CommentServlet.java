@@ -97,6 +97,7 @@ public class CommentServlet extends AbstractServletBase {
 	public List<WholeCommentObjectResponse> readNonPendingCommentsByManifestationId(@PathParam("manifestationId") UUID manifestationId)
 	{
 		List<Comment> commentsForManifestation = commentService.readNonPendingCommentsByManifestationId(manifestationId);
+		
 		List<WholeCommentObjectResponse> wholeCommentObjectsForManifestation = commentsForManifestation.stream()
 				.map(comment -> generateCommentObjectResponse(comment))
 				.collect(Collectors.toList());

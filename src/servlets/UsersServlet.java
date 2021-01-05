@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -15,6 +14,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
@@ -39,7 +39,7 @@ import repository.Repository;
 import repository.UserRepository;
 import services.UserService;
 
-@Path("users")
+@Path("/")
 public class UsersServlet extends AbstractServletBase {
 
 	@Context
@@ -63,17 +63,27 @@ public class UsersServlet extends AbstractServletBase {
 	}
 	
 	@GET
-	@Path("/")
+	@Path("users/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<User> readAll(@Context HttpServletRequest request)
+	public List<User> readAll(@QueryParam("role") UserRole role)
 	{
-		super.isAuthorized(request);
+		if(role != null) {
+			return userService.readByUserRole(role);
+		}
 		
 		return userService.read();
 	}
 	
 	@GET
-	@Path("/{id}")
+	@Path("users/buyers/distrustful")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<User> readAllDistrustfulBuyers()
+	{
+		return userService.readDistrustfulBuyers();
+	}
+	
+	@GET
+	@Path("users/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeUserObjectResponseBase readById(@PathParam("id") UUID id)
 	{
@@ -87,7 +97,7 @@ public class UsersServlet extends AbstractServletBase {
 	}
 	
 	@POST
-	@Path("/buyer")
+	@Path("users/buyer")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeUserObjectResponseBase createBuyer(CreateBuyerRequest request)
@@ -102,7 +112,7 @@ public class UsersServlet extends AbstractServletBase {
 	}
 	
 	@POST
-	@Path("/seller")
+	@Path("users/seller")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeUserObjectResponseBase createSeller(CreateSellerRequest request)
@@ -117,7 +127,7 @@ public class UsersServlet extends AbstractServletBase {
 	}
 	
 	@PUT
-	@Path("/")
+	@Path("users/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeUserObjectResponseBase update(UpdateUserRequest request)
@@ -137,7 +147,7 @@ public class UsersServlet extends AbstractServletBase {
 	}
 	
 	@PUT
-	@Path("/{id}/password")
+	@Path("users/{id}/password")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeUserObjectResponseBase changePassword(@PathParam("id") UUID id, ChangePasswordRequest request)
@@ -154,13 +164,13 @@ public class UsersServlet extends AbstractServletBase {
 	}
 	
 	@DELETE
-	@Path("/{id}")
+	@Path("users/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public boolean delete(@PathParam("id") UUID id)
 	{
-		return userService.delete(id);
+		return userService.blockUser(id) != null;
 	}
-	
+		
 	private WholeUserObjectResponseBase generateUserObjectResponse(User user)
 	{
 		if(user.getRole() == UserRole.Buyer) {
