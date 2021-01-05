@@ -4740,7 +4740,7 @@ tbody.collapse.show {
 }
 
 .page-link:hover {
-  color: #0056b3;
+  color: #000000;
   text-decoration: none;
   background-color: #e9ecef;
   border-color: #dee2e6;
@@ -4770,8 +4770,8 @@ tbody.collapse.show {
 .page-item.active .page-link {
   z-index: 1;
   color: #fff;
-  background-color: #007bff;
-  border-color: #007bff;
+  background-color: #000000;
+  border-color: #000000;
 }
 
 .page-item.disabled .page-link {

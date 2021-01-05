@@ -1,0 +1,8 @@
+.pagination-item {
+	color: black
+}
+
+.active-pagination-item {
+	color: white;
+	background-color: black;
+}

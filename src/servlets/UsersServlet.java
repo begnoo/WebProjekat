@@ -18,6 +18,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import core.domain.dto.Page;
 import core.domain.enums.UserRole;
 import core.domain.models.Buyer;
 import core.domain.models.BuyerType;
@@ -32,11 +33,13 @@ import core.responses.users.WholeAdministratorObjectResponse;
 import core.responses.users.WholeBuyerObjectResponse;
 import core.responses.users.WholeSellerObjectResponse;
 import core.responses.users.WholeUserObjectResponseBase;
+import core.service.IPaginationService;
 import core.service.IUserService;
 import core.servlets.exceptions.NotFoundException;
 import repository.DbContext;
 import repository.Repository;
 import repository.UserRepository;
+import services.PaginationService;
 import services.UserService;
 
 @Path("/")
@@ -46,6 +49,7 @@ public class UsersServlet extends AbstractServletBase {
 	ServletContext servletContext;
 	
 	private IUserService userService;
+	private IPaginationService<User> paginationService;
 	
 	public UsersServlet()
 	{
@@ -60,6 +64,8 @@ public class UsersServlet extends AbstractServletBase {
 		IRepository<BuyerType> buyerTypeRepository = new Repository<BuyerType>(context, BuyerType.class);
 
 		userService = new UserService(userRepository, buyerTypeRepository);
+		
+		paginationService = new PaginationService<User>(userRepository);
 	}
 	
 	@GET
@@ -72,6 +78,14 @@ public class UsersServlet extends AbstractServletBase {
 		}
 		
 		return userService.read();
+	}
+	
+	@GET
+	@Path("users/page")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<User> readAll(@QueryParam("number") int number, @QueryParam("size") int size)
+	{		
+		return paginationService.readPage(new Page(number, size));
 	}
 	
 	@GET
