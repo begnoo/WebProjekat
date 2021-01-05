@@ -80,6 +80,11 @@ public class TicketService extends CrudService<Ticket> implements ITicketService
 		//TODO: Dodati uniqeId
 		
 		Manifestation manifestation = ticket.getManifestation();
+		
+		if(manifestation.getEventDate().isBefore(LocalDateTime.now())) {
+			return null;
+		}
+		
 		if(!updateNumberOfSeatsForManifestation(manifestation, -1)) {
 			return null;
 		}

@@ -6,9 +6,9 @@ Vue.component("location-form-map", {
     </div>
     `,
     data: function () {
+        props: ["coordinates"];
         return {
             markerFeature: null,
-            coordinates: null,
         };
     },
 
@@ -22,8 +22,7 @@ Vue.component("location-form-map", {
                 "EPSG:4326"
             );
 
-            this.coordinates = transformedCoordinates;
-            this.updateCoordinates();
+            this.updateCoordinates(transformedCoordinates);
         },
         initMap: function () {
             this.markerFeature = new ol.Feature({
@@ -54,8 +53,8 @@ Vue.component("location-form-map", {
 
             map.on("singleclick", this.moveMarkerOnClick);
         },
-        updateCoordinates: function () {
-            this.$emit("update-coordinates", this.coordinates);
+        updateCoordinates: function (coordinates) {
+            this.$emit("update-coordinates", coordinates);
         },
     },
 

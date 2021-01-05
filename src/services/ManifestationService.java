@@ -29,6 +29,10 @@ public class ManifestationService extends CrudService<Manifestation> implements 
 	@Override
 	public Manifestation create(Manifestation manifestation) {
 		
+		if(manifestation.getEventDate().isBefore(LocalDateTime.now())) {
+			return null;
+		}
+		
 		if(manifestation.getEventDate().isAfter(manifestation.getEventEndDate())) {
 			return null;
 		}
@@ -48,6 +52,10 @@ public class ManifestationService extends CrudService<Manifestation> implements 
 
 	@Override
 	public Manifestation update(Manifestation manifestationForUpdate) {
+		
+		if(manifestationForUpdate.getEventDate().isBefore(LocalDateTime.now())) {
+			return null;
+		}
 		
 		if(manifestationForUpdate.getEventDate().isAfter(manifestationForUpdate.getEventEndDate())) {
 			return null;
