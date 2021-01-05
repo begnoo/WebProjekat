@@ -13,6 +13,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
@@ -28,7 +29,7 @@ import repository.ManifestationRepository;
 import repository.Repository;
 import services.ManifestationService;
 
-@Path("manifestations")
+@Path("/")
 public class ManifestationServlet extends AbstractServletBase {
 	@Context
 	ServletContext servletContext;
@@ -49,14 +50,18 @@ public class ManifestationServlet extends AbstractServletBase {
 	}
 
 	@GET
-	@Path("/")
+	@Path("manifestations/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Manifestation> readAll() {
+	public List<Manifestation> readAll(@QueryParam("order-by-date") boolean orderByDate) {
+		if(orderByDate) {
+			return manifestationService.readOrderedByDescendingDate();
+		}
+		
 		return manifestationService.read();
 	}
-
+	
 	@GET
-	@Path("/{id}")
+	@Path("manifestations/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeManifestationObjectResponse readById(@PathParam("id") UUID id) {
 		Manifestation manifestation = manifestationService.read(id);
@@ -65,7 +70,7 @@ public class ManifestationServlet extends AbstractServletBase {
 	}
 
 	@POST
-	@Path("/")
+	@Path("manifestations/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeManifestationObjectResponse create(CreateManifestationRequest request) {
@@ -79,7 +84,7 @@ public class ManifestationServlet extends AbstractServletBase {
 	}
 
 	@PUT
-	@Path("/")
+	@Path("manifestations/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeManifestationObjectResponse update(UpdateManifestationRequest request) {
@@ -98,7 +103,7 @@ public class ManifestationServlet extends AbstractServletBase {
 	}
 	
 	@DELETE
-	@Path("/{id}")
+	@Path("manifestations/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public boolean delete(@PathParam("id") UUID id)
 	{

@@ -1,57 +1,12 @@
 [ {
-  "id" : "ce591855-aae7-430b-a7ad-ee37c9b4e7d8",
-  "createdAt" : "2021-01-02 23:00",
-  "active" : true,
-  "latitude" : "60.43",
-  "longitude" : "60.43",
-  "address" : {
-    "id" : "ca8f4bca-fd0c-40ac-9080-d54474250c2c",
-    "createdAt" : "2021-01-02 23:00",
-    "active" : true,
-    "street" : "MILOS KRALJ",
-    "houseNumber" : "10",
-    "place" : "MILOSEVGRAD",
-    "postalCode" : "30000Milosa"
-  }
-}, {
-  "id" : "102d3276-6c45-41db-b2fc-0a5e48242b9b",
-  "createdAt" : "2021-01-02 19:11",
-  "active" : true,
-  "latitude" : "45.255476227223596",
-  "longitude" : "9.861740782873927",
-  "address" : {
-    "id" : "d95104a6-b1a7-4abe-b260-1acd19f64af6",
-    "createdAt" : "2021-01-02 19:11",
-    "active" : true,
-    "street" : "Vinogradska",
-    "houseNumber" : "47",
-    "place" : "Novi Sad",
-    "postalCode" : "21132"
-  }
-}, {
-  "id" : "8234e16b-6f89-415b-b3b0-f58ae5949cda",
-  "createdAt" : "2021-01-02 19:11",
-  "active" : true,
-  "latitude" : "45.245030232018622",
-  "longitude" : "19.84960348355249",
-  "address" : {
-    "id" : "f49e774f-abe9-4a0a-b661-1659e3de6b2f",
-    "createdAt" : "2021-01-02 19:11",
-    "active" : true,
-    "street" : "Dr Ilije Djuricica",
-    "houseNumber" : "3",
-    "place" : "Novi Sad",
-    "postalCode" : "402912"
-  }
-}, {
-  "id" : "de43d634-82b7-473e-9c32-d9fdbaa841f2",
-  "createdAt" : "2021-01-02 19:11",
+  "id" : "8579ea0b-201b-4102-a932-56c787281271",
+  "createdAt" : "2021-01-05 17:00",
   "active" : true,
   "latitude" : "45.2470805144055",
   "longitude" : "19.845354677817618",
   "address" : {
-    "id" : "6b6edd8f-2da1-4b28-a787-d35445e95685",
-    "createdAt" : "2021-01-02 19:11",
+    "id" : "4c3e86db-82a8-4a8e-a8e9-6df277687989",
+    "createdAt" : "2021-01-05 17:00",
     "active" : true,
     "street" : "Sutjeska",
     "houseNumber" : "2",
@@ -59,18 +14,48 @@
     "postalCode" : "21000"
   }
 }, {
-  "id" : "577d35e0-3c59-4e5e-8c24-7214bae91ebd",
-  "createdAt" : "2021-01-02 19:11",
+  "id" : "e1af6adf-28c9-4911-9e40-d95c90ae2c92",
+  "createdAt" : "2021-01-05 17:00",
+  "active" : true,
+  "latitude" : "45.255476227223596",
+  "longitude" : "9.861740782873927",
+  "address" : {
+    "id" : "5015941e-332e-43de-9fbe-766fcd1e43ec",
+    "createdAt" : "2021-01-05 17:00",
+    "active" : true,
+    "street" : "Vinogradska",
+    "houseNumber" : "47",
+    "place" : "Novi Sad",
+    "postalCode" : "21132"
+  }
+}, {
+  "id" : "001ad574-11b6-473b-ac03-4033769d9875",
+  "createdAt" : "2021-01-05 17:00",
   "active" : true,
   "latitude" : "44.81433635371563",
   "longitude" : "20.421267940534413",
   "address" : {
-    "id" : "b9c98ad5-034c-4f6f-9f7f-290a7c34f414",
-    "createdAt" : "2021-01-02 19:11",
+    "id" : "d0f83ddb-a1b2-471d-a18f-0a3d64d5f6d0",
+    "createdAt" : "2021-01-05 17:00",
     "active" : true,
     "street" : "Bulevar Arsenija Carnojevica",
     "houseNumber" : " 58",
     "place" : "Beograd",
     "postalCode" : "11070"
+  }
+}, {
+  "id" : "2a9386b1-1b50-4252-bd16-5bc6ed17abd9",
+  "createdAt" : "2021-01-05 17:00",
+  "active" : true,
+  "latitude" : "45.245030232018622",
+  "longitude" : "19.84960348355249",
+  "address" : {
+    "id" : "ab3049a8-4586-4e8e-84ac-644f564a2543",
+    "createdAt" : "2021-01-05 17:00",
+    "active" : true,
+    "street" : "Dr Ilije Djuricica",
+    "houseNumber" : "3",
+    "place" : "Novi Sad",
+    "postalCode" : "402912"
   }
 } ]
