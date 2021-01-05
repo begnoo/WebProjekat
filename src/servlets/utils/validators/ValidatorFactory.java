@@ -2,9 +2,19 @@ package servlets.utils.validators;
 
 import java.util.HashMap;
 
+import core.domain.dto.Credidentals;
+import core.requests.buyerTypes.CreateBuyerTypeRequest;
+import core.requests.buyerTypes.UpdateBuyerTypeRequest;
+import core.requests.comments.CreateCommentRequest;
+import core.requests.comments.UpdateCommentRequest;
 import core.requests.users.CreateBuyerRequest;
 import core.servlets.validators.IObjectValidator;
 import core.servlets.validators.IValidatorFactory;
+import servlets.utils.validators.authorization.CredidentalsValidator;
+import servlets.utils.validators.buyerTypes.CreateBuyerTypeRequestValidator;
+import servlets.utils.validators.buyerTypes.UpdateBuyerTypeRequestValidator;
+import servlets.utils.validators.comments.CreateCommentRequestValidator;
+import servlets.utils.validators.comments.UpdateCommentRequestValidator;
 
 public class ValidatorFactory implements IValidatorFactory {
 	private HashMap<Class<?>, Class<?>> validatorsForObjects;
@@ -13,6 +23,11 @@ public class ValidatorFactory implements IValidatorFactory {
 	{
 		validatorsForObjects = new HashMap<Class<?>, Class<?>>();
 		validatorsForObjects.put(CreateBuyerRequest.class, CreateBuyerRequestValidator.class);
+		validatorsForObjects.put(Credidentals.class, CredidentalsValidator.class);
+		validatorsForObjects.put(CreateBuyerTypeRequest.class, CreateBuyerTypeRequestValidator.class);
+		validatorsForObjects.put(UpdateBuyerTypeRequest.class, UpdateBuyerTypeRequestValidator.class);
+		validatorsForObjects.put(CreateCommentRequest.class, CreateCommentRequestValidator.class);
+		validatorsForObjects.put(UpdateCommentRequest.class, UpdateCommentRequestValidator.class);
 	}
 	
 	@Override

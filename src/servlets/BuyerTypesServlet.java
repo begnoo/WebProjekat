@@ -67,6 +67,8 @@ public class BuyerTypesServlet extends AbstractServletBase {
 	@Produces(MediaType.APPLICATION_JSON)
 	public BuyerType create(CreateBuyerTypeRequest request)
 	{
+		super.validateRequest(request);
+		
 		BuyerType buyerType = mapper.Map(new BuyerType(), request);
 		
 		return buyerTypeService.create(buyerType);
@@ -78,6 +80,8 @@ public class BuyerTypesServlet extends AbstractServletBase {
 	@Produces(MediaType.APPLICATION_JSON)
 	public BuyerType update(UpdateBuyerTypeRequest request)
 	{
+		super.validateRequest(request);
+
 		BuyerType buyerType = buyerTypeService.read(request.getId());
 		if(buyerType == null) {
 			return null;

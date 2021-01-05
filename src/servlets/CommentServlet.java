@@ -73,6 +73,8 @@ public class CommentServlet extends AbstractServletBase {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeCommentObjectResponse create(CreateCommentRequest request) {
+		super.validateRequest(request);
+		
 		Comment comment = mapper.Map(new Comment(), request);
 
 		Comment createdComment = commentService.create(comment);
@@ -85,6 +87,8 @@ public class CommentServlet extends AbstractServletBase {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeCommentObjectResponse update(UpdateCommentRequest request) {
+		super.validateRequest(request);
+		
 		Comment comment = commentService.read(request.getId());
 		if(comment == null) {
 			return null;
