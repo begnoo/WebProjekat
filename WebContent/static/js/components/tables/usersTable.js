@@ -42,7 +42,12 @@ Vue.component('users-table',
 		            </p>
 	            </li>
 	           
-           		<li v-for="page in pages" class="page-item" v-bind:class="{active: page === selectedPage}" v-on:click="setPage(page)">
+           		<li
+	           		v-for="page in pages"
+	           		class="page-item"
+	           		v-bind:class="{active: page === selectedPage}"
+	           		v-on:click="setPage(page)"
+           		>
 	            	<p class="page-link pagination-item">{{ page }}</p>
 	           	</li>
 	           
@@ -64,9 +69,10 @@ Vue.component('users-table',
     data: function() {
         return {
             users: [],
+            nextUsers: [],
             selectedUser: null,
             
-            pageSize: 5,
+            pageSize: 3,
             selectedPage: 1,
             pages: [1, 2, 3]
             
@@ -74,17 +80,14 @@ Vue.component('users-table',
     },
     
     methods: {
-    	loadUsers() {
-    		axios.get('/WebProjekat/rest/users/page?number=' + this.selectedPage + "&size=" + this.pageSize)
-             	 .then(response => this.users = response.data);
+    	loadPageOfUsers : function(page) {    		
+    		return axios.get('/WebProjekat/rest/users/page?number=' + page + "&size=" + this.pageSize)
+             	 .then(response =>
+             	 {
+         	 		this.nextUsers = response.data
+         	 	});
     	},
     
-    	changePagesList: function() {
-			if(this.selectedPage >= 2) {
-				this.pages = [this.selectedPage - 1, this.selectedPage, this.selectedPage + 1];
-			}
-		},
-		
     	selectUser: function(user) {
     		this.selectedUser = user;
 		},
@@ -92,25 +95,37 @@ Vue.component('users-table',
 		setPage: function(pageNumber) {
 			let changeFor = pageNumber - this.selectedPage;
 			this.changePageFor(changeFor);
-			this.changePagesList();
 		},
 		
-		changePageFor: function(changeFor) {
-			if(changeFor < 0 && this.selectedPage > 1) {
-				this.selectedPage--;
-			} else if (changeFor > 0 && this.users.length === this.pageSize) { 
-				this.selectedPage++;
-			}
-			this.changePagesList();
-			this.loadUsers();
+		changePageFor: async function(changeFor) {
+			let nextPage = this.selectedPage;
 			
-			return;
+			if(changeFor < 0 && this.selectedPage + changeFor >= 1) {
+				nextPage += changeFor;
+			} else if (changeFor > 0 && this.users.length === this.pageSize) { 
+				nextPage += changeFor;
+			}
+			
+			await this.loadPageOfUsers(nextPage);
+			if(this.nextUsers.length > 0) {
+				this.users = this.nextUsers;
+				this.selectedPage = nextPage;
+				this.changePagesList();
+			}
+		},
+		
+    	changePagesList: function() {
+			if(this.selectedPage >= 2) {
+				this.pages = [this.selectedPage - 1, this.selectedPage, this.selectedPage + 1];
+			}
 		}
+		
 		
     },
 
-    mounted: function () {
-    	this.loadUsers();
+    mounted: async function() {
+    	await this.loadPageOfUsers(this.selectedPage);
+    	this.users = this.nextUsers;
     }
       
 });
