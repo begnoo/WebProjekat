@@ -6,10 +6,23 @@ Vue.component("location-form-map", {
     </div>
     `,
     data: function () {
-        props: ["coordinates"];
         return {
+            map: null,
             markerFeature: null,
         };
+    },
+
+    props: ["coordinates"],
+    watch: {
+        immediate: true,
+        coordinates: function (newCoordinates, oldCoordinates) {
+            this.moveMapView(newCoordinates);
+            this.markerFeature
+                .getGeometry()
+                .setCoordinates(
+                    ol.proj.transform(newCoordinates, "EPSG:4326", "EPSG:3857")
+                );
+        },
     },
 
     methods: {
@@ -35,7 +48,7 @@ Vue.component("location-form-map", {
                 }),
             });
 
-            map = new ol.Map({
+            this.map = new ol.Map({
                 target: this.$refs["map-root"],
                 layers: [
                     new ol.layer.Tile({
@@ -51,15 +64,24 @@ Vue.component("location-form-map", {
                 }),
             });
 
-            map.on("singleclick", this.moveMarkerOnClick);
+            this.map.on("singleclick", this.moveMarkerOnClick);
         },
         updateCoordinates: function (coordinates) {
             this.$emit("update-coordinates", coordinates);
         },
+        moveMapView: function (newCoordinates) {
+            this.map.getView().animate({
+                center: ol.proj.transform(
+                    newCoordinates,
+                    "EPSG:4326",
+                    "EPSG:3857"
+                ),
+                duration: 500,
+            });
+        },
     },
 
     mounted() {
-        console.log(ol);
         this.initMap();
     },
 });
