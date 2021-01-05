@@ -3,6 +3,7 @@ package servlets.utils.validators;
 import java.util.HashMap;
 
 import core.domain.dto.Credidentals;
+import core.domain.dto.TicketOrder;
 import core.requests.buyerTypes.CreateBuyerTypeRequest;
 import core.requests.buyerTypes.UpdateBuyerTypeRequest;
 import core.requests.comments.CreateCommentRequest;
@@ -24,6 +25,7 @@ import servlets.utils.validators.comments.UpdateCommentRequestValidator;
 import servlets.utils.validators.images.Base64ImageForManifestationValidator;
 import servlets.utils.validators.locations.CreateLocationRequestValidator;
 import servlets.utils.validators.locations.UpdateLocationRequestValidator;
+import servlets.utils.validators.tickets.TicketOrderValidator;
 import servlets.utils.validators.users.ChangePasswordRequestValidator;
 import servlets.utils.validators.users.CreateBuyerRequestValidator;
 import servlets.utils.validators.users.CreateSellerRequestValidator;
@@ -48,10 +50,14 @@ public class ValidatorFactory implements IValidatorFactory {
 		validatorsForObjects.put(CreateLocationRequest.class, CreateLocationRequestValidator.class);
 		validatorsForObjects.put(UpdateLocationRequest.class, UpdateLocationRequestValidator.class);
 		
+		
+		validatorsForObjects.put(TicketOrder.class, TicketOrderValidator.class);
+		
 		validatorsForObjects.put(CreateBuyerRequest.class, CreateBuyerRequestValidator.class);
 		validatorsForObjects.put(CreateSellerRequest.class, CreateSellerRequestValidator.class);
 		validatorsForObjects.put(UpdateUserRequest.class, UpdateUserRequestValidator.class);
 		validatorsForObjects.put(ChangePasswordRequest.class, ChangePasswordRequestValidator.class);
+		
 	}
 	
 	@Override

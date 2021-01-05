@@ -22,7 +22,6 @@ public class TicketService extends CrudService<Ticket> implements ITicketService
 	IRepository<Manifestation> manifestationRepository;
 	IRepository<BuyerType> buyerTypeRepository;
 
-
 	public TicketService(IRepository<Ticket> repository, IRepository<User> userRepository,
 			IRepository<Manifestation> manifestationRepository, IRepository<BuyerType> buyerTypeRepository) {
 		super(repository);
