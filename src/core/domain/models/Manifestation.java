@@ -37,7 +37,7 @@ public class Manifestation extends BaseEntity {
 
 	public Manifestation(String name, ManifestationType type, int seats, LocalDateTime eventDate,
 			LocalDateTime eventEndDate, int regularTicketPrice, boolean status, UUID locationId, Location location,
-			UUID sellerId, Seller seller) {
+			UUID sellerId, Seller seller, String imagePath) {
 		super();
 		this.name = name;
 		this.type = type;
@@ -50,6 +50,7 @@ public class Manifestation extends BaseEntity {
 		this.location = location;
 		this.sellerId = sellerId;
 		this.seller = seller;
+		this.imagePath = imagePath;
 	}
 
 	public String getName() {

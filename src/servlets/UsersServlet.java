@@ -20,6 +20,7 @@ import javax.ws.rs.core.MediaType;
 
 import core.domain.enums.UserRole;
 import core.domain.models.Buyer;
+import core.domain.models.BuyerType;
 import core.domain.models.Seller;
 import core.domain.models.User;
 import core.repository.IRepository;
@@ -34,6 +35,7 @@ import core.responses.users.WholeUserObjectResponseBase;
 import core.service.IUserService;
 import core.servlets.exceptions.NotFoundException;
 import repository.DbContext;
+import repository.Repository;
 import repository.UserRepository;
 import services.UserService;
 
@@ -55,7 +57,9 @@ public class UsersServlet extends AbstractServletBase {
 	{
 		DbContext context = (DbContext) servletContext.getAttribute("DbContext");
 		IRepository<User> userRepository = new UserRepository(context);
-		userService = new UserService(userRepository);
+		IRepository<BuyerType> buyerTypeRepository = new Repository<BuyerType>(context, BuyerType.class);
+
+		userService = new UserService(userRepository, buyerTypeRepository);
 	}
 	
 	@GET

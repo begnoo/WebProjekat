@@ -71,15 +71,15 @@ public class Seeder {
 		userRepository.create(admin2);
 
 		// Buyers
-		Buyer buyer1 = new Buyer("paneze", "panic", "Milos", "Panic", Gender.Male, LocalDateTime.now(),
+		Buyer buyer1 = new Buyer("paneze", "panic", "Milos", "Panic", Gender.Male, LocalDateTime.now().minusYears(21),
 				new ArrayList<Ticket>(), 100, defaultType.getId(), defaultType);
-		Buyer buyer2 = new Buyer("majoneze", "huawei_ruter", "Dalibor", "Malic", Gender.Male, LocalDateTime.now(),
+		Buyer buyer2 = new Buyer("majoneze", "huawei_ruter", "Dalibor", "Malic", Gender.Male, LocalDateTime.now().minusYears(50),
 				new ArrayList<Ticket>(), 1000, bronzeType.getId(), bronzeType);
-		Buyer buyer3 = new Buyer("sljuxa", "markocar123", "Marko", "Suljak", Gender.Male, LocalDateTime.now(),
+		Buyer buyer3 = new Buyer("sljuxa", "markocar123", "Marko", "Suljak", Gender.Male, LocalDateTime.now().minusYears(13),
 				new ArrayList<Ticket>(), 1800, silverType.getId(), silverType);
-		Buyer buyer4 = new Buyer("nadxa", "harry_styles", "Nadezda", "Seratlic", Gender.Female, LocalDateTime.now(),
+		Buyer buyer4 = new Buyer("nadxa", "harry_styles", "Nadezda", "Seratlic", Gender.Female, LocalDateTime.now().minusYears(90),
 				new ArrayList<Ticket>(), 2800, goldType.getId(), goldType);
-		Buyer buyer5 = new Buyer("zocalez", "patos", "Zoran", "Jankov", Gender.Male, LocalDateTime.now(),
+		Buyer buyer5 = new Buyer("zocalez", "patos", "Zoran", "Jankov", Gender.Male, LocalDateTime.now().minusYears(21),
 				new ArrayList<Ticket>(), 500, defaultType.getId(), defaultType);
 
 		userRepository.create(buyer1);
@@ -89,11 +89,11 @@ public class Seeder {
 		userRepository.create(buyer5);
 
 		// Sellers
-		Seller seller1 = new Seller("skc", "skc123", "Simfonije", "Gvozdimirovic", Gender.Male, LocalDateTime.now(),
+		Seller seller1 = new Seller("skc", "skc123", "Simfonije", "Gvozdimirovic", Gender.Male, LocalDateTime.now().minusYears(21),
 				new ArrayList<Manifestation>());
-		Seller seller2 = new Seller("spens", "spens021", "Kavkaz", "Majovic", Gender.Male, LocalDateTime.now(),
+		Seller seller2 = new Seller("spens", "spens021", "Kavkaz", "Majovic", Gender.Male, LocalDateTime.now().minusYears(31),
 				new ArrayList<Manifestation>());
-		Seller seller3 = new Seller("jeftin_exit", "exit021", "Glorija", "Petrov", Gender.Female, LocalDateTime.now(),
+		Seller seller3 = new Seller("jeftin_exit", "exit021", "Glorija", "Petrov", Gender.Female, LocalDateTime.now().minusYears(23),
 				new ArrayList<Manifestation>());
 
 		// Manifestations
@@ -101,16 +101,16 @@ public class Seeder {
 
 		Manifestation manifestation1 = new Manifestation("MF DOOM Memorial", ManifestationType.Concert, 5000,
 				LocalDateTime.now(), LocalDateTime.now().plusMinutes(100), 1000, true, location1.getId(), location1,
-				seller1.getId(), seller1);
+				seller1.getId(), seller1, "WebProjekat/rest/images/doom.jpg");
 		Manifestation manifestation2 = new Manifestation("Bajaga i instuktori, previse godina",
 				ManifestationType.Concert, 500, LocalDateTime.now(), LocalDateTime.now().plusMinutes(100), 400, true,
-				location2.getId(), location2, seller2.getId(), seller2);
+				location2.getId(), location2, seller2.getId(), seller2, "WebProjekat/rest/images/default.jpg");
 		Manifestation manifestation3 = new Manifestation("Ujka Vanja", ManifestationType.Theater, 200,
 				LocalDateTime.now(), LocalDateTime.now().plusMinutes(100), 800, true, location4.getId(), location4,
-				seller2.getId(), seller2);
+				seller2.getId(), seller2, "WebProjekat/rest/images/default.jpg");
 		Manifestation manifestation4 = new Manifestation("Exit Festival", ManifestationType.Festival, 10000,
 				LocalDateTime.now(), LocalDateTime.now().plusMinutes(100), 1400, true, location3.getId(), location3,
-				seller3.getId(), seller3);
+				seller3.getId(), seller3, "WebProjekat/rest/images/default.jpg");
 
 		manifestationRepository.create(manifestation1);
 		manifestationRepository.create(manifestation2);

@@ -8,14 +8,46 @@ import java.util.stream.Collectors;
 import core.domain.enums.TicketStatus;
 import core.domain.enums.UserRole;
 import core.domain.models.Buyer;
+import core.domain.models.BuyerType;
 import core.domain.models.User;
 import core.repository.IRepository;
 import core.service.IUserService;
 
 public class UserService extends CrudService<User> implements IUserService {
 
-	public UserService(IRepository<User> repository) {
+	IRepository<BuyerType> buyerTypeRepository;
+	
+	public UserService(IRepository<User> repository, IRepository<BuyerType> buyerTypeRepository) {
 		super(repository);
+		this.buyerTypeRepository = buyerTypeRepository;
+	}
+	
+	@Override
+	public User create(User user) {
+		
+		if(!checkIfUsernameUnique(user.getUsername())) {
+			return null;
+		}
+		
+		if(user.getRole() == UserRole.Buyer) {
+			((Buyer) user).setBuyerTypeId(getDefaultBuyerType().getId()); 
+		}
+		
+		return repository.create(user);
+	}
+	
+	private boolean checkIfUsernameUnique(String username) {
+		return repository.read()
+				.stream()
+				.filter(user -> user.getUsername().equals(username))
+				.collect(Collectors.toList()).size() == 0;
+	}
+	
+	private BuyerType getDefaultBuyerType() {
+		return buyerTypeRepository.read()
+				.stream()
+				.filter(buyerType -> buyerType.getName().equals("Default"))
+				.collect(Collectors.toList()).get(0);
 	}
 
 	@Override
