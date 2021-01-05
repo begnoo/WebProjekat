@@ -11,6 +11,8 @@ import core.requests.comments.UpdateCommentRequest;
 import core.requests.images.Base64ImageForManifestation;
 import core.requests.locations.CreateLocationRequest;
 import core.requests.locations.UpdateLocationRequest;
+import core.requests.manifestations.CreateManifestationRequest;
+import core.requests.manifestations.UpdateManifestationRequest;
 import core.requests.users.ChangePasswordRequest;
 import core.requests.users.CreateBuyerRequest;
 import core.requests.users.CreateSellerRequest;
@@ -25,6 +27,8 @@ import servlets.utils.validators.comments.UpdateCommentRequestValidator;
 import servlets.utils.validators.images.Base64ImageForManifestationValidator;
 import servlets.utils.validators.locations.CreateLocationRequestValidator;
 import servlets.utils.validators.locations.UpdateLocationRequestValidator;
+import servlets.utils.validators.manifestations.CreateManifestationRequestValidator;
+import servlets.utils.validators.manifestations.UpdateManifestationRequestValidator;
 import servlets.utils.validators.tickets.TicketOrderValidator;
 import servlets.utils.validators.users.ChangePasswordRequestValidator;
 import servlets.utils.validators.users.CreateBuyerRequestValidator;
@@ -50,7 +54,9 @@ public class ValidatorFactory implements IValidatorFactory {
 		validatorsForObjects.put(CreateLocationRequest.class, CreateLocationRequestValidator.class);
 		validatorsForObjects.put(UpdateLocationRequest.class, UpdateLocationRequestValidator.class);
 		
-		
+		validatorsForObjects.put(CreateManifestationRequest.class, CreateManifestationRequestValidator.class);
+		validatorsForObjects.put(UpdateManifestationRequest.class, UpdateManifestationRequestValidator.class);
+
 		validatorsForObjects.put(TicketOrder.class, TicketOrderValidator.class);
 		
 		validatorsForObjects.put(CreateBuyerRequest.class, CreateBuyerRequestValidator.class);

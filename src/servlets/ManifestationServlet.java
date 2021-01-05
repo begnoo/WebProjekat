@@ -69,6 +69,8 @@ public class ManifestationServlet extends AbstractServletBase {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeManifestationObjectResponse create(CreateManifestationRequest request) {
+		super.validateRequest(request);
+		
 		Manifestation manifestation = mapper.Map(new Manifestation(), request);
 		
 		Manifestation createdManifestation = manifestationService.create(manifestation);
@@ -81,6 +83,8 @@ public class ManifestationServlet extends AbstractServletBase {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeManifestationObjectResponse update(UpdateManifestationRequest request) {
+		super.validateRequest(request);
+
 		Manifestation manifestation = manifestationService.read(request.getId());
 		if(manifestation == null) {
 			return null;
