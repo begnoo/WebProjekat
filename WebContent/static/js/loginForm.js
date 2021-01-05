@@ -14,7 +14,7 @@ Vue.component('login-form', {
             </div>
             <div class="d-flex d-flex justify-content-between">
             <button v-on:click="login" class="btn btn-primary">Login</button>
-            <button class="btn btn-primary">Register</button>
+            <button v-on:click="redirectToRegister" class="btn btn-primary">Register</button>
             </div>
 			</form>
 		</div>
@@ -37,12 +37,19 @@ Vue.component('login-form', {
             {
                 'username': this.username,
                 'password': this.password
-            }).then(response => alert("Uspesno") )
+            }).then(response => 
+				window.localStorage.setObject('loggedUser', response.data)
+			  )
               .catch(function(error)
               {
   	              	alert(error.response.data.errorMessage);
               	
               });
+        },
+
+        redirectToRegister: function(event)
+        {
+            this.$router.push('/register');
         }
     }
 });
