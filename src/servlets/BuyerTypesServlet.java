@@ -20,17 +20,17 @@ import core.domain.models.BuyerType;
 import core.repository.IRepository;
 import core.requests.buyerTypes.CreateBuyerTypeRequest;
 import core.requests.buyerTypes.UpdateBuyerTypeRequest;
-import core.service.ICrudService;
+import core.service.IBuyerTypeService;
 import repository.DbContext;
 import repository.Repository;
-import services.CrudService;
+import services.BuyerTypeService;
 
 @Path("buyer-type")
 public class BuyerTypesServlet extends AbstractServletBase {
 	@Context
 	ServletContext servletContext;
 	
-	private ICrudService<BuyerType> buyerTypeService;
+	private IBuyerTypeService buyerTypeService;
 
 	public BuyerTypesServlet()
 	{
@@ -42,7 +42,7 @@ public class BuyerTypesServlet extends AbstractServletBase {
 	{
 		DbContext context = (DbContext) servletContext.getAttribute("DbContext");
 		IRepository<BuyerType> buyerTypeRepository = new Repository<BuyerType>(context, BuyerType.class);
-		buyerTypeService = new CrudService<BuyerType>(buyerTypeRepository);
+		buyerTypeService = new BuyerTypeService(buyerTypeRepository);
 	}
 	
 	@GET

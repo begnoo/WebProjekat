@@ -34,7 +34,7 @@ public class CommentService extends CrudService<Comment> implements ICommentServ
 		List<Ticket> buyersReservedTickets = buyer.getTickets().stream()
 				.filter(ticket -> ticket.getManifestationId().equals(comment.getManifestationId()))
 				.filter(ticket -> ticket.getStatus() == TicketStatus.Reserved)
-				.collect(Collectors.toList());
+				.collect(Collectors.toList()); // TODO: Mozda izmestiti ovu funkciju u ticket service?
 		
 		if (manifestation.getEventEndDate().isAfter(LocalDateTime.now()) || buyersReservedTickets.isEmpty()) {
 			System.out.println("Count: " + buyersReservedTickets.size());

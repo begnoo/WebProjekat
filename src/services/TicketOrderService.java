@@ -1,5 +1,6 @@
 package services;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class TicketOrderService implements ITicketOrderService {
 		Buyer buyer = (Buyer) userRepository.read(ticketOrder.getBuyerId());
 		
 		Manifestation manifestation = manifestationRepository.read(ticketOrder.getManifestationId());
-		if(manifestation == null) {
+		if(manifestation == null || manifestation.getEventDate().isBefore(LocalDateTime.now())) {
 			return tickets;
 		}
 		
@@ -76,6 +77,7 @@ public class TicketOrderService implements ITicketOrderService {
 	public int getPriceOfTicketWithDiscount(int price, Buyer buyer) {
 		double discount = (100.0 - buyer.getType().getDiscount()) / 100;
 		int priceWithDiscount = (int) (price * discount);
+		
 		return priceWithDiscount;
 	}
 }
