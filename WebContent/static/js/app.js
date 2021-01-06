@@ -1,6 +1,9 @@
 const Login = { template: "<login-form></login-form>" };
 const Register = { template: "<register-form></register-form>" };
 const LocationForm = { template: "<location-form></location-form>" };
+const ManifestationForm = {
+    template: "<manifestation-form></manifestation-form>",
+};
 const Users = { template: "<users-table></users-table>" };
 
 const router = new VueRouter({
@@ -9,7 +12,8 @@ const router = new VueRouter({
         { path: "/login", component: Login },
         { path: "/register", component: Register },
         { path: "/add-location", component: LocationForm },
-        { path: "/users", component: Users }
+        { path: "/add-manifestation", component: ManifestationForm },
+        { path: "/users", component: Users },
     ],
 });
 
