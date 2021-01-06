@@ -53,11 +53,10 @@ Vue.component("manifestation-form", {
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="typeDataField">Type:</label>
-                        <input list="typesDataList" class="form-control" id="typeDataField">
-                        <datalist id="typesDataList">
-                            <option v-for="type in types" :key="type" :data-value="type">{{type}}</option>
-                        </datalist>
+                        <label for="typeDataSelect">Type:</label>
+                        <select id="typeDataSelect" class="form-control" v-model="type">
+                            <option v-for="type in types" :key="type" :id="type">{{type}}</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="locationField">Location:</label>
@@ -95,7 +94,7 @@ Vue.component("manifestation-form", {
             event.preventDefault();
             console.log(this.locationId);
             axios
-                .post("/WebProjekat/rest/manifesations", {
+                .post("/WebProjekat/rest/manifestations", {
                     name: this.name,
                     type: this.type,
                     seats: this.seats,
@@ -114,8 +113,8 @@ Vue.component("manifestation-form", {
                     alert(error.response.data.errorMessage);
                 });
         },
-        updateLocationId: function (locationId) {
-            this.locationId = locationId;
+        updateLocationId: function (location) {
+            this.locationId = location.id;
         },
     },
 });

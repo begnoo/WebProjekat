@@ -1,18 +1,35 @@
 Vue.component("location-combo-box", {
     template: `
-    <div>
-        <input ref="location-input" class="form-control" id="locationInput" v-model="locationFilter" v-on:change="filterLocations">
-        <select ref="location-select" name="locationSelect" id="locationSelect">
-            <option v-for="location in locationsToShow" :key="location.id" :id="location.id">{{getLocationString(location)}}</option>
-        </select>
+    <div class="dropdown">
+        <input v-if="Object.keys(selectedLocation).length === 0" 
+                ref="locationInput" 
+                class="form-control" 
+                id="locationInput" 
+                v-model="locationFilter" 
+                v-on:change="filterLocations"
+                autocomplete="off">
+        
+        <div v-else v-on:click="resetLocation" class="dropdown-selected">
+            <input :value="getLocationString(selectedLocation)" class="form-control" disabled>
+        </div>
+        <div v-show="locationFilter && !locationSelected" class="dropdown-list">
+            <div class="dropdown-item"
+                v-on:click="selectLocation(location)"
+                v-for="location in locationsToShow" 
+                :key="location.id" 
+                :id="location.id"
+                >{{getLocationString(location)}}
+            </div>
+        </div>
     </div>
     `,
     data: function () {
         return {
             locations: null,
             locationsToShow: null,
-            selectedLocation: null,
+            selectedLocation: {},
             locationFilter: null,
+            locationSelected: false,
         };
     },
 
@@ -34,10 +51,10 @@ Vue.component("location-combo-box", {
                     console.log(error);
                 });
         },
-        getLocationString({ address }) {
+        getLocationString: function ({ address }) {
             return `${address.street} ${address.houseNumber}, ${address.place} ${address.postalCode}`;
         },
-        filterLocations() {
+        filterLocations: function () {
             if (!this.locationFilter) {
                 this.locationsToShow = this.locations;
             } else {
@@ -48,8 +65,17 @@ Vue.component("location-combo-box", {
                 );
             }
         },
-        emitLocationValueChanged: function (event) {
-            this.$emit("location-value-change", coordinates);
+        selectLocation: function (location) {
+            this.selectedLocation = location;
+            this.inputValue = "";
+            this.locationSelected = true;
+            this.$emit("location-value-change", this.selectedLocation);
+        },
+        resetLocation: function () {
+            this.selectedLocation = {};
+            this.locationSelected = false;
+            //this.$nextTick(() => this.$refs.locationInput.focus());
+            this.$emit("location-value-change", this.selectedLocation);
         },
     },
     mounted: function () {
