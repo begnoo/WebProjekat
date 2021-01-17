@@ -21,12 +21,15 @@ public class TicketsSearchParamethers {
 	@JsonDeserialize(using = JsonDateDeserializer.class)
 	private LocalDateTime dateTo;
 
+	private String type;
+	private String status;
+
 	public TicketsSearchParamethers() {
 		super();
 	}
 
 	public TicketsSearchParamethers(UUID buyerId, String manifestationName, int priceFrom, int priceTo,
-			LocalDateTime dateFrom, LocalDateTime dateTo) {
+			LocalDateTime dateFrom, LocalDateTime dateTo, String type, String status) {
 		super();
 		this.buyerId = buyerId;
 		this.manifestationName = manifestationName;
@@ -34,6 +37,8 @@ public class TicketsSearchParamethers {
 		this.priceTo = priceTo;
 		this.dateFrom = dateFrom;
 		this.dateTo = dateTo;
+		this.type = type;
+		this.status = status;
 	}
 
 	public UUID getBuyerId() {
@@ -82,6 +87,22 @@ public class TicketsSearchParamethers {
 
 	public void setDateTo(LocalDateTime dateTo) {
 		this.dateTo = dateTo;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 }

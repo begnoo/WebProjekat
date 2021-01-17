@@ -5,15 +5,18 @@ public class UsersSearchParamethers {
 	private String surname;
 	private String username;
 
+	private String role;
+
 	public UsersSearchParamethers() {
 		super();
 	}
 
-	public UsersSearchParamethers(String name, String surname, String username) {
+	public UsersSearchParamethers(String name, String surname, String username, String role) {
 		super();
 		this.name = name;
 		this.surname = surname;
 		this.username = username;
+		this.role = role;
 	}
 
 	public String getName() {
@@ -38,6 +41,14 @@ public class UsersSearchParamethers {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 }

@@ -13,5 +13,8 @@ public class ManifestationsSearchParamethersValidator extends AbstractObjectVali
 		
 		ruleFor(validatedObject.getCity()).notNull()
 										  .supplyErrorMessage("City can not be null.");
+		
+		ruleFor(validatedObject.getType()).notNull()
+							   .supplyErrorMessage("Manifestation type can not be null.");
 	}
 }

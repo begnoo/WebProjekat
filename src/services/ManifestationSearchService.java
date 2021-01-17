@@ -23,7 +23,9 @@ public class ManifestationSearchService implements IAdvanceSearchService<Manifes
 				.filter(manifestation -> searchParamethers.getDateTo() == null || manifestation.getEventDate().compareTo(searchParamethers.getDateTo()) <= 0)
 				.filter(manifestation -> manifestation.getLocation().getAddress().getPlace().toLowerCase().contains(searchParamethers.getCity().toLowerCase()))
 				.filter(manifestation -> manifestation.getRegularTicketPrice() >= searchParamethers.getPriceFrom())
-				.filter(manifestation -> manifestation.getRegularTicketPrice() <= searchParamethers.getPriceTo());
+				.filter(manifestation -> manifestation.getRegularTicketPrice() <= searchParamethers.getPriceTo())
+				.filter(manifestation -> searchParamethers.getType().isBlank() || manifestation.getType().toString().equals(searchParamethers.getType()))
+				.filter(manifestation -> !searchParamethers.isOnlyNotSolved() || manifestation.getSeats() != 0);
 		
 		return stream.collect();
 	}

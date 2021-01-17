@@ -22,8 +22,9 @@ public class UsersSearchService implements IAdvanceSearchService<User, UsersSear
 		IDbSetStream<User> stream = repository.getStream()
 				.filter(user -> user.getName().toLowerCase().contains(searchParamethers.getName().toLowerCase()))
 				.filter(user -> user.getSurname().toLowerCase().contains(searchParamethers.getSurname().toLowerCase()))
-				.filter(user -> user.getUsername().toLowerCase().contains(searchParamethers.getUsername().toLowerCase()));
-
+				.filter(user -> user.getUsername().toLowerCase().contains(searchParamethers.getUsername().toLowerCase()))
+				.filter(user -> searchParamethers.getRole().isBlank() || user.getRole().toString().equals(searchParamethers.getRole()));
+		
 		return stream.collect();
 	}
 

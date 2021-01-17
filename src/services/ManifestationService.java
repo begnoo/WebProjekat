@@ -5,12 +5,9 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import core.domain.dto.ManifestationsSearchParamethers;
 import core.domain.models.Location;
 import core.domain.models.Manifestation;
-import core.repository.IDbSetStream;
 import core.repository.IRepository;
-import core.service.IAdvanceSearchService;
 import core.service.IManifestationService;
 
 public class ManifestationService extends CrudService<Manifestation> implements IManifestationService {

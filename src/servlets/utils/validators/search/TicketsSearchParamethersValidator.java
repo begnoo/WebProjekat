@@ -13,5 +13,11 @@ public class TicketsSearchParamethersValidator extends AbstractObjectValidator<T
 		
 		ruleFor(validatedObject.getManifestationName()).notNull()
 													   .supplyErrorMessage("Manifestation name can not be null.");
+		
+		ruleFor(validatedObject.getType()).notNull()
+										  .supplyErrorMessage("Ticket type can not be null.");
+		
+		ruleFor(validatedObject.getStatus()).notNull()
+		  									.supplyErrorMessage("Ticket status can not be null.");
 	}
 }

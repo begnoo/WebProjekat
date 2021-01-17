@@ -25,7 +25,9 @@ public class TicketsSearchService implements IAdvanceSearchService<Ticket, Ticke
 				.filter(ticket -> searchParamethers.getDateFrom() == null || ticket.getManifestation().getEventDate().compareTo(searchParamethers.getDateFrom()) >= 0)
 				.filter(ticket -> searchParamethers.getDateTo() == null || ticket.getManifestation().getEventDate().compareTo(searchParamethers.getDateTo()) <= 0)
 				.filter(ticket -> ticket.getPrice() >= searchParamethers.getPriceFrom())
-				.filter(ticket -> ticket.getPrice() <= searchParamethers.getPriceTo());
+				.filter(ticket -> ticket.getPrice() <= searchParamethers.getPriceTo())
+				.filter(ticket -> searchParamethers.getType().isBlank() || ticket.getType().toString().equals(searchParamethers.getType()))
+				.filter(ticket -> searchParamethers.getStatus().isBlank() || ticket.getStatus().toString().equals(searchParamethers.getStatus()));
 		
 		return stream.collect();
 	}

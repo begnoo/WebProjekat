@@ -14,5 +14,9 @@ public class UsersSearchParamethersValidator extends AbstractObjectValidator<Use
 		
 		ruleFor(validatedObject.getUsername()).notNull()
 		  									  .supplyErrorMessage("Username can not be null.");
+		
+		ruleFor(validatedObject.getRole()).notNull()
+										  .supplyErrorMessage("Role can not be null.");
+		
 	}
 }
