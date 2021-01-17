@@ -23,12 +23,15 @@ public class ManifestationsSearchParamethers {
 	private String type;
 	private boolean onlyNotSolved;
 
+	private String sortBy;
+	private String orderBy;
+	
 	public ManifestationsSearchParamethers() {
 		super();
 	}
 
 	public ManifestationsSearchParamethers(String name, LocalDateTime dateFrom, LocalDateTime dateTo, String city,
-			int priceFrom, int priceTo, String type, boolean onlyNotSolved) {
+			int priceFrom, int priceTo, String type, boolean onlyNotSolved, String sortBy, String orderBy) {
 		super();
 		this.name = name;
 		this.dateFrom = dateFrom;
@@ -38,6 +41,8 @@ public class ManifestationsSearchParamethers {
 		this.priceTo = priceTo;
 		this.type = type;
 		this.onlyNotSolved = onlyNotSolved;
+		this.sortBy = sortBy;
+		this.orderBy = orderBy;
 	}
 
 	public String getName() {
@@ -92,7 +97,7 @@ public class ManifestationsSearchParamethers {
 		return type;
 	}
 
-	public void setManifestationType(String type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 
@@ -102,6 +107,22 @@ public class ManifestationsSearchParamethers {
 
 	public void setOnlyNotSolved(boolean onlyNotSolved) {
 		this.onlyNotSolved = onlyNotSolved;
+	}
+
+	public String getSortBy() {
+		return sortBy;
+	}
+
+	public void setSortBy(String sortBy) {
+		this.sortBy = sortBy;
+	}
+
+	public String getOrderBy() {
+		return orderBy;
+	}
+
+	public void setOrderBy(String orderBy) {
+		this.orderBy = orderBy;
 	}
 
 }

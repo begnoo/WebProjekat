@@ -6,6 +6,7 @@ import core.domain.dto.ManifestationsSearchParamethers;
 import core.domain.models.Manifestation;
 import core.repository.IDbSetStream;
 import core.repository.IRepository;
+import core.repository.SortingOrder;
 import core.service.IAdvanceSearchService;
 
 public class ManifestationSearchService implements IAdvanceSearchService<Manifestation, ManifestationsSearchParamethers> {
@@ -26,6 +27,11 @@ public class ManifestationSearchService implements IAdvanceSearchService<Manifes
 				.filter(manifestation -> manifestation.getRegularTicketPrice() <= searchParamethers.getPriceTo())
 				.filter(manifestation -> searchParamethers.getType().isBlank() || manifestation.getType().toString().equals(searchParamethers.getType()))
 				.filter(manifestation -> !searchParamethers.isOnlyNotSolved() || manifestation.getSeats() != 0);
+		
+		if(!searchParamethers.getSortBy().isBlank())
+		{
+			stream = stream.sortByAttribute(searchParamethers.getSortBy(), SortingOrder.valueOf(searchParamethers.getOrderBy()));
+		}
 		
 		return stream.collect();
 	}

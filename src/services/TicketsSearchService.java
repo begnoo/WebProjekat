@@ -6,6 +6,7 @@ import core.domain.dto.TicketsSearchParamethers;
 import core.domain.models.Ticket;
 import core.repository.IDbSetStream;
 import core.repository.IRepository;
+import core.repository.SortingOrder;
 import core.service.IAdvanceSearchService;
 
 public class TicketsSearchService implements IAdvanceSearchService<Ticket, TicketsSearchParamethers> {
@@ -28,6 +29,11 @@ public class TicketsSearchService implements IAdvanceSearchService<Ticket, Ticke
 				.filter(ticket -> ticket.getPrice() <= searchParamethers.getPriceTo())
 				.filter(ticket -> searchParamethers.getType().isBlank() || ticket.getType().toString().equals(searchParamethers.getType()))
 				.filter(ticket -> searchParamethers.getStatus().isBlank() || ticket.getStatus().toString().equals(searchParamethers.getStatus()));
+		
+		if(!searchParamethers.getSortBy().isBlank())
+		{
+			stream = stream.sortByAttribute(searchParamethers.getSortBy(), SortingOrder.valueOf(searchParamethers.getOrderBy()));
+		}
 		
 		return stream.collect();
 	}

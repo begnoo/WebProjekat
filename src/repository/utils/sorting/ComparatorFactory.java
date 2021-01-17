@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 
 import core.domain.models.Location;
+import core.domain.models.Manifestation;
 import core.repository.IComparatorFactory;
 import core.repository.SortingOrder;
 
@@ -19,6 +20,7 @@ public class ComparatorFactory implements IComparatorFactory {
 		this.comparatorClasses.put(String.class, StringComparator.class);
 		this.comparatorClasses.put(LocalDateTime.class, DateTimeComparator.class);
 		this.comparatorClasses.put(Location.class, LocationComparator.class);
+		this.comparatorClasses.put(Manifestation.class, ManifestationComparator.class);
 	}
 	
 	

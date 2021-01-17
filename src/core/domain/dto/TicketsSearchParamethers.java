@@ -24,12 +24,15 @@ public class TicketsSearchParamethers {
 	private String type;
 	private String status;
 
+	private String sortBy;
+	private String orderBy;
+
 	public TicketsSearchParamethers() {
 		super();
 	}
 
 	public TicketsSearchParamethers(UUID buyerId, String manifestationName, int priceFrom, int priceTo,
-			LocalDateTime dateFrom, LocalDateTime dateTo, String type, String status) {
+			LocalDateTime dateFrom, LocalDateTime dateTo, String type, String status, String sortBy, String orderBy) {
 		super();
 		this.buyerId = buyerId;
 		this.manifestationName = manifestationName;
@@ -39,6 +42,8 @@ public class TicketsSearchParamethers {
 		this.dateTo = dateTo;
 		this.type = type;
 		this.status = status;
+		this.sortBy = sortBy;
+		this.orderBy = orderBy;
 	}
 
 	public UUID getBuyerId() {
@@ -103,6 +108,22 @@ public class TicketsSearchParamethers {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getSortBy() {
+		return sortBy;
+	}
+
+	public void setSortBy(String sortBy) {
+		this.sortBy = sortBy;
+	}
+
+	public String getOrderBy() {
+		return orderBy;
+	}
+
+	public void setOrderBy(String orderBy) {
+		this.orderBy = orderBy;
 	}
 
 }

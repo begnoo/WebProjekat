@@ -70,8 +70,8 @@ public class DbSetStream<T extends BaseEntity> implements IDbSetStream<T> {
 				@Override
 				public int compare(T o1, T o2) {
 					try {
-						Field attributeForSorting = classType.getDeclaredField(attributeName);
-						Method getterForAttribute = classType.getDeclaredMethod(getSetterNameForField(attributeName));
+						Field attributeForSorting = getFieldFromClass(attributeName);
+						Method getterForAttribute = getMethodFromClass(getSetterNameForField(attributeName));
 						Class<?> attributeType = attributeForSorting.getType();
 						Object firstValue = getterForAttribute.invoke(o1);
 						Object secondValue = getterForAttribute.invoke(o2);
@@ -81,6 +81,7 @@ public class DbSetStream<T extends BaseEntity> implements IDbSetStream<T> {
 						
 						return comparator.compare(firstValue, secondValue);
 					} catch (Exception e) {
+						System.out.println(e.getMessage());
 						return 0;
 					}
 									}
@@ -88,6 +89,44 @@ public class DbSetStream<T extends BaseEntity> implements IDbSetStream<T> {
 				private String getSetterNameForField(String fieldName)
 				{
 					return "get" + Character.toUpperCase(fieldName.charAt(0)) + fieldName.substring(1);
+				}
+				
+				private Field getFieldFromClass(String fieldName)
+				{
+					Class<?> currentClass = classType;
+					do
+					{
+						for(Field field : currentClass.getDeclaredFields())
+						{
+							if(field.getName().toLowerCase().equals(fieldName.toLowerCase()))
+							{
+								return field;
+							}
+						}
+					
+						currentClass = currentClass.getSuperclass();
+					} while(currentClass != Object.class);
+					
+					return null;
+				}
+				
+				private Method getMethodFromClass(String methodName)
+				{
+					Class<?> currentClass = classType;
+					do
+					{
+						for(Method method : currentClass.getDeclaredMethods())
+						{
+							if(method.getName().equals(methodName))
+							{
+								return method;
+							}
+						}
+					
+						currentClass = currentClass.getSuperclass();
+					} while(currentClass != Object.class);
+					
+					return null;
 				}
 			
 			}

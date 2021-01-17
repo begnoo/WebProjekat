@@ -6,6 +6,7 @@ import core.domain.dto.UsersSearchParamethers;
 import core.domain.models.User;
 import core.repository.IDbSetStream;
 import core.repository.IRepository;
+import core.repository.SortingOrder;
 import core.service.IAdvanceSearchService;
 
 public class UsersSearchService implements IAdvanceSearchService<User, UsersSearchParamethers> {
@@ -24,6 +25,11 @@ public class UsersSearchService implements IAdvanceSearchService<User, UsersSear
 				.filter(user -> user.getSurname().toLowerCase().contains(searchParamethers.getSurname().toLowerCase()))
 				.filter(user -> user.getUsername().toLowerCase().contains(searchParamethers.getUsername().toLowerCase()))
 				.filter(user -> searchParamethers.getRole().isBlank() || user.getRole().toString().equals(searchParamethers.getRole()));
+		
+		if(!searchParamethers.getSortBy().isBlank())
+		{
+			stream = stream.sortByAttribute(searchParamethers.getSortBy(), SortingOrder.valueOf(searchParamethers.getOrderBy()));
+		}
 		
 		return stream.collect();
 	}
