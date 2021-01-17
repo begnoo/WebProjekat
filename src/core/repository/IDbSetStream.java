@@ -11,5 +11,7 @@ public interface IDbSetStream<T extends BaseEntity> {
 	
 	IDbSetStream<T> sort(Comparator<T> comparator);
 	
+	IDbSetStream<T> sortByAttribute(String attributeName, SortingOrder order);
+	
 	List<T> collect();
 }

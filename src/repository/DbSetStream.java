@@ -1,5 +1,7 @@
 package repository;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -9,19 +11,26 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import core.domain.models.BaseEntity;
+import core.repository.IComparatorFactory;
 import core.repository.IDbSetStream;
+import core.repository.SortingOrder;
+import repository.utils.sorting.ComparatorFactory;
 
 public class DbSetStream<T extends BaseEntity> implements IDbSetStream<T> {
 
 	private List<T> entities;
 	private List<Predicate<T>> filters;
 	private List<Comparator<T>> comparators;
+	private IComparatorFactory comparatorFactory;
+	private Class<T> classType;
 	
-	public DbSetStream(List<T> entities)
+	public DbSetStream(List<T> entities, Class<T> classType)
 	{
 		this.entities = entities;
+		this.classType = classType;
 		this.filters = new ArrayList<Predicate<T>>();
 		this.comparators = new ArrayList<Comparator<T>>();
+		this.comparatorFactory = new ComparatorFactory();
 	}
 	
 	@Override
@@ -43,14 +52,48 @@ public class DbSetStream<T extends BaseEntity> implements IDbSetStream<T> {
 	public List<T> collect() {
 		Stream<T> stream = entities.stream();
 		
+		stream = stream.filter(Arrays.stream(filters.toArray(new Predicate[filters.size()])).reduce(filter -> true, Predicate::and));
+
 		for(Comparator<T> comparator : comparators)
 		{
 			stream = stream.sorted(comparator);
-		}
-		
-		stream = stream.filter(Arrays.stream(filters.toArray(new Predicate[filters.size()])).reduce(filter -> true, Predicate::and));
+		}		
 		
 		return stream.collect(Collectors.toList());
+	}
+
+	@Override
+	public IDbSetStream<T> sortByAttribute(String attributeName, SortingOrder order) {
+		this.comparators.add(
+			new Comparator<T>() {
+
+				@Override
+				public int compare(T o1, T o2) {
+					try {
+						Field attributeForSorting = classType.getDeclaredField(attributeName);
+						Method getterForAttribute = classType.getDeclaredMethod(getSetterNameForField(attributeName));
+						Class<?> attributeType = attributeForSorting.getType();
+						Object firstValue = getterForAttribute.invoke(o1);
+						Object secondValue = getterForAttribute.invoke(o2);
+						
+						@SuppressWarnings("unchecked")
+						Comparator<Object> comparator = (Comparator<Object>) comparatorFactory.getComparator(attributeType, order);
+						
+						return comparator.compare(firstValue, secondValue);
+					} catch (Exception e) {
+						return 0;
+					}
+									}
+				
+				private String getSetterNameForField(String fieldName)
+				{
+					return "get" + Character.toUpperCase(fieldName.charAt(0)) + fieldName.substring(1);
+				}
+			
+			}
+		);
+		
+		return this;
 	}
 
 }

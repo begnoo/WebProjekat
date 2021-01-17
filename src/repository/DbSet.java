@@ -101,7 +101,7 @@ public class DbSet<T extends BaseEntity> implements IDbSet<T> {
 
 	@Override
 	public IDbSetStream<T> getStream() {
-		return new DbSetStream<T>(read());
+		return new DbSetStream<T>(read(), classType);
 	}
 
 	@Override
