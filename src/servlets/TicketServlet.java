@@ -19,6 +19,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import core.domain.dto.TicketOrder;
+import core.domain.dto.TicketsSearchParamethers;
 import core.domain.models.BuyerType;
 import core.domain.models.Location;
 import core.domain.models.Manifestation;
@@ -26,6 +27,7 @@ import core.domain.models.Ticket;
 import core.domain.models.User;
 import core.repository.IRepository;
 import core.responses.tickets.WholeTicketObjectResponse;
+import core.service.IAdvanceSearchService;
 import core.service.IBuyerTypeService;
 import core.service.IManifestationService;
 import core.service.ITicketOrderService;
@@ -40,6 +42,7 @@ import services.BuyerTypeService;
 import services.ManifestationService;
 import services.TicketOrderService;
 import services.TicketService;
+import services.TicketsSearchService;
 import services.UserService;
 
 @Path("/")
@@ -49,6 +52,7 @@ public class TicketServlet extends AbstractServletBase {
 
 	private ITicketService ticketService;
 	private ITicketOrderService ticketOrderService;
+	private IAdvanceSearchService<Ticket, TicketsSearchParamethers> searchService;
 
 	public TicketServlet()
 	{
@@ -69,6 +73,7 @@ public class TicketServlet extends AbstractServletBase {
 		IManifestationService manifestationService = new ManifestationService(manifestationRepository, locationRepository);
 		ticketService = new TicketService(ticketRepository, userService, manifestationService);
 		ticketOrderService = new TicketOrderService(ticketService, userRepository, manifestationRepository);
+		searchService = new TicketsSearchService(ticketRepository);
 	}
 
 	@GET
@@ -129,6 +134,15 @@ public class TicketServlet extends AbstractServletBase {
 				.collect(Collectors.toList());
 		
 		return wholeTicketObjectsOfBuyers;
+	}
+	
+	@POST
+	@Path("tickets/advance-search")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Ticket> advanceSearch(TicketsSearchParamethers searchParamethers) {
+		super.validateRequest(searchParamethers);
+		
+		return searchService.search(searchParamethers);
 	}
 	
 	@POST

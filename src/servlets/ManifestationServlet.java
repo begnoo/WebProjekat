@@ -24,7 +24,7 @@ import core.repository.IRepository;
 import core.requests.manifestations.CreateManifestationRequest;
 import core.requests.manifestations.UpdateManifestationRequest;
 import core.responses.manifestations.WholeManifestationObjectResponse;
-import core.service.IAdvanceSearch;
+import core.service.IAdvanceSearchService;
 import core.service.IManifestationService;
 import repository.DbContext;
 import repository.ManifestationRepository;
@@ -38,7 +38,7 @@ public class ManifestationServlet extends AbstractServletBase {
 	ServletContext servletContext;
 
 	private IManifestationService manifestationService;
-	private IAdvanceSearch<Manifestation, ManifestationsSearchParamethers> searchService;
+	private IAdvanceSearchService<Manifestation, ManifestationsSearchParamethers> searchService;
 	public ManifestationServlet()
 	{
 		super();

@@ -19,6 +19,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import core.domain.dto.Page;
+import core.domain.dto.UsersSearchParamethers;
 import core.domain.enums.UserRole;
 import core.domain.models.Buyer;
 import core.domain.models.BuyerType;
@@ -33,6 +34,7 @@ import core.responses.users.WholeAdministratorObjectResponse;
 import core.responses.users.WholeBuyerObjectResponse;
 import core.responses.users.WholeSellerObjectResponse;
 import core.responses.users.WholeUserObjectResponseBase;
+import core.service.IAdvanceSearchService;
 import core.service.IBuyerTypeService;
 import core.service.IPaginationService;
 import core.service.IUserService;
@@ -43,6 +45,7 @@ import repository.UserRepository;
 import services.BuyerTypeService;
 import services.PaginationService;
 import services.UserService;
+import services.UsersSearchService;
 
 @Path("/")
 public class UsersServlet extends AbstractServletBase {
@@ -52,7 +55,8 @@ public class UsersServlet extends AbstractServletBase {
 	
 	private IUserService userService;
 	private IPaginationService<User> paginationService;
-	
+	private IAdvanceSearchService<User, UsersSearchParamethers> searchService;
+
 	public UsersServlet()
 	{
 		super();
@@ -67,9 +71,9 @@ public class UsersServlet extends AbstractServletBase {
 		
 		IBuyerTypeService buyerTypeService = new BuyerTypeService(buyerTypeRepository);
 		
-		userService = new UserService(userRepository, buyerTypeService);
-		
+		userService = new UserService(userRepository, buyerTypeService);	
 		paginationService = new PaginationService<User>(userRepository);
+		searchService = new UsersSearchService(userRepository);
 	}
 	
 	@GET
@@ -112,6 +116,15 @@ public class UsersServlet extends AbstractServletBase {
 		}
 				
 		return generateUserObjectResponse(user);
+	}
+	
+	@POST
+	@Path("users/advance-search")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<User> advanceSearch(UsersSearchParamethers searchParamethers) {
+		super.validateRequest(searchParamethers);
+		
+		return searchService.search(searchParamethers);
 	}
 	
 	@POST

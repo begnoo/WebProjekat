@@ -2,6 +2,6 @@ package core.service;
 
 import java.util.List;
 
-public interface IAdvanceSearch<T, R> {
+public interface IAdvanceSearchService<T, R> {
 	List<T> search(R searchParamethers);
 }
