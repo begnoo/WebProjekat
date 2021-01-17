@@ -16,5 +16,7 @@ public interface IDbSet<T extends BaseEntity> {
 	
 	void save();
 	
-	Class<?> getEntityClassType(); 
+	IDbSetStream<T> getStream();
+	
+	Class<?> getEntityClassType();
 }

@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import core.domain.models.BaseEntity;
 import core.repository.IDbSet;
+import core.repository.IDbSetStream;
 import core.repository.IEntitiesDeserializator;
 import core.repository.IEntitiesSerializator;
 import repository.utils.deserializators.DefaultEntitiesDeserializator;
@@ -99,6 +100,11 @@ public class DbSet<T extends BaseEntity> implements IDbSet<T> {
 	}
 
 	@Override
+	public IDbSetStream<T> getStream() {
+		return new DbSetStream<T>(read());
+	}
+
+	@Override
 	public Class<?> getEntityClassType() {
 		return classType;
 	}
@@ -127,4 +133,5 @@ public class DbSet<T extends BaseEntity> implements IDbSet<T> {
 	{
 		return getDbSetName() + ".json";
 	}
+
 }

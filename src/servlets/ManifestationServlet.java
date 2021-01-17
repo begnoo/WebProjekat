@@ -17,16 +17,19 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import core.domain.dto.ManifestationsSearchParamethers;
 import core.domain.models.Location;
 import core.domain.models.Manifestation;
 import core.repository.IRepository;
 import core.requests.manifestations.CreateManifestationRequest;
 import core.requests.manifestations.UpdateManifestationRequest;
 import core.responses.manifestations.WholeManifestationObjectResponse;
+import core.service.IAdvanceSearch;
 import core.service.IManifestationService;
 import repository.DbContext;
 import repository.ManifestationRepository;
 import repository.Repository;
+import services.ManifestationSearchService;
 import services.ManifestationService;
 
 @Path("/")
@@ -35,7 +38,7 @@ public class ManifestationServlet extends AbstractServletBase {
 	ServletContext servletContext;
 
 	private IManifestationService manifestationService;
-
+	private IAdvanceSearch<Manifestation, ManifestationsSearchParamethers> searchService;
 	public ManifestationServlet()
 	{
 		super();
@@ -47,6 +50,7 @@ public class ManifestationServlet extends AbstractServletBase {
 		IRepository<Manifestation> manifestationRepository = new ManifestationRepository(context);
 		IRepository<Location> locationRepository = new Repository<Location>(context, Location.class);
 		manifestationService = new ManifestationService(manifestationRepository, locationRepository);
+		searchService = new ManifestationSearchService(manifestationRepository);
 	}
 
 	@GET
@@ -69,6 +73,15 @@ public class ManifestationServlet extends AbstractServletBase {
 		return generateManifestationObjectResponse(manifestation);
 	}
 
+	@POST
+	@Path("manifestations/advance-search")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Manifestation> advanceSearch(ManifestationsSearchParamethers searchParamethers) {
+		super.validateRequest(searchParamethers);
+		
+		return searchService.search(searchParamethers);
+	}
+	
 	@POST
 	@Path("manifestations/")
 	@Consumes(MediaType.APPLICATION_JSON)

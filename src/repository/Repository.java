@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import core.domain.models.BaseEntity;
+import core.repository.IDbSetStream;
 import core.repository.IRepository;
 
 public class Repository<T extends BaseEntity> implements IRepository<T>{
@@ -53,6 +54,11 @@ public class Repository<T extends BaseEntity> implements IRepository<T>{
 		}
 		
 		return isDeleted;
+	}
+
+	@Override
+	public IDbSetStream<T> getStream() {
+		return entities.getStream();
 	}
 
 }

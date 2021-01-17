@@ -15,4 +15,6 @@ public interface IRepository<T extends BaseEntity> {
 	T update(T entityForUpdate);
 	
 	boolean delete(UUID entityID);
+	
+	IDbSetStream<T> getStream();
 }

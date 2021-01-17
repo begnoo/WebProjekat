@@ -3,6 +3,7 @@ package servlets.utils.validators;
 import java.util.HashMap;
 
 import core.domain.dto.Credidentals;
+import core.domain.dto.ManifestationsSearchParamethers;
 import core.domain.dto.TicketOrder;
 import core.requests.buyerTypes.CreateBuyerTypeRequest;
 import core.requests.buyerTypes.UpdateBuyerTypeRequest;
@@ -29,6 +30,7 @@ import servlets.utils.validators.locations.CreateLocationRequestValidator;
 import servlets.utils.validators.locations.UpdateLocationRequestValidator;
 import servlets.utils.validators.manifestations.CreateManifestationRequestValidator;
 import servlets.utils.validators.manifestations.UpdateManifestationRequestValidator;
+import servlets.utils.validators.search.ManifestationSearchParamethersValidator;
 import servlets.utils.validators.tickets.TicketOrderValidator;
 import servlets.utils.validators.users.ChangePasswordRequestValidator;
 import servlets.utils.validators.users.CreateBuyerRequestValidator;
@@ -63,6 +65,8 @@ public class ValidatorFactory implements IValidatorFactory {
 		validatorsForObjects.put(CreateSellerRequest.class, CreateSellerRequestValidator.class);
 		validatorsForObjects.put(UpdateUserRequest.class, UpdateUserRequestValidator.class);
 		validatorsForObjects.put(ChangePasswordRequest.class, ChangePasswordRequestValidator.class);
+		
+		validatorsForObjects.put(ManifestationsSearchParamethers.class, ManifestationSearchParamethersValidator.class);
 		
 	}
 	
