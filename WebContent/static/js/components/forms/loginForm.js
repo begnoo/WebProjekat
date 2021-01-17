@@ -37,15 +37,19 @@ Vue.component('login-form', {
             {
                 'username': this.username,
                 'password': this.password
-            }).then(response => 
-				window.localStorage.setObject('loggedUser', response.data)
-			  )
+            }).then(response => this.onLoginSuccess(response))
               .catch(function(error)
               {
   	              	alert(error.response.data.errorMessage);
               	
               });
         },
+
+		onLoginSuccess: function(response){
+			window.localStorage.setObject('loggedUser', response.data)
+			store.state.userLoggedIn = true;
+			this.$router.replace("/")
+		},
 
         redirectToRegister: function(event)
         {

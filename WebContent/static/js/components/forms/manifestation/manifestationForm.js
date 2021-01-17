@@ -116,5 +116,8 @@ Vue.component("manifestation-form", {
         updateLocationId: function (location) {
             this.locationId = location.id;
         },
+        redirectToImageForm: function () {
+            this.$router.push("/add-manifestation-image");
+        },
     },
 });
