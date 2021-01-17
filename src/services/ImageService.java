@@ -30,7 +30,7 @@ public class ImageService implements IImageService {
 		}
 		
 		Manifestation manifestationForUpdate = manifestationRepository.read(base64ImageForManifestaion.getManifestationId());
-		String requestRootPath = "WebProjekat/rest/";
+		String requestRootPath = "../WebProjekat/rest/";
 		manifestationForUpdate.setImagePath(requestRootPath + imagePath);
 		manifestationRepository.update(manifestationForUpdate);
 		

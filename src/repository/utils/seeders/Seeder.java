@@ -101,16 +101,16 @@ public class Seeder {
 
 		Manifestation manifestation1 = new Manifestation("MF DOOM Memorial", ManifestationType.Concert, 5000,
 				LocalDateTime.now().minusHours(3), LocalDateTime.now().plusMinutes(100), 1000, true, location1.getId(), location1,
-				seller1.getId(), seller1, "WebProjekat/rest/images/doom.jpg");
+				seller1.getId(), seller1, "../WebProjekat/rest/images/doom.jpg");
 		Manifestation manifestation2 = new Manifestation("Bajaga i instuktori, previse godina",
 				ManifestationType.Concert, 500, LocalDateTime.now().minusHours(1), LocalDateTime.now().plusMinutes(20), 400, true,
-				location2.getId(), location2, seller2.getId(), seller2, "WebProjekat/rest/images/default.jpg");
+				location2.getId(), location2, seller2.getId(), seller2, "../WebProjekat/rest/images/default.jpg");
 		Manifestation manifestation3 = new Manifestation("Ujka Vanja", ManifestationType.Theater, 200,
 				LocalDateTime.now(), LocalDateTime.now().plusMinutes(300), 800, true, location4.getId(), location4,
-				seller2.getId(), seller2, "WebProjekat/rest/images/default.jpg");
+				seller2.getId(), seller2, "../WebProjekat/rest/images/default.jpg");
 		Manifestation manifestation4 = new Manifestation("Exit Festival", ManifestationType.Festival, 10000,
 				LocalDateTime.now().minusHours(33), LocalDateTime.now().plusMinutes(10), 1400, true, location3.getId(), location3,
-				seller3.getId(), seller3, "WebProjekat/rest/images/default.jpg");
+				seller3.getId(), seller3, "../WebProjekat/rest/images/default.jpg");
 
 		manifestationRepository.create(manifestation1);
 		manifestationRepository.create(manifestation2);

@@ -38,6 +38,7 @@ public class ManifestationService extends CrudService<Manifestation> implements 
 			return null;
 		}
 		
+		manifestation.setImagePath("../WebProjekat/rest/images/default.jpg");
 		manifestation.setStatus(false);
 		return repository.create(manifestation);
 	}

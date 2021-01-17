@@ -37,10 +37,10 @@ Vue.component("navbar", {
 			activeOptions: [],
 			defaultOptions: [],
 			buyerOptions: [],
-			sellerOptions: [],
-			adminOptions: [
+			sellerOptions: [				
 				{name : "ManifestationForm", path : "/add-manifestation"},
-				{name : "ManifestationFormImage", path : "/add-manifestation-image"},
+				{name : "ManifestationFormImage", path : "/add-manifestation-image"},],
+			adminOptions: [
 				{name : "LocationForm", path : "/add-location"},
 				{name : "Users", path : "/users"},
 			],
