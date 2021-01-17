@@ -7,19 +7,20 @@ Vue.component("manifestation-table", {
 				<div class="card-body">
 					<div class="container">
 					  <div class="row">
-					    <div class="col-sm align-self-center">
+					    <div class="col-sm-3 align-self-center">
 					    	<img class="img-thumbnail img-fluid" width=150 height=150 :src="manifestation.imagePath">
 					    </div>
-					    <div class="col-sm align-self-center">
-							{{getDateString(manifestation)}}
+					    <div class="col-sm-3 align-self-center">
+							{{getDateString(manifestation)[0]}} <br>
+							{{getDateString(manifestation)[1]}}
 					    </div>
-					    <div class="col-sm-6 align-self-center">
+					    <div class="col-sm-4 align-self-center">
 					      	<b>{{manifestation.name}}</b> <br>
 							{{manifestation.type}} <br>
 							Regular ticket price: {{manifestation.regularTicketPrice}} rsd
 					    </div>
-						<div class="col-sm text-center align-self-center">
-					      <button type="button" class="btn btn-primary">Tickets</button>
+						<div class="col-sm-1 text-center align-self-center">
+					      <button v-on:click="redirectToInfo(manifestation.id)" type="button" class="btn btn-primary">Tickets</button>
 					    </div>
 					  </div>
 					</div>
@@ -62,11 +63,11 @@ Vue.component("manifestation-table", {
 			const eventDateParts = eventDate.split(' ');
 			const eventEndDateParts = eventEndDate.split(' ');
 			if(eventDateParts[0] == eventEndDateParts[0]){
-				return `${eventDateParts[0]} ${eventDateParts[1]} - ${eventDateParts[1]}`;
+				return [eventDateParts[0], `${eventDateParts[1]} - ${eventEndDateParts[1]}`];
 			}
-			return `${eventDate} ${eventEndDate} `
+			return [`${eventDate}`, `${eventEndDate}`]
 		},
-		getNextPage(event){
+		getNextPage: function(event){
 			if(event != null){
 				event.preventDefault();
 			}
@@ -78,14 +79,18 @@ Vue.component("manifestation-table", {
 			}
 
 		},
-		getPreviousPage(){
+		getPreviousPage: function(){
 			event.preventDefault();
-			const begin = Math.max(0, this.manifestations.length - (this.numOfElements*this.currentPage));
-			const end = Math.max(0, this.numOfElements*(this.currentPage-1));
+			const begin = Math.max(0, this.manifestations.length - (this.numOfElements*(this.currentPage-1)));
+			const end = Math.max(0, this.numOfElements*(this.currentPage));
+			console.log(begin, end);
 			if(end > begin){
 				this.manifestationsToShow = this.manifestations.slice(begin, end);
 				--this.currentPage;
 			}
+		},
+		redirectToInfo: function(id){
+			this.$router.push("manifestation/" + id);
 		}
 		
 		

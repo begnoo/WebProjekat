@@ -6,7 +6,10 @@ const ManifestationImageForm = {
     template: "<manifestation-image-form></manifestation-image-form>",
 };
 const Users = { template: "<users-table></users-table>" };
-const HomePage = {template: "<home-page></home-page>"}
+const HomePage = {template: "<home-page></home-page>"};
+const ManifestationPage = {template: "<manifestation-page></manifestation-page>"};
+
+
 
 const router = new VueRouter({
     mode: "hash",
@@ -18,6 +21,8 @@ const router = new VueRouter({
         { path: "/add-manifestation-image", component: ManifestationImageForm },
         { path: "/users", component: Users },
 		{ path: "/", component: HomePage },
+		{ path: "/manifestation/:id", component: ManifestationPage },
+
     ],
 });
 

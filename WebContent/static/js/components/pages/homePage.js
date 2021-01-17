@@ -11,10 +11,5 @@ Vue.component("home-page", {
             </div>
         </div>
     </div>
-    `,
-	data : function(){
-		return {
-			nesto: "",
-		}
-	}
+    `
 });
