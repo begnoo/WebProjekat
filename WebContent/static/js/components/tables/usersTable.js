@@ -12,6 +12,8 @@ Vue.component('users-table',
 							<th scope="col">Username</th>
 							<th scope="col">Gender</th>
 							<th scope="col">Birthdate</th>
+							<th scope=""></th>
+							<th scope=""></th>
 					  </tr>
 				</thead>
 				<tbody>
@@ -26,6 +28,8 @@ Vue.component('users-table',
 							<td>{{ user.username }}</td>
 							<td>{{ user.gender }}</td>
 							<td>{{ user.birthdate }}</td>
+							<td>Edit</td>
+							<td>Delete</td>
 					  </tr>
 				</tbody>
 	      </table>
@@ -80,11 +84,12 @@ Vue.component('users-table',
     },
     
     methods: {
-    	loadPageOfUsers : function(page) {    		
-    		return axios.get('/WebProjekat/rest/users/page?number=' + page + "&size=" + this.pageSize)
+    	loadPageOfUsers : function(page, callback) {    		
+    		axios.get('/WebProjekat/rest/users/page?number=' + page + "&size=" + this.pageSize)
              	 .then(response =>
              	 {
-         	 		this.nextUsers = response.data
+         	 		this.nextUsers = response.data;
+         	 		callback();
          	 	});
     	},
     
@@ -97,7 +102,7 @@ Vue.component('users-table',
 			this.changePageFor(changeFor);
 		},
 		
-		changePageFor: async function(changeFor) {
+		changePageFor: function(changeFor) {
 			let nextPage = this.selectedPage;
 			
 			if(changeFor < 0 && this.selectedPage + changeFor >= 1) {
@@ -106,12 +111,14 @@ Vue.component('users-table',
 				nextPage += changeFor;
 			}
 			
-			await this.loadPageOfUsers(nextPage);
-			if(this.nextUsers.length > 0) {
-				this.users = this.nextUsers;
-				this.selectedPage = nextPage;
-				this.changePagesList();
-			}
+			this.loadPageOfUsers(nextPage, () =>
+			{
+				if(this.nextUsers.length > 0) {
+					this.users = this.nextUsers;
+					this.selectedPage = nextPage;
+					this.changePagesList();
+				}
+			});
 		},
 		
     	changePagesList: function() {
@@ -119,13 +126,12 @@ Vue.component('users-table',
 				this.pages = [this.selectedPage - 1, this.selectedPage, this.selectedPage + 1];
 			}
 		}
-		
-		
     },
 
-    mounted: async function() {
-    	await this.loadPageOfUsers(this.selectedPage);
-    	this.users = this.nextUsers;
+    mounted: function() {
+    	this.loadPageOfUsers(this.selectedPage, () =>
+    	{
+    		this.users = this.nextUsers;
+    	});
     }
-      
 });
