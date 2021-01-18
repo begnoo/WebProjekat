@@ -35,6 +35,15 @@
   "rating" : 5,
   "status" : "Approved"
 }, {
+  "id" : "ee65ab87-e5c8-4364-9bb1-b41465b119f6",
+  "createdAt" : "2021-01-18 21:32",
+  "active" : true,
+  "buyerId" : "a6dd063b-80e4-4cf5-8965-188f5140d59b",
+  "manifestationId" : "d75e6054-e8e9-4a49-bcd5-a29a7e2b20f9",
+  "text" : "Best BAJAGA ever!",
+  "rating" : 5,
+  "status" : "Approved"
+}, {
   "id" : "8c6c85bd-dc14-448b-aacc-975bd07aa5ac",
   "createdAt" : "2021-01-18 20:51",
   "active" : true,
