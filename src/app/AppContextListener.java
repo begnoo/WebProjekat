@@ -26,8 +26,8 @@ public class AppContextListener implements ServletContextListener{
 		
 		System.out.println("WebProjekat STARTED");
 		
-		Seeder seeder = new Seeder(dbContext);
-		seeder.run();
+		//Seeder seeder = new Seeder(dbContext);
+		//seeder.run();
 	}
 
 }

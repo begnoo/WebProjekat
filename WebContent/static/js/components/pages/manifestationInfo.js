@@ -19,6 +19,10 @@ Vue.component("manifestation-info", {
 					{{this.manifestation.location.address.street}} {{this.manifestation.location.address.houseNumber}} <br>
 					{{this.manifestation.location.address.place}}, {{this.manifestation.location.address.postalCode}}<br>
 				</p>
+				
+				<br/>
+		        <p v-on:click="redirectToInfo(manifestation.id)">Comment me</p>
+				
 			</div>
         </div>
 		<div class="row mt-3">
@@ -43,7 +47,11 @@ Vue.component("manifestation-info", {
 		},
 		getCoordinates: function(){
 			return [this.manifestation.location.longitude, this.manifestation.location.latitude];
-		}
+		},
+		redirectToInfo: function(id){
+			this.$router.push("../manifestations/" + id + "/comment");
+		} // removeLater
+		
 	},
 	
 
