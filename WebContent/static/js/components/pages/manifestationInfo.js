@@ -37,7 +37,7 @@ Vue.component("manifestation-info", {
 	methods: {
 		getEventStatus: function(){
 			const eventDate = moment(this.manifestation.eventDate, "YYYY-MM-DD hh:mm");
-			const eventEndDate = moment(this.manifestation.eventDate, "YYYY-MM-DD hh:mm");
+			const eventEndDate = moment(this.manifestation.eventEndDate, "YYYY-MM-DD hh:mm");
 			if(eventEndDate <= Date.now()){
 				return "EVENT ENDED";
 			}
