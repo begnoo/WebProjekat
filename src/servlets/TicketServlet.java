@@ -1,5 +1,6 @@
 package servlets;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -20,6 +21,7 @@ import javax.ws.rs.core.MediaType;
 
 import core.domain.dto.TicketOrder;
 import core.domain.dto.TicketsSearchParamethers;
+import core.domain.enums.TicketType;
 import core.domain.models.BuyerType;
 import core.domain.models.Location;
 import core.domain.models.Manifestation;
@@ -72,7 +74,7 @@ public class TicketServlet extends AbstractServletBase {
 		IUserService userService = new UserService(userRepository, buyerTypeService);
 		IManifestationService manifestationService = new ManifestationService(manifestationRepository, locationRepository);
 		ticketService = new TicketService(ticketRepository, userService, manifestationService);
-		ticketOrderService = new TicketOrderService(ticketService, userRepository, manifestationRepository);
+		ticketOrderService = new TicketOrderService(ticketService, userRepository, manifestationRepository, buyerTypeRepository);
 		searchService = new TicketsSearchService(ticketRepository);
 	}
 
@@ -134,6 +136,13 @@ public class TicketServlet extends AbstractServletBase {
 				.collect(Collectors.toList());
 		
 		return wholeTicketObjectsOfBuyers;
+	}
+	
+	@GET
+	@Path("tickets/buyer-type/{buyerTypeId}/prices/{price}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public HashMap<TicketType, Integer> getTicketPricesForBuyerType(@PathParam("buyerTypeId") UUID buyerTypeId, @PathParam("price") int regularPrice){
+		return ticketOrderService.getTicketPrices(regularPrice, buyerTypeId);
 	}
 	
 	@POST

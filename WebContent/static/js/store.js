@@ -1,5 +1,10 @@
 var store = {
 	state: {
-		userLoggedIn: false
+		userLoggedIn: false,
+		order: {
+			VIP: 0,
+			FanPit: 0,
+			Regular: 0,
+		},
 	},
 }
