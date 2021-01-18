@@ -12,7 +12,7 @@ Vue.component("location-form-map", {
         };
     },
 
-    props: ["coordinates"],
+    props: ["coordinates", "zoom", "moovable"],
     watch: {
         immediate: true,
         coordinates: function (newCoordinates, oldCoordinates) {
@@ -39,8 +39,14 @@ Vue.component("location-form-map", {
         },
         initMap: function () {
             this.markerFeature = new ol.Feature({
-                geometry: new ol.geom.Point(ol.proj.fromLonLat([-2, 53])),
+                geometry: new ol.geom.Point(ol.proj.fromLonLat(this.coordinates)),
             });
+
+			this.markerFeature.setStyle(new ol.style.Style({
+		    image: new ol.style.Icon({
+			  scale: 0.15,
+		      src: '../WebProjekat/rest/images/marker.png',
+		    })}));
 
             vectorLayer = new ol.layer.Vector({
                 source: new ol.source.Vector({
@@ -58,13 +64,18 @@ Vue.component("location-form-map", {
                 ],
 
                 view: new ol.View({
-                    zoom: 0,
-                    center: [0, 0],
+                    zoom: this.zoom,
+                    center: ol.proj.transform(
+	                    this.coordinates,
+	                    "EPSG:4326",
+	                    "EPSG:3857"
+               		),
                     constrainResolution: true,
                 }),
             });
-
-            this.map.on("singleclick", this.moveMarkerOnClick);
+			if(this.moovable){
+				this.map.on("singleclick", this.moveMarkerOnClick);
+			}
         },
         updateCoordinates: function (coordinates) {
             this.$emit("update-coordinates", coordinates);
