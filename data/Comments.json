@@ -1,0 +1,55 @@
+[ {
+  "id" : "fa7ef86e-5734-4b32-bcf7-04fd0211af2e",
+  "createdAt" : "2021-01-18 20:51",
+  "active" : true,
+  "buyerId" : "91f22a27-a30e-4130-9a05-477979a0117f",
+  "manifestationId" : "d75e6054-e8e9-4a49-bcd5-a29a7e2b20f9",
+  "text" : "The absoulte worst thing I have ever seen",
+  "rating" : 1,
+  "status" : "Refused"
+}, {
+  "id" : "9d98d506-ed09-43b7-83dd-4273cc2c2886",
+  "createdAt" : "2021-01-18 20:51",
+  "active" : true,
+  "buyerId" : "a6dd063b-80e4-4cf5-8965-188f5140d59b",
+  "manifestationId" : "d75e6054-e8e9-4a49-bcd5-a29a7e2b20f9",
+  "text" : "It was pretty good",
+  "rating" : 1,
+  "status" : "Approved"
+}, {
+  "id" : "4dd61f20-3a48-49ab-bde1-65ee4e5679ba",
+  "createdAt" : "2021-01-18 20:51",
+  "active" : true,
+  "buyerId" : "91f22a27-a30e-4130-9a05-477979a0117f",
+  "manifestationId" : "cc6ff6e6-495c-4602-a4d0-010c21002523",
+  "text" : "It was pretty good",
+  "rating" : 4,
+  "status" : "Approved"
+}, {
+  "id" : "d4e00150-cb66-4ed7-8ede-bd58dcbbfaeb",
+  "createdAt" : "2021-01-18 20:51",
+  "active" : true,
+  "buyerId" : "00b8f931-ea1a-4546-9c44-435bf7d0a21a",
+  "manifestationId" : "bc2de995-6ddf-4761-a6f6-c3c582940e8a",
+  "text" : "Best festival I've been to!!!",
+  "rating" : 5,
+  "status" : "Approved"
+}, {
+  "id" : "ee65ab87-e5c8-4364-9bb1-b41465b119f6",
+  "createdAt" : "2021-01-18 21:32",
+  "active" : true,
+  "buyerId" : "a6dd063b-80e4-4cf5-8965-188f5140d59b",
+  "manifestationId" : "d75e6054-e8e9-4a49-bcd5-a29a7e2b20f9",
+  "text" : "Best BAJAGA ever!",
+  "rating" : 5,
+  "status" : "Approved"
+}, {
+  "id" : "8c6c85bd-dc14-448b-aacc-975bd07aa5ac",
+  "createdAt" : "2021-01-18 20:51",
+  "active" : true,
+  "buyerId" : "079afdaf-5972-4075-b38c-e2ba630d9bad",
+  "manifestationId" : "8117dd74-5656-44f0-b381-2eb403f2061d",
+  "text" : "Could have been better, but still alright",
+  "rating" : 3,
+  "status" : "Approved"
+} ]
