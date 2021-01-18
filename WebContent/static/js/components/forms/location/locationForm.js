@@ -6,7 +6,10 @@ Vue.component("location-form", {
         </div>
         <div class="col-6">
             <form v-on:submit="createLocation">
-                <location-form-map v-on:update-coordinates="updateCoordinatesHandler" :coordinates="[longitude, latitude]"></location-form-map>
+                <location-form-map v-on:update-coordinates="updateCoordinatesHandler" 
+					:coordinates="[longitude, latitude]" 
+					:zoom="0" 
+					:moovable="true"></location-form-map>
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <div class="mb-3">
@@ -163,7 +166,6 @@ Vue.component("location-form", {
                 })
                 .then((response) => {
                     if (response.data && response.data.lenght != 0) {
-                        console.log(response.data);
                         const { lon, lat } = response.data[0];
                         this.updateCoordinatesHandler([lon, lat]);
                     }

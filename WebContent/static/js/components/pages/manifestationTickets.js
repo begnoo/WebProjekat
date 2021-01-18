@@ -3,14 +3,22 @@ Vue.component("manifestation-tickets", {
     <div class="container">
         <div class="row">
             <div class="col">
-
+				<div v-if="!sharedState.userLoggedIn">
+					<p>Please log in to access the tickets page.</p>
+				</div>
+				<div v-else>
+					{{this.manifestation}}
+				</div>
             </div>
         </div>
     </div>
     `,
-	data : function(){
+
+	props: ["manifestation"],
+	
+	data: function(){
 		return {
-			manifestation: "",
-		}
-	}
+			sharedState: store.state,
+		};
+	},
 });
