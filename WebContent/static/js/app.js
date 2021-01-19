@@ -11,6 +11,7 @@ const Users = { template: "<users-table></users-table>" };
 const HomePage = {template: "<home-page></home-page>"};
 const ManifestationPage = {template: "<manifestation-page></manifestation-page>"};
 const OrderTable = {template: "<order-table></order-table>"};
+const BuyerTicketsPage = {template: "<buyer-tickets-page></buyer-tickets-page>"};
 
 
 
@@ -28,6 +29,8 @@ const router = new VueRouter({
 		{ path: "/manifestations/:id/comment", component: Comment },
 		{ path: "/manifestations/:id/comments", component: Comments },
 		{ path: "/cart", component: OrderTable },
+		{ path: "/buyer-tickets/", component: BuyerTicketsPage },
+		{ path: "/buyer-tickets/:id", component: BuyerTicketsPage },
     ],
 });
 

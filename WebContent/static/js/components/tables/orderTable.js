@@ -1,9 +1,9 @@
 Vue.component("order-table", {
 	template: `
     <div class="d-flex justify-content-center">
-	<div class="row">
-		<div v-if="Object.keys(shoppingCart).length !== 0">
-			<table  class="table" >
+	<div class="row" class="mt-3">
+		<div v-if="!isShoppingCartEmpty()" class="mt-3">
+			<table class="table" >
 			  <thead class="thead-light">
 			    <tr>
 				  <th scope="col">Manifestation</th>
@@ -16,7 +16,11 @@ Vue.component("order-table", {
 			  <tbody v-for="(manifestationOrder, manifestationId) in shoppingCart">
 					<template v-for="(number, ticketType) in manifestationOrder.order">
 						<tr v-if="number">
-							<td>{{manifestationOrder.manifestation.name}}</td>
+							<td>
+								<router-link :to="'/manifestations/' + manifestationOrder.manifestation.id">
+									{{manifestationOrder.manifestation.name}}
+								</router-link>
+							</td>
 							<td>{{ticketType}}</td>
 							<td>{{number}}</td>
 							<td>{{manifestationOrder.prices[ticketType]*number}}</td>
@@ -36,8 +40,8 @@ Vue.component("order-table", {
 			</tbody>
 			</table>
 		</div>
-		<div v-else>
-			<h3 class="mt-3">You have nothing in your shopping cart.</h3>
+		<div v-else class="mt-3">
+			<h3>You have nothing in your shopping cart.</h3>
 		</div>
 	</div>
 	</div>
@@ -96,10 +100,14 @@ Vue.component("order-table", {
 			}
 			this.shoppingCart = {};
 			localStorage.setObject("shoppingCart", this.shoppingCart);
-			if(Object.keys(this.shoppingCart).length === 0){
-				alert("Uspesno");
-			}
+			alert("Uspesno");
 
+		},
+		isShoppingCartEmpty: function(){
+			if(this.shoppingCart == null){
+				return true;
+			}
+			return Object.keys(this.shoppingCart).length === 0;
 		}
 
 	},

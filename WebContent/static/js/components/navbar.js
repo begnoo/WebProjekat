@@ -37,6 +37,7 @@ Vue.component("navbar", {
 			activeOptions: [],
 			defaultOptions: [],
 			buyerOptions: [
+				{name: "Tickets", path: "/buyer-tickets"},
 				{name : "Cart", path : "/cart"}
 			],
 			sellerOptions: [				
@@ -84,6 +85,9 @@ Vue.component("navbar", {
 			}else{
 				this.activeOptions = this.defaultOptions;
 			}
+		},
+		getBuyerId : function(){
+			return this.sharedState.userLoggedIn ? localStorage.getObject("loggedUser").user.id : "";
 		},
 		
 		logout: function(event){
