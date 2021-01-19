@@ -24,7 +24,7 @@ public class BuyerTypeService extends CrudService<BuyerType> implements IBuyerTy
 	@Override
 	public BuyerType findAppropriateTypeForPoints(int points) {
 		List<BuyerType> buyerTypes = repository.read();
-		buyerTypes.sort((buyerType1, buyerType2) -> buyerType1.getMinimumPoints() - buyerType2.getMinimumPoints());
+		buyerTypes.sort((buyerType1, buyerType2) -> buyerType2.getMinimumPoints() - buyerType1.getMinimumPoints());
 		
 		for(BuyerType buyerType : buyerTypes) {
 			if(buyerType.getMinimumPoints() <= points) {
