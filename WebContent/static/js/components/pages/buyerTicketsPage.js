@@ -38,8 +38,7 @@ Vue.component("buyer-tickets-page", {
 	
 	methods: {
 		getBuyerTickets: function(onlyReserved){
-			console.log("drogica1");
-			console.log(onlyReserved);
+			console.log("nesto ne radi kme");
 			const buyerId = localStorage.getObject("loggedUser").user.id;
 			axios.get("/WebProjekat/rest/users/buyers/" + buyerId + "/tickets", {
 				params:{
@@ -48,6 +47,7 @@ Vue.component("buyer-tickets-page", {
 			})
 			.then(response => {
 				this.tickets = response.data;
+				console.log(this.tickets);
 			})
 			.catch(error => console.log(error));
 		}

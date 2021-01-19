@@ -93,7 +93,7 @@ Vue.component("navbar", {
 		logout: function(event){
 			event.preventDefault();
 			window.localStorage.removeItem("loggedUser");
-			window.localStorage.removeItem("shoppingCartr");
+			window.localStorage.removeItem("shoppingCart");
 			this.sharedState.userLoggedIn = false;
 			this.sharedState.loggedUsername = null;
 			this.$router.replace("/")

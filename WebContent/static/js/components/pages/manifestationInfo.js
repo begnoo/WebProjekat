@@ -8,7 +8,15 @@ Vue.component("manifestation-info", {
 			<div class="col align-self-center">
 				<p>
 					<a v-show="this.manifestation.seats == 0" style="color: red"><b>SOLD OUT</b></a> <br>
-					<a style="color: red"><b>{{this.getEventStatus()}}</b></a> <br>
+					<span v-if="getEventStatus() == 'EVENT AVAILABLE'">
+						<a style="color: green"><b>EVENT AVAILABLE</b></a> <br>
+					</span>
+					<span v-if="getEventStatus() == 'EVENT ENDED'">
+						<a style="color: red"><b>EVENT ENDED</b></a> <br>
+					</span>
+					<span v-if="getEventStatus() == 'EVENT STARTED'">
+						<a style="color: red"><b>EVENT STARTED</b></a> <br>
+					</span>
 					Event start: {{this.manifestation.eventDate}} <br>
 					Event end: {{this.manifestation.eventEndDate}} <br>
 					Number of seats left: {{this.manifestation.seats}} <br>
@@ -36,8 +44,12 @@ Vue.component("manifestation-info", {
 	
 	methods: {
 		getEventStatus: function(){
+			//ruzna html realizacija, menjati ako ostane vremena
 			const eventDate = moment(this.manifestation.eventDate, "YYYY-MM-DD hh:mm");
 			const eventEndDate = moment(this.manifestation.eventEndDate, "YYYY-MM-DD hh:mm");
+			if(eventDate > Date.now() && this.manifestation.seats > 0){
+				return "EVENT AVAILABLE";
+			}
 			if(eventEndDate <= Date.now()){
 				return "EVENT ENDED";
 			}
