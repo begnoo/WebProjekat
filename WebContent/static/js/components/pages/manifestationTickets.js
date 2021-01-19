@@ -1,74 +1,127 @@
 Vue.component("manifestation-tickets", {
-    template: `
-    <div class="container">
-        <div class="row">
-            <div class="col">
-				<div v-if="!sharedState.userLoggedIn">
-					<p>Please log in to access the tickets page.</p>
-				</div>
-				<div v-else>
+	template: `
+    <div class="container d-flex justify-content-center">
+		<div v-if="!sharedState.userLoggedIn">
+			<h3 class="mt-3">Please log in to access the tickets page.</h3>
+		</div>
+        <div v-else class="row">
+			<div class="col-1">
+			</div>
+            <div class="col-4">
+
 				<form class="mt-3">
 					<div class="form-group">
-						<label for="ticketTypeSelect" >Ticket type: </label>
-						<select id="ticketType" name="ticketTypeSelect" v-model="ticketType">
+						<label for="ticketTypeSelect" class="form-label">Ticket type: </label>
+						<select id="ticketType" name="ticketTypeSelect" class="custom-select" v-model="ticketType">
 							<option value="Regular">Regular</option>
+							<option value="Vip">Vip</option>
 							<option value="FanPit">Fan Pit</option>
-							<option value="VIP">VIP</option>
 						</select>
 					</div>
 					<div class="form-group">
-						<label for="ticketAmountField" >Amount: </label>
-						<input type="number" v-model="ticketAmount" name="ticketAmountField">
+						<label for="ticketAmountField" class="form-label">Amount: </label>
+						<input type="number" min="1" v-model="ticketAmount" class="form-control" name="ticketAmountField">
+					</div>
+					<div class="form-group">
+						<label for="ticketsPrice" class="form-label">Price of tickets: </label>
+						<input type="text" style="background-color: white;" :value="ticketsPrice" class="form-control" name="ticketsPriceField" disabled>
 					</div>
 					<div class="mb-3" >
 						<button v-on:click="addToCart" class="btn btn-primary">Add to Cart</button>
 					</div>
-					{{this.ticketPricesWithDiscounts}}
 				</form>
-				</div>
             </div>
+			<div class="col-2">
+			</div>
+			<div class="col-3">
+				<table class="table mt-3">
+				  <thead>
+				    <tr sytle="border-top: hidden;">
+				      <th scope="col">Type</th>
+				      <th scope="col">Price(RSD)</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+				    <tr>
+				      <td>Regular</td>
+				      <td>{{ticketPricesWithDiscounts.Regular}}</td>
+				    </tr>
+				    <tr>
+				      <td>Vip</td>
+				      <td>{{ticketPricesWithDiscounts.Vip}}</td>
+				    </tr>
+					<tr>
+				      <td>Fan Pit</td>
+				      <td>{{ticketPricesWithDiscounts.FanPit}}</td>
+				    </tr>
+				  </tbody>
+				</table>
+			</div>
         </div>
     </div>
     `,
 
-    props: ["manifestation"],
+	props: ["manifestation"],
 
-    data: function () {
-        return {
-            ticketType: null,
-			ticketAmount: null,
-            sharedState: store.state,
-            ticketPricesWithDiscounts: {},
-        };
-    },
+	data: function() {
+		return {
+			ticketType: "Regular",
+			ticketAmount: 1,
+			sharedState: store.state,
+			ticketPricesWithDiscounts: {},
+		};
+	},
 
-    methods: {
-        getTicketPriceForUser: function () {
-            const regularTicketPrice = this.manifestation.regularTicketPrice;
-            console.log(window.localStorage.getObject("loggedUser"));
-            const { buyerTypeId } = window.localStorage.getObject(
-                "loggedUser"
-            ).user;
-            axios
-                .get(
-                    "../WebProjekat/rest/tickets/buyer-type/" +
-                        buyerTypeId +
-                        "/prices/" +
-                        regularTicketPrice
-                )
-                .then(
-                    (response) =>
-                        (this.ticketPricesWithDiscounts = response.data)
-                )
-                .catch((error) => alert(error));
-        },
-		addToCart: function(event){
-			event.preventDefault();
-			this.sharedState.order[this.ticketType] += ticketAmount;
+	computed: {
+		ticketsPrice: function() {
+			return this.ticketAmount * this.ticketPricesWithDiscounts[this.ticketType];
 		}
-    },
+	},
 
-    mounted: function () {
-        this.getTicketPriceForUser();
-    },
+	methods: {
+		getTicketPriceForUser: function() {
+			const regularTicketPrice = this.manifestation.regularTicketPrice;
+			const { buyerTypeId } = window.localStorage.getObject(
+				"loggedUser"
+			).user;
+			axios
+				.get(
+					"../WebProjekat/rest/tickets/buyer-type/" +
+					buyerTypeId +
+					"/prices/" +
+					regularTicketPrice
+				)
+				.then(
+					(response) =>
+						(this.ticketPricesWithDiscounts = response.data)
+				)
+				.catch((error) => alert(error));
+		},
+		addToCart: function(event) {
+			event.preventDefault();
+			if (!localStorage.getObject("shoppingCart")) {
+				const shoppingCart = {};
+				localStorage.setObject("shoppingCart", shoppingCart);
+			}
+			const shoppingCart = localStorage.getObject("shoppingCart");
+			if (!shoppingCart[this.manifestation.id]) {
+				shoppingCart[this.manifestation.id] = {
+					manifestation: this.manifestation,
+					order: {
+						Vip: 0,
+						Regular: 0,
+						FanPit: 0,
+					},
+					prices: this.ticketPricesWithDiscounts,
+				};		
+			}
+			shoppingCart[this.manifestation.id].order[this.ticketType] += this.ticketAmount;
+			localStorage.setObject("shoppingCart", shoppingCart);
+			alert("Uspeno");
+		}
+	},
+
+	mounted: function() {
+		this.getTicketPriceForUser();
+	},
 });

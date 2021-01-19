@@ -10,6 +10,7 @@ const ManifestationImageForm = {
 const Users = { template: "<users-table></users-table>" };
 const HomePage = {template: "<home-page></home-page>"};
 const ManifestationPage = {template: "<manifestation-page></manifestation-page>"};
+const OrderTable = {template: "<order-table></order-table>"};
 
 
 
@@ -23,9 +24,10 @@ const router = new VueRouter({
         { path: "/add-manifestation-image", component: ManifestationImageForm },
         { path: "/users", component: Users },
 		{ path: "/", component: HomePage },
-		{ path: "/manifestation/:id", component: ManifestationPage },
+		{ path: "/manifestations/:id", component: ManifestationPage },
 		{ path: "/manifestations/:id/comment", component: Comment },
-		{ path: "/manifestations/:id/comments", component: Comments }
+		{ path: "/manifestations/:id/comments", component: Comments },
+		{ path: "/cart", component: OrderTable },
     ],
 });
 

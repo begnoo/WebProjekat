@@ -36,7 +36,9 @@ Vue.component("navbar", {
 			loggedUsername: null,
 			activeOptions: [],
 			defaultOptions: [],
-			buyerOptions: [],
+			buyerOptions: [
+				{name : "Cart", path : "/cart"}
+			],
 			sellerOptions: [				
 				{name : "ManifestationForm", path : "/add-manifestation"},
 				{name : "ManifestationFormImage", path : "/add-manifestation-image"},],

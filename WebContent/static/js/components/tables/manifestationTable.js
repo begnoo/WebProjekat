@@ -90,7 +90,7 @@ Vue.component("manifestation-table", {
 			}
 		},
 		redirectToInfo: function(id){
-			this.$router.push("manifestation/" + id);
+			this.$router.push("manifestations/" + id);
 		}
 		
 		
