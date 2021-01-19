@@ -37,7 +37,9 @@ Vue.component("tickets-table", {
 		cancelTicket: function(ticketId){
 			axios.put("/WebProjekat/rest/tickets/" + ticketId + "/cancel")
 			.then(response => {
+				console.log(response.data);
 				this.updateTicket(response.data);
+				this.updateBuyerInLocalStorage(response.data.buyer);
 			})
 			.catch(error => console.log(error));
 		},
@@ -48,7 +50,12 @@ Vue.component("tickets-table", {
 			}
 			const index = this.tickets.findIndex((ticket) => ticket.id === updatedTicket.id);
 			this.tickets.splice(index, 1, updatedTicket);
-		}
+		},
+		updateBuyerInLocalStorage: function(updatedBuyer) {
+			let loggedUser = localStorage.getObject("loggedUser");
+			loggedUser.user = updatedBuyer;
+			localStorage.setObject("loggedUser", loggedUser);
+		},
 	},
 	
 });

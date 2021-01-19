@@ -1,7 +1,7 @@
 Vue.component("order-table", {
 	template: `
     <div class="d-flex justify-content-center">
-	<div class="row" class="mt-3">
+	<div class="row mt-3">
 		<div v-if="!isShoppingCartEmpty()" class="mt-3">
 			<table class="table" >
 			  <thead class="thead-light">
@@ -88,13 +88,11 @@ Vue.component("order-table", {
 						shoppingCartToSend.numberOfOrderedTicketsMap[ticketType] = order[ticketType];
 					}
 				}
-				
-				console.log(shoppingCartToSend);
-				console.log(manifestation.id);
-				
+
 				axios.post("../WebProjekat/rest/tickets/", shoppingCartToSend)
 					.then(response => {
-						console.log(response.data);
+						const updatedBuyer = response.data[0].buyer;
+						this.updateBuyerInLocalStorage(updatedBuyer);
 					})
 					.catch(error => console.log(error));
 			}
@@ -103,12 +101,17 @@ Vue.component("order-table", {
 			alert("Uspesno");
 
 		},
-		isShoppingCartEmpty: function(){
-			if(this.shoppingCart == null){
+		isShoppingCartEmpty: function() {
+			if (this.shoppingCart == null) {
 				return true;
 			}
 			return Object.keys(this.shoppingCart).length === 0;
-		}
+		},
+		updateBuyerInLocalStorage: function(updatedBuyer) {
+			let loggedUser = localStorage.getObject("loggedUser");
+			loggedUser.user = updatedBuyer;
+			localStorage.setObject("loggedUser", loggedUser);
+		},
 
 	},
 
