@@ -16,11 +16,21 @@ Vue.component("navbar", {
 	      </li>
 		</ul>
 		<ul class="navbar-nav ml-auto">
-			<li v-show="this.sharedState.userLoggedIn" class="nav-item active">
-	        	<a class="nav-link"> {{loggedUsername}} </a>
-	      	</li>
 			<li v-if="this.sharedState.userLoggedIn" class="nav-item active">
-	        	<a v-on:click="logout" href="#" class="nav-link">Logout</a>
+				<div class="dropdown">
+				  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				    {{loggedUsername}}
+				  </button>
+				  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+				    <router-link v-for="userOption in userOptions" :key="userOption.name"
+					:to="userOption.path" 
+					class="dropdown-item">
+						{{userOption.name}}
+					</router-link>
+				    <div class="dropdown-divider"></div>
+					<a v-on:click="logout" href="#" class="dropdown-item">Logout</a>
+				  </div>
+				</div>
 	      	</li>
 			<li v-else class="nav-item active">
 	        	<router-link to="/login" href="#" class="nav-link">Login</router-link>
@@ -46,6 +56,9 @@ Vue.component("navbar", {
 			adminOptions: [
 				{name : "LocationForm", path : "/add-location"},
 				{name : "Users", path : "/users"},
+			],
+			userOptions:[
+				{name: "Account", path:"account"},
 			],
 		}
 	},
