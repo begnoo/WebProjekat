@@ -85,7 +85,7 @@ Vue.component('users-table',
     
     methods: {
     	loadPageOfUsers : function(page, callback) {    		
-    		axios.get('/WebProjekat/rest/users/page?number=' + page + "&size=" + this.pageSize)
+    		axios.get('/WebProjekat/rest/users?number=' + page + "&size=" + this.pageSize)
              	 .then(response =>
              	 {
          	 		this.nextUsers = response.data;
