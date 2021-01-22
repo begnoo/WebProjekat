@@ -18,7 +18,9 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import core.domain.dto.Page;
 import core.domain.enums.CommentStatus;
+import core.domain.enums.UserRole;
 import core.domain.models.Comment;
 import core.domain.models.Manifestation;
 import core.domain.models.User;
@@ -27,11 +29,13 @@ import core.requests.comments.CreateCommentRequest;
 import core.requests.comments.UpdateCommentRequest;
 import core.responses.comments.WholeCommentObjectResponse;
 import core.service.ICommentService;
+import core.service.IPaginationService;
 import repository.CommentRepository;
 import repository.DbContext;
 import repository.ManifestationRepository;
 import repository.UserRepository;
 import services.CommentService;
+import services.PaginationService;
 
 @Path("/")
 public class CommentServlet extends AbstractServletBase {
@@ -40,6 +44,7 @@ public class CommentServlet extends AbstractServletBase {
 	ServletContext servletContext;
 
 	private ICommentService commentService;
+	private IPaginationService<Comment> paginationService;
 	
 	public CommentServlet()
 	{
@@ -53,13 +58,16 @@ public class CommentServlet extends AbstractServletBase {
 		IRepository<Manifestation> manifestationRepository = new ManifestationRepository(context);
 		IRepository<User> userRepository = new UserRepository(context);
 		commentService = new CommentService(commentRepository, manifestationRepository, userRepository);
+		paginationService = new PaginationService<Comment>();
 	}
 
 	@GET
 	@Path("comments/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Comment> readAll() {
-		return commentService.read();
+	public List<Comment> readAll(@QueryParam("role") UserRole role, @QueryParam("number") int number, @QueryParam("size") int size) {
+		List<Comment> comments = commentService.read();
+		
+		return paginationService.readPage(comments, new Page(number, size));
 	}
 
 	@GET
@@ -75,7 +83,7 @@ public class CommentServlet extends AbstractServletBase {
 	@GET
 	@Path("manifestations/{manifestationId}/comments")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<WholeCommentObjectResponse> readByManifestationId(@PathParam("manifestationId") UUID manifestationId, @QueryParam("status") CommentStatus commentStatus)
+	public List<WholeCommentObjectResponse> readByManifestationId(@PathParam("manifestationId") UUID manifestationId, @QueryParam("status") CommentStatus commentStatus, @QueryParam("number") int number, @QueryParam("size") int size)
 	{
 		List<Comment> commentsForManifestation;
 		if(commentStatus == null) {
@@ -83,8 +91,9 @@ public class CommentServlet extends AbstractServletBase {
 		} else {
 			commentsForManifestation = commentService.readByManifestationIdAndStatus(manifestationId, commentStatus);
 		}
+		List<Comment> paginatedComments = paginationService.readPage(commentsForManifestation, new Page(number, size));
 		
-		List<WholeCommentObjectResponse> wholeCommentObjectsForManifestation = commentsForManifestation.stream()
+		List<WholeCommentObjectResponse> wholeCommentObjectsForManifestation = paginatedComments.stream()
 				.map(comment -> generateCommentObjectResponse(comment))
 				.collect(Collectors.toList());
 		
@@ -94,11 +103,12 @@ public class CommentServlet extends AbstractServletBase {
 	@GET
 	@Path("manifestations/{manifestationId}/comments/non-pending")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<WholeCommentObjectResponse> readNonPendingCommentsByManifestationId(@PathParam("manifestationId") UUID manifestationId)
+	public List<WholeCommentObjectResponse> readNonPendingCommentsByManifestationId(@PathParam("manifestationId") UUID manifestationId, @QueryParam("role") UserRole role, @QueryParam("number") int number, @QueryParam("size") int size)
 	{
 		List<Comment> commentsForManifestation = commentService.readNonPendingCommentsByManifestationId(manifestationId);
-		
-		List<WholeCommentObjectResponse> wholeCommentObjectsForManifestation = commentsForManifestation.stream()
+		List<Comment> paginatedComments = paginationService.readPage(commentsForManifestation, new Page(number, size));
+
+		List<WholeCommentObjectResponse> wholeCommentObjectsForManifestation = paginatedComments.stream()
 				.map(comment -> generateCommentObjectResponse(comment))
 				.collect(Collectors.toList());
 		

@@ -19,6 +19,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import core.domain.dto.Page;
 import core.domain.dto.TicketOrder;
 import core.domain.dto.TicketsSearchParamethers;
 import core.domain.enums.TicketType;
@@ -32,6 +33,7 @@ import core.responses.tickets.WholeTicketObjectResponse;
 import core.service.IAdvanceSearchService;
 import core.service.IBuyerTypeService;
 import core.service.IManifestationService;
+import core.service.IPaginationService;
 import core.service.ITicketOrderService;
 import core.service.ITicketService;
 import core.service.IUserService;
@@ -42,6 +44,7 @@ import repository.TicketRepository;
 import repository.UserRepository;
 import services.BuyerTypeService;
 import services.ManifestationService;
+import services.PaginationService;
 import services.TicketOrderService;
 import services.TicketService;
 import services.TicketsSearchService;
@@ -55,6 +58,7 @@ public class TicketServlet extends AbstractServletBase {
 	private ITicketService ticketService;
 	private ITicketOrderService ticketOrderService;
 	private IAdvanceSearchService<Ticket, TicketsSearchParamethers> searchService;
+	private IPaginationService<Ticket> paginationService;
 
 	public TicketServlet()
 	{
@@ -76,13 +80,16 @@ public class TicketServlet extends AbstractServletBase {
 		ticketService = new TicketService(ticketRepository, userService, manifestationService);
 		ticketOrderService = new TicketOrderService(ticketService, userRepository, manifestationRepository, buyerTypeRepository);
 		searchService = new TicketsSearchService(ticketRepository);
+		paginationService = new PaginationService<Ticket>();
 	}
 
 	@GET
 	@Path("tickets/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Ticket> readAll() {
-		return ticketService.read();
+	public List<Ticket> readAll(@QueryParam("number") int number, @QueryParam("size") int size) {
+		List<Ticket> tickets = ticketService.read();
+		
+		return paginationService.readPage(tickets, new Page(number, size)); 
 	}
 
 	@GET
@@ -97,10 +104,11 @@ public class TicketServlet extends AbstractServletBase {
 	@GET
 	@Path("manifestations/{manifestationId}/tickets")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<WholeTicketObjectResponse> readByManifestationId(@PathParam("manifestationId") UUID manifestationId) {
+	public List<WholeTicketObjectResponse> readByManifestationId(@PathParam("manifestationId") UUID manifestationId, @QueryParam("number") int number, @QueryParam("size") int size) {
 		List<Ticket> ticketsForManifestation = ticketService.readByManifestationId(manifestationId);
+		List<Ticket> paginatedTickets = paginationService.readPage(ticketsForManifestation, new Page(number, size));
 		
-		List<WholeTicketObjectResponse> wholeTicketObjectsForManifestation = ticketsForManifestation.stream()
+		List<WholeTicketObjectResponse> wholeTicketObjectsForManifestation = paginatedTickets.stream()
 				.map(ticket -> generateTicketObjectResponse(ticket))
 				.collect(Collectors.toList());
 		
@@ -110,10 +118,11 @@ public class TicketServlet extends AbstractServletBase {
 	@GET
 	@Path("users/sellers/{sellerId}/manifestations/tickets/reserved")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<WholeTicketObjectResponse> readReservedTicketsOfSellersManifestations(@PathParam("sellerId") UUID sellerId) {
+	public List<WholeTicketObjectResponse> readReservedTicketsOfSellersManifestations(@PathParam("sellerId") UUID sellerId, @QueryParam("number") int number, @QueryParam("size") int size) {
 		List<Ticket> ticketsForSellersManifestation = ticketService.readReservedTicketsOfSellersManifestations(sellerId);
+		List<Ticket> paginatedTickets = paginationService.readPage(ticketsForSellersManifestation, new Page(number, size));
 		
-		List<WholeTicketObjectResponse> wholeTicketObjectsForSellersManifestation = ticketsForSellersManifestation.stream()
+		List<WholeTicketObjectResponse> wholeTicketObjectsForSellersManifestation = paginatedTickets.stream()
 				.map(ticket -> generateTicketObjectResponse(ticket))
 				.collect(Collectors.toList());
 		
@@ -123,15 +132,16 @@ public class TicketServlet extends AbstractServletBase {
 	@GET
 	@Path("users/buyers/{buyerId}/tickets")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<WholeTicketObjectResponse> readByBuyerId(@PathParam("buyerId") UUID buyerId, @QueryParam("only-reserved") boolean onlyReserved) {
+	public List<WholeTicketObjectResponse> readByBuyerId(@PathParam("buyerId") UUID buyerId, @QueryParam("only-reserved") boolean onlyReserved, @QueryParam("number") int number, @QueryParam("size") int size) {
 		List<Ticket> ticketsOfBuyer;
 		if(onlyReserved) {
 			ticketsOfBuyer = ticketService.readReservedTicketsOfBuyer(buyerId);
 		} else {
 			ticketsOfBuyer = ticketService.readByBuyerId(buyerId);
 		}
-		
-		List<WholeTicketObjectResponse> wholeTicketObjectsOfBuyers = ticketsOfBuyer.stream()
+		List<Ticket> paginatedTickets = paginationService.readPage(ticketsOfBuyer, new Page(number, size));
+
+		List<WholeTicketObjectResponse> wholeTicketObjectsOfBuyers = paginatedTickets.stream()
 				.map(ticket -> generateTicketObjectResponse(ticket))
 				.collect(Collectors.toList());
 		
@@ -148,10 +158,12 @@ public class TicketServlet extends AbstractServletBase {
 	@POST
 	@Path("tickets/advance-search")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Ticket> advanceSearch(TicketsSearchParamethers searchParamethers) {
+	public List<Ticket> advanceSearch(TicketsSearchParamethers searchParamethers, @QueryParam("number") int number, @QueryParam("size") int size) {
 		super.validateRequest(searchParamethers);
 		
-		return searchService.search(searchParamethers);
+		List<Ticket> tickets = searchService.search(searchParamethers);
+		
+		return paginationService.readPage(tickets, new Page(number, size));
 	}
 	
 	@POST

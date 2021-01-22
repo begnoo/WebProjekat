@@ -18,6 +18,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import core.domain.dto.ManifestationsSearchParamethers;
+import core.domain.dto.Page;
 import core.domain.models.Location;
 import core.domain.models.Manifestation;
 import core.repository.IRepository;
@@ -26,11 +27,13 @@ import core.requests.manifestations.UpdateManifestationRequest;
 import core.responses.manifestations.WholeManifestationObjectResponse;
 import core.service.IAdvanceSearchService;
 import core.service.IManifestationService;
+import core.service.IPaginationService;
 import repository.DbContext;
 import repository.ManifestationRepository;
 import repository.Repository;
 import services.ManifestationSearchService;
 import services.ManifestationService;
+import services.PaginationService;
 
 @Path("/")
 public class ManifestationServlet extends AbstractServletBase {
@@ -39,6 +42,8 @@ public class ManifestationServlet extends AbstractServletBase {
 
 	private IManifestationService manifestationService;
 	private IAdvanceSearchService<Manifestation, ManifestationsSearchParamethers> searchService;
+	private IPaginationService<Manifestation> paginationService;
+
 	public ManifestationServlet()
 	{
 		super();
@@ -51,17 +56,21 @@ public class ManifestationServlet extends AbstractServletBase {
 		IRepository<Location> locationRepository = new Repository<Location>(context, Location.class);
 		manifestationService = new ManifestationService(manifestationRepository, locationRepository);
 		searchService = new ManifestationSearchService(manifestationRepository);
+		paginationService = new PaginationService<Manifestation>();
 	}
 
 	@GET
 	@Path("manifestations/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Manifestation> readAll(@QueryParam("order-by-date") boolean orderByDate) {
+	public List<Manifestation> readAll(@QueryParam("order-by-date") boolean orderByDate, @QueryParam("number") int number, @QueryParam("size") int size) {
+		List<Manifestation> manifestations = null;
 		if(orderByDate) {
-			return manifestationService.readOrderedByDescendingDate();
+			manifestations = manifestationService.readOrderedByDescendingDate();
+		} else {
+			manifestations = manifestationService.read();
 		}
 		
-		return manifestationService.read();
+		return paginationService.readPage(manifestations, new Page(number, size));
 	}
 	
 	@GET
@@ -76,10 +85,12 @@ public class ManifestationServlet extends AbstractServletBase {
 	@POST
 	@Path("manifestations/advance-search")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Manifestation> advanceSearch(ManifestationsSearchParamethers searchParamethers) {
+	public List<Manifestation> advanceSearch(ManifestationsSearchParamethers searchParamethers, @QueryParam("number") int number, @QueryParam("size") int size) {
 		super.validateRequest(searchParamethers);
 		
-		return searchService.search(searchParamethers);
+		List<Manifestation> manifestations = searchService.search(searchParamethers);
+		
+		return paginationService.readPage(manifestations, new Page(number, size));
 	}
 	
 	@POST

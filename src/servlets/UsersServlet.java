@@ -54,8 +54,8 @@ public class UsersServlet extends AbstractServletBase {
 	ServletContext servletContext;
 	
 	private IUserService userService;
-	private IPaginationService<User> paginationService;
 	private IAdvanceSearchService<User, UsersSearchParamethers> searchService;
+	private IPaginationService<User> paginationService;
 
 	public UsersServlet()
 	{
@@ -72,36 +72,33 @@ public class UsersServlet extends AbstractServletBase {
 		IBuyerTypeService buyerTypeService = new BuyerTypeService(buyerTypeRepository);
 		
 		userService = new UserService(userRepository, buyerTypeService);	
-		paginationService = new PaginationService<User>(userRepository);
+		paginationService = new PaginationService<User>();
 		searchService = new UsersSearchService(userRepository);
 	}
 	
 	@GET
 	@Path("users/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<User> readAll(@QueryParam("role") UserRole role)
+	public List<User> readAll(@QueryParam("role") UserRole role, @QueryParam("number") int number, @QueryParam("size") int size)
 	{
+		List<User> users = null;
 		if(role != null) {
-			return userService.readByUserRole(role);
+			users = userService.readByUserRole(role);
+		} else {
+			users = userService.read();
 		}
 		
-		return userService.read();
+		return paginationService.readPage(users, new Page(number, size));
 	}
-	
-	@GET
-	@Path("users/page")
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<User> readAll(@QueryParam("number") int number, @QueryParam("size") int size)
-	{		
-		return paginationService.readPage(new Page(number, size));
-	}
-	
+		
 	@GET
 	@Path("users/buyers/distrustful")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<User> readAllDistrustfulBuyers()
+	public List<User> readAllDistrustfulBuyers(@QueryParam("number") int number, @QueryParam("size") int size)
 	{
-		return userService.readDistrustfulBuyers();
+		List<User> users = userService.readDistrustfulBuyers();
+		
+		return paginationService.readPage(users, new Page(number, size));
 	}
 	
 	@GET
@@ -121,10 +118,12 @@ public class UsersServlet extends AbstractServletBase {
 	@POST
 	@Path("users/advance-search")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<User> advanceSearch(UsersSearchParamethers searchParamethers) {
+	public List<User> advanceSearch(UsersSearchParamethers searchParamethers, @QueryParam("number") int number, @QueryParam("size") int size) {
 		super.validateRequest(searchParamethers);
-		
-		return searchService.search(searchParamethers);
+
+		List<User> users = searchService.search(searchParamethers);
+
+		return paginationService.readPage(users, new Page(number, size));
 	}
 	
 	@POST
