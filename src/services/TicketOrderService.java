@@ -40,7 +40,7 @@ public class TicketOrderService implements ITicketOrderService {
 
 		Manifestation manifestation = manifestationRepository.read(ticketOrder.getManifestationId());
 		if (manifestation == null || manifestation.getEventDate().isBefore(LocalDateTime.now())) {
-			return tickets;
+			return null;
 		}
 
 		int numberOfAllTickets = ticketOrder.getNumberOfOrderedTicketsMap().values().stream().reduce(0, Integer::sum);

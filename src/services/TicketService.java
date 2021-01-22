@@ -15,6 +15,7 @@ import core.repository.IRepository;
 import core.service.IManifestationService;
 import core.service.ITicketService;
 import core.service.IUserService;
+import services.utils.RandomUtils;
 
 public class TicketService extends CrudService<Ticket> implements ITicketService {
 
@@ -74,9 +75,7 @@ public class TicketService extends CrudService<Ticket> implements ITicketService
 	}
 
 	@Override
-	public Ticket create(Ticket ticket) {
-		//TODO: Dodati uniqeId
-		
+	public Ticket create(Ticket ticket) {		
 		Manifestation manifestation = ticket.getManifestation();		
 		if(manifestationService.updateNumberOfSeats(manifestation, -1) == null) {
 			return null;
@@ -87,7 +86,17 @@ public class TicketService extends CrudService<Ticket> implements ITicketService
 		userService.updateBuyerPointsFor(buyer, earnedPoints);
 		
 		ticket.setStatus(TicketStatus.Reserved);
+		String uniqueId = "";
+		do {
+			uniqueId = RandomUtils.getRandomString(10);
+		} while(isUniqueIdTaken(uniqueId));
+		ticket.setUniqueId(uniqueId);
+		
 		return repository.create(ticket);
+	}
+	
+	private boolean isUniqueIdTaken(String id) {
+		return read().stream().anyMatch(ticket -> ticket.getUniqueId().equals(id));
 	}
 	
 	@Override
