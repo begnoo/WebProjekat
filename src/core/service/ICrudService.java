@@ -14,5 +14,5 @@ public interface ICrudService<T extends BaseEntity> {
 	
 	T update(T entityForUpdate);
 	
-	boolean delete(UUID entityID);
+	T delete(UUID entityID);
 }

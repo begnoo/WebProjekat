@@ -20,11 +20,11 @@ public class LocationService extends CrudService<Location> implements ILocationS
 	}
 	
 	@Override
-	public boolean delete(UUID locationId)
+	public Location delete(UUID locationId)
 	{
 		List<Manifestation> manifestationsOnLocation = manifestationService.readByLocationId(locationId);
 		if(!manifestationsOnLocation.isEmpty()) {
-			return false;
+			return null;
 		}
 		
 		return super.delete(locationId);

@@ -100,7 +100,7 @@ public class LocationsServlet extends AbstractServletBase {
 	@DELETE
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean delete(@PathParam("id") UUID id)
+	public Location delete(@PathParam("id") UUID id)
 	{
 		return locationService.delete(id);
 	}

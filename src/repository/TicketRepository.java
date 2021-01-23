@@ -30,16 +30,15 @@ public class TicketRepository extends Repository<Ticket> {
 	}
 	
 	@Override
-	public boolean delete(UUID entityID) {
-		Ticket ticketForDelition = entities.read(entityID);
-		boolean isDeleted = entities.remove(entityID);
+	public Ticket delete(UUID entityID) {
+		Ticket ticketForDelition = entities.remove(entityID);
 		
-		if(isDeleted == true) {
+		if(ticketForDelition != null) {
 			ticketForDelition.getBuyer().getTickets().remove(ticketForDelition);
 			entities.save();
 		}
-		
-		return isDeleted;
+		// TODO: EXCEPTION
+		return ticketForDelition;
 	}
 
 	private void loadDependencies(Ticket comment) {

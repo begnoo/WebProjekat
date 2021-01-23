@@ -84,13 +84,8 @@ public class UserService extends CrudService<User> implements IUserService {
 		if(user.getRole() == UserRole.Seller) {
 			blockSeller((Seller)user);
 		}
-		
-		boolean isDeleted = super.delete(userId);
-		if(!isDeleted) {
-			return null;
-		}
-		
-		return user;
+				
+		return super.delete(userId);
 	}
 	
 	private void blockBuyer(Buyer buyer) {

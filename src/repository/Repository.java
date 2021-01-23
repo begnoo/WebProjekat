@@ -46,14 +46,15 @@ public class Repository<T extends BaseEntity> implements IRepository<T>{
 	}
 
 	@Override
-	public boolean delete(UUID entityID) {
-		boolean isDeleted = entities.remove(entityID);
+	public T delete(UUID entityID) {
+		T deletedEntity = entities.remove(entityID);
 		
-		if(isDeleted == true) {
+		// TODO: THROW EXCEPTION
+		if(deletedEntity != null) {
 			entities.save();
 		}
 		
-		return isDeleted;
+		return deletedEntity;
 	}
 
 	@Override

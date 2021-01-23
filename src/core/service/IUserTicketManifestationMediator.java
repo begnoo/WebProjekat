@@ -15,7 +15,7 @@ public interface IUserTicketManifestationMediator {
 
 	List<Ticket> readTicketsByManifestaionId(UUID manifestationId);
 	
-	boolean deleteTicket(UUID ticketId);
+	Ticket deleteTicket(UUID ticketId);
 
 	// To -> User
 	User readUser(UUID userId);
@@ -27,6 +27,6 @@ public interface IUserTicketManifestationMediator {
 	
 	Manifestation readManifestation(UUID manifestationId);
 	
-	boolean deleteManifestation(UUID manifestationId);
+	Manifestation deleteManifestation(UUID manifestationId);
 
 }

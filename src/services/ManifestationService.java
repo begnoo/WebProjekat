@@ -105,11 +105,11 @@ public class ManifestationService extends CrudService<Manifestation> implements 
 	}
 
 	@Override
-	public boolean delete(UUID manifestationId)
+	public Manifestation delete(UUID manifestationId)
 	{
 		Manifestation manifestation = repository.read(manifestationId);
 		if(manifestation == null) {
-			return false;
+			return null;
 		}
 		
 		List<Ticket> manifestationTickets = mediator.readTicketsByManifestaionId(manifestationId);

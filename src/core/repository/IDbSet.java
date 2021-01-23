@@ -12,7 +12,7 @@ public interface IDbSet<T extends BaseEntity> {
 	
 	T read(UUID id);
 	
-	boolean remove(UUID id);
+	T remove(UUID id);
 	
 	void save();
 	

@@ -128,7 +128,7 @@ public class ManifestationServlet extends AbstractServletBase {
 	@DELETE
 	@Path("manifestations/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean delete(@PathParam("id") UUID id)
+	public Manifestation delete(@PathParam("id") UUID id)
 	{
 		return manifestationService.delete(id);
 	}

@@ -31,16 +31,15 @@ public class ManifestationRepository extends Repository<Manifestation> {
 	}
 	
 	@Override
-	public boolean delete(UUID entityID) {
-		Manifestation manifestationForDelition = entities.read(entityID);
-		boolean isDeleted = entities.remove(entityID);
+	public Manifestation delete(UUID manifestationId) {
+		Manifestation deletedManifestation = entities.remove(manifestationId);
 		
-		if(isDeleted == true) {
-			manifestationForDelition.getSeller().getManifestations().remove(manifestationForDelition);
+		if(deletedManifestation != null) {
+			deletedManifestation.getSeller().getManifestations().remove(deletedManifestation);
 			entities.save();
 		}
-		
-		return isDeleted;
+		// TODO: EXCEPTION?
+		return deletedManifestation;
 	}
 	
 	private void loadDependencies(Manifestation comment) {

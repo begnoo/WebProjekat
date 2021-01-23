@@ -56,7 +56,7 @@ public class UserTicketManifestationMediator implements IUserTicketManifestation
 	}
 
 	@Override
-	public boolean deleteTicket(UUID ticketId) {
+	public Ticket deleteTicket(UUID ticketId) {
 		return ticketService.delete(ticketId);
 	}
 
@@ -81,7 +81,7 @@ public class UserTicketManifestationMediator implements IUserTicketManifestation
 	}
 
 	@Override
-	public boolean deleteManifestation(UUID manifestationId) {
+	public Manifestation deleteManifestation(UUID manifestationId) {
 		return manifestationService.delete(manifestationId);
 	}
 }

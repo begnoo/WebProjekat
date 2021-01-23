@@ -78,15 +78,15 @@ public class DbSet<T extends BaseEntity> implements IDbSet<T> {
 
 
 	@Override
-	public boolean remove(UUID id) {
+	public T remove(UUID id) {
 		T entityForRemoval = entities.get(id);
 		
 		if(entityForRemoval == null || !entityForRemoval.isActive()) {
-			return false;
+			return null;
 		}
 		
 		entityForRemoval.setActive(false);
-		return true;
+		return entityForRemoval;
 	}
 
 	@Override

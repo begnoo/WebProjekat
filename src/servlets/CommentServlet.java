@@ -142,7 +142,7 @@ public class CommentServlet extends AbstractServletBase {
 	@DELETE
 	@Path("comments/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean delete(@PathParam("id") UUID id)
+	public Comment delete(@PathParam("id") UUID id)
 	{
 		return commentService.delete(id);
 	}

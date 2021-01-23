@@ -35,7 +35,7 @@ public class CrudService<T extends BaseEntity> implements ICrudService<T> {
 	}
 
 	@Override
-	public boolean delete(UUID entityID) {
+	public T delete(UUID entityID) {
 		return repository.delete(entityID);
 	}
 }

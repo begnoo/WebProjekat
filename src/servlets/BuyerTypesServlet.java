@@ -91,7 +91,7 @@ public class BuyerTypesServlet extends AbstractServletBase {
 	@DELETE
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean delete(@PathParam("id") UUID id)
+	public BuyerType delete(@PathParam("id") UUID id)
 	{
 		return buyerTypeService.delete(id);
 	}

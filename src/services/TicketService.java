@@ -96,10 +96,10 @@ public class TicketService extends CrudService<Ticket> implements ITicketService
 	}
 	
 	@Override
-	public boolean delete(UUID ticketId) {
+	public Ticket delete(UUID ticketId) {
 		Ticket ticket = repository.read(ticketId);
 		if(ticket == null) {
-			return false;
+			return null;
 		}
 		
 		boolean hasNotStarted = ticket.getManifestationDate().isAfter(LocalDateTime.now());
