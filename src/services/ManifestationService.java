@@ -5,18 +5,25 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import core.domain.models.Comment;
 import core.domain.models.Location;
 import core.domain.models.Manifestation;
+import core.domain.models.Ticket;
 import core.repository.IRepository;
+import core.service.ICommentService;
 import core.service.IManifestationService;
+import core.service.IUserTicketManifestationMediator;
 
 public class ManifestationService extends CrudService<Manifestation> implements IManifestationService {
 	private IRepository<Location> locationRepository;
-
-
-	public ManifestationService(IRepository<Manifestation> repository, IRepository<Location> locationRepository) {
+	private ICommentService commentService;
+	private IUserTicketManifestationMediator mediator;
+	
+	public ManifestationService(IRepository<Manifestation> repository, IRepository<Location> locationRepository, ICommentService commentService, IUserTicketManifestationMediator mediator) {
 		super(repository);
 		this.locationRepository = locationRepository;
+		this.commentService = commentService;
+		this.mediator = mediator;
 	}
 
 	@Override
@@ -34,7 +41,6 @@ public class ManifestationService extends CrudService<Manifestation> implements 
 				.filter(manifestation -> manifestation.getLocationId().equals(locationId))
 				.collect(Collectors.toList());
 	}
-
 
 	@Override
 	public Manifestation create(Manifestation manifestation) {
@@ -98,6 +104,27 @@ public class ManifestationService extends CrudService<Manifestation> implements 
 		return !firstManifestationStartNotOverlaping && !secondManifestationStartNotOverlaping;
 	}
 
+	@Override
+	public boolean delete(UUID manifestationId)
+	{
+		Manifestation manifestation = repository.read(manifestationId);
+		if(manifestation == null) {
+			return false;
+		}
+		
+		List<Ticket> manifestationTickets = mediator.readTicketsByManifestaionId(manifestationId);
+		for(Ticket ticket : manifestationTickets) {
+			mediator.deleteTicket(ticket.getId());
+		}
+		
+		List<Comment> manifestationComments = commentService.readByManifestationId(manifestationId);
+		for(Comment comment : manifestationComments) {
+			commentService.delete(comment.getId());
+		}
+		
+		return super.delete(manifestationId);
+	}
+	
 	@Override
 	public Manifestation updateNumberOfSeats(Manifestation manifestation, int additionalSeats) {
 		int newNumberOfManifestationSeats = manifestation.getSeats() + additionalSeats;

@@ -25,10 +25,8 @@ import core.domain.enums.UserRole;
 import core.domain.models.Buyer;
 import core.domain.models.BuyerType;
 import core.domain.models.Comment;
-import core.domain.models.Location;
 import core.domain.models.Manifestation;
 import core.domain.models.Seller;
-import core.domain.models.Ticket;
 import core.domain.models.User;
 import core.repository.IRepository;
 import core.requests.users.ChangePasswordRequest;
@@ -42,20 +40,19 @@ import core.responses.users.WholeUserObjectResponseBase;
 import core.service.IAdvanceSearchService;
 import core.service.IBuyerTypeService;
 import core.service.ICommentService;
-import core.service.IManifestationService;
 import core.service.IPaginationService;
+import core.service.IUserService;
+import core.service.IUserTicketManifestationMediator;
 import repository.CommentRepository;
 import repository.DbContext;
 import repository.ManifestationRepository;
 import repository.Repository;
-import repository.TicketRepository;
 import repository.UserRepository;
 import services.BuyerTypeService;
 import services.CommentService;
-import services.ManifestationService;
 import services.PaginationService;
-import services.TicketService;
 import services.UserService;
+import services.UserTicketManifestationMediator;
 import services.UsersSearchService;
 
 @Path("/")
@@ -64,7 +61,7 @@ public class UsersServlet extends AbstractServletBase {
 	@Context
 	ServletContext servletContext;
 	
-	private UserService userService;
+	private IUserService userService;
 	private IAdvanceSearchService<User, UsersSearchParamethers> searchService;
 	private IPaginationService<User> paginationService;
 
@@ -77,21 +74,16 @@ public class UsersServlet extends AbstractServletBase {
 	public void init()
 	{
 		DbContext context = (DbContext) servletContext.getAttribute("DbContext");
+		IUserTicketManifestationMediator mediator = new UserTicketManifestationMediator(context);
 		IRepository<User> userRepository = new UserRepository(context);
 		IRepository<BuyerType> buyerTypeRepository = new Repository<BuyerType>(context, BuyerType.class);
-		IRepository<Ticket> ticketRepository = new TicketRepository(context);
 		IRepository<Comment> commentRepository = new CommentRepository(context);
 		IRepository<Manifestation> manifestationRepository = new ManifestationRepository(context);
-		IRepository<Location> locationRepository = new Repository<Location>(context, Location.class);
+		
 		IBuyerTypeService buyerTypeService = new BuyerTypeService(buyerTypeRepository);
 		ICommentService commentService = new CommentService(commentRepository, manifestationRepository, userRepository);
+		userService = new UserService(userRepository, buyerTypeService, commentService, mediator);
 		
-		userService = new UserService(userRepository, buyerTypeService, commentService);
-		
-		IManifestationService manifestationService = new ManifestationService(manifestationRepository, locationRepository);
-		TicketService ticketService = new TicketService(ticketRepository, userService, manifestationService);
-		userService.setTicketService(ticketService);
-
 		paginationService = new PaginationService<User>();
 		searchService = new UsersSearchService(userRepository);
 	}

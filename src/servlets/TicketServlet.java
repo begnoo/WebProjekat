@@ -23,34 +23,26 @@ import core.domain.dto.TicketOrder;
 import core.domain.dto.TicketsSearchParamethers;
 import core.domain.enums.TicketType;
 import core.domain.models.BuyerType;
-import core.domain.models.Comment;
-import core.domain.models.Location;
 import core.domain.models.Manifestation;
 import core.domain.models.Ticket;
 import core.domain.models.User;
 import core.repository.IRepository;
 import core.responses.tickets.WholeTicketObjectResponse;
 import core.service.IAdvanceSearchService;
-import core.service.IBuyerTypeService;
-import core.service.ICommentService;
-import core.service.IManifestationService;
 import core.service.IPaginationService;
 import core.service.ITicketOrderService;
 import core.service.ITicketService;
-import repository.CommentRepository;
+import core.service.IUserTicketManifestationMediator;
 import repository.DbContext;
 import repository.ManifestationRepository;
 import repository.Repository;
 import repository.TicketRepository;
 import repository.UserRepository;
-import services.BuyerTypeService;
-import services.CommentService;
-import services.ManifestationService;
 import services.PaginationService;
 import services.TicketOrderService;
 import services.TicketService;
 import services.TicketsSearchService;
-import services.UserService;
+import services.UserTicketManifestationMediator;
 
 @Path("/")
 public class TicketServlet extends AbstractServletBase {
@@ -70,22 +62,14 @@ public class TicketServlet extends AbstractServletBase {
 	@PostConstruct
 	public void init() {
 		DbContext context = (DbContext) servletContext.getAttribute("DbContext");
+		IUserTicketManifestationMediator mediator = new UserTicketManifestationMediator(context);
 		IRepository<Ticket> ticketRepository = new TicketRepository(context);
 		IRepository<User> userRepository = new UserRepository(context);
 		IRepository<BuyerType> buyerTypeRepository = new Repository<BuyerType>(context, BuyerType.class);
 		IRepository<Manifestation> manifestationRepository = new ManifestationRepository(context);
-		IRepository<Location> locationRepository = new Repository<Location>(context, Location.class);
-		IRepository<Comment> commentRepository = new CommentRepository(context);
 		
-		ICommentService commentService = new CommentService(commentRepository, manifestationRepository, userRepository);
-		IBuyerTypeService buyerTypeService = new BuyerTypeService(buyerTypeRepository);
-		UserService userService = new UserService(userRepository, buyerTypeService, commentService);
-		IManifestationService manifestationService = new ManifestationService(manifestationRepository, locationRepository);
-		
-		ticketService = new TicketService(ticketRepository, userService, manifestationService);
+		ticketService = new TicketService(ticketRepository, mediator);
 		ticketOrderService = new TicketOrderService(ticketService, userRepository, manifestationRepository, buyerTypeRepository);
-		
-		userService.setTicketService(ticketService);
 		
 		searchService = new TicketsSearchService(ticketRepository);
 		paginationService = new PaginationService<Ticket>();

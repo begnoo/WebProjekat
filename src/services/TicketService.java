@@ -12,21 +12,17 @@ import core.domain.models.Manifestation;
 import core.domain.models.Seller;
 import core.domain.models.Ticket;
 import core.repository.IRepository;
-import core.service.IManifestationService;
 import core.service.ITicketService;
-import core.service.IUserService;
+import core.service.IUserTicketManifestationMediator;
 import services.utils.RandomUtils;
 
 public class TicketService extends CrudService<Ticket> implements ITicketService {
-
-	IUserService userService;
-	IManifestationService manifestationService;
+	private IUserTicketManifestationMediator mediator;
 	
-	public TicketService(IRepository<Ticket> repository, IUserService userService,
-			IManifestationService manifestationService) {
+	public TicketService(IRepository<Ticket> repository, IUserTicketManifestationMediator mediator) {
 		super(repository);
-		this.userService = userService;
-		this.manifestationService = manifestationService;
+		
+		this.mediator = mediator;
 	}
 
 	@Override
@@ -52,7 +48,7 @@ public class TicketService extends CrudService<Ticket> implements ITicketService
 
 	@Override
 	public List<Ticket> readReservedTicketsOfSellersManifestations(UUID sellerId) {
-		Seller seller = (Seller) userService.read(sellerId);
+		Seller seller = (Seller) mediator.readUser(sellerId);
 		if (seller == null) {
 			return null;
 		}
@@ -77,13 +73,13 @@ public class TicketService extends CrudService<Ticket> implements ITicketService
 	@Override
 	public Ticket create(Ticket ticket) {		
 		Manifestation manifestation = ticket.getManifestation();		
-		if(manifestationService.updateNumberOfSeats(manifestation, -1) == null) {
+		if(mediator.updateNumberOfSeats(manifestation, -1) == null) {
 			return null;
 		}
 		
 		Buyer buyer = ticket.getBuyer();
 		int earnedPoints = getPointValue(ticket.getPrice());
-		userService.updateBuyerPointsFor(buyer, earnedPoints);
+		mediator.updateBuyerPointsFor(buyer, earnedPoints);
 		
 		ticket.setStatus(TicketStatus.Reserved);
 		String uniqueId = "";
@@ -134,12 +130,12 @@ public class TicketService extends CrudService<Ticket> implements ITicketService
 	}
 	
 	private void returnSeatsAndTakeUserPoints(Ticket ticket, int pointCoenficient) {
-		Manifestation manifestation = manifestationService.read(ticket.getManifestationId());
-		manifestationService.updateNumberOfSeats(manifestation, 1);
+		Manifestation manifestation = mediator.readManifestation(ticket.getManifestationId());
+		mediator.updateNumberOfSeats(manifestation, 1);
 
 		Buyer buyer = ticket.getBuyer();
 		int penaltyPoints = getPointValue(ticket.getPrice()) * pointCoenficient;
-		userService.updateBuyerPointsFor(buyer, penaltyPoints);
+		mediator.updateBuyerPointsFor(buyer, penaltyPoints);
 	}
 	
 	private int getPointValue(int price) {

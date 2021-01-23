@@ -18,20 +18,28 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import core.domain.dto.Page;
+import core.domain.models.Comment;
 import core.domain.models.Location;
 import core.domain.models.Manifestation;
+import core.domain.models.User;
 import core.repository.IRepository;
 import core.requests.locations.CreateLocationRequest;
 import core.requests.locations.UpdateLocationRequest;
+import core.service.ICommentService;
 import core.service.ICrudService;
 import core.service.IManifestationService;
 import core.service.IPaginationService;
+import core.service.IUserTicketManifestationMediator;
+import repository.CommentRepository;
 import repository.DbContext;
 import repository.ManifestationRepository;
 import repository.Repository;
+import repository.UserRepository;
+import services.CommentService;
 import services.LocationService;
 import services.ManifestationService;
 import services.PaginationService;
+import services.UserTicketManifestationMediator;
 
 @Path("locations")
 public class LocationsServlet extends AbstractServletBase {
@@ -50,9 +58,13 @@ public class LocationsServlet extends AbstractServletBase {
 	public void init()
 	{
 		DbContext context = (DbContext) servletContext.getAttribute("DbContext");
+		IUserTicketManifestationMediator mediator = new UserTicketManifestationMediator(context);
 		IRepository<Location> locationRepository = new Repository<Location>(context, Location.class);
 		IRepository<Manifestation> manifestationRepository = new ManifestationRepository(context);
-		IManifestationService manifestationService = new ManifestationService(manifestationRepository, locationRepository);
+		IRepository<Comment> commentRepository = new CommentRepository(context);
+		IRepository<User> userRepository = new UserRepository(context);
+		ICommentService commentService = new CommentService(commentRepository, manifestationRepository, userRepository);
+		IManifestationService manifestationService = new ManifestationService(manifestationRepository, locationRepository, commentService, mediator);
 		locationService = new LocationService(locationRepository, manifestationService);
 		paginationService = new PaginationService<Location>();	
 	}

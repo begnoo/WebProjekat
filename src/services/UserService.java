@@ -10,24 +10,27 @@ import core.domain.enums.UserRole;
 import core.domain.models.Buyer;
 import core.domain.models.BuyerType;
 import core.domain.models.Comment;
+import core.domain.models.Manifestation;
+import core.domain.models.Seller;
 import core.domain.models.Ticket;
 import core.domain.models.User;
 import core.repository.IRepository;
 import core.service.IBuyerTypeService;
 import core.service.ICommentService;
-import core.service.ITicketService;
 import core.service.IUserService;
+import core.service.IUserTicketManifestationMediator;
 
 public class UserService extends CrudService<User> implements IUserService {
 
 	private IBuyerTypeService buyerTypeService;
-	private ITicketService ticketService;
 	private ICommentService commentService;
+	private IUserTicketManifestationMediator mediator;
 	
-	public UserService(IRepository<User> repository, IBuyerTypeService buyerTypeService, ICommentService commentService) {
+	public UserService(IRepository<User> repository, IBuyerTypeService buyerTypeService, ICommentService commentService, IUserTicketManifestationMediator mediator) {
 		super(repository);
 		this.buyerTypeService = buyerTypeService;
 		this.commentService = commentService;
+		this.mediator = mediator;
 	}
 	
 	@Override
@@ -78,6 +81,10 @@ public class UserService extends CrudService<User> implements IUserService {
 			blockBuyer((Buyer)user);
 		}
 		
+		if(user.getRole() == UserRole.Seller) {
+			blockSeller((Seller)user);
+		}
+		
 		boolean isDeleted = super.delete(userId);
 		if(!isDeleted) {
 			return null;
@@ -93,11 +100,17 @@ public class UserService extends CrudService<User> implements IUserService {
 			commentService.delete(comment.getId());
 		}
 		
-		List<Ticket> buyerTickets = ticketService.readByBuyerId(buyerId);
+		List<Ticket> buyerTickets = mediator.readTicketsByBuyerId(buyerId);
 		for(Ticket ticket : buyerTickets) {
-			ticketService.delete(ticket.getId());
+			mediator.deleteTicket(ticket.getId());
 		}
 
+	}
+	
+	private void blockSeller(Seller seller) {
+		for(Manifestation manifestation : seller.getManifestations()) {
+			mediator.deleteManifestation(manifestation.getId());
+		}
 	}
 
 	@Override
@@ -150,9 +163,4 @@ public class UserService extends CrudService<User> implements IUserService {
 		
 		return Math.max(0, newPoints);
 	}
-	
-	public void setTicketService(ITicketService ticketService) {
-		this.ticketService = ticketService;
-	}
-
 }
