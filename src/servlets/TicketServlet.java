@@ -29,6 +29,7 @@ import core.service.IAdvanceSearchService;
 import core.service.IPaginationService;
 import core.service.ITicketOrderService;
 import core.service.ITicketService;
+import core.servlets.exceptions.NotFoundException;
 import repository.DbContext;
 import repository.TicketRepository;
 import services.PaginationService;
@@ -76,6 +77,9 @@ public class TicketServlet extends AbstractServletBase {
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeTicketObjectResponse readById(@PathParam("id") UUID id) {
 		Ticket ticket = ticketService.read(id);
+		if(ticket == null) {
+			throw new NotFoundException("Ticket does not exists.");
+		}
 		
 		return generateTicketObjectResponse(ticket);
 	}

@@ -27,6 +27,7 @@ import core.responses.manifestations.WholeManifestationObjectResponse;
 import core.service.IAdvanceSearchService;
 import core.service.IManifestationService;
 import core.service.IPaginationService;
+import core.servlets.exceptions.NotFoundException;
 import repository.DbContext;
 import repository.ManifestationRepository;
 import services.ManifestationSearchService;
@@ -77,6 +78,9 @@ public class ManifestationServlet extends AbstractServletBase {
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeManifestationObjectResponse readById(@PathParam("id") UUID id) {
 		Manifestation manifestation = manifestationService.read(id);
+		if(manifestation == null) {
+			throw new NotFoundException("Manifestation does not exists.");
+		}
 		
 		return generateManifestationObjectResponse(manifestation);
 	}
@@ -115,7 +119,7 @@ public class ManifestationServlet extends AbstractServletBase {
 
 		Manifestation manifestation = manifestationService.read(request.getId());
 		if(manifestation == null) {
-			return null;
+			throw new NotFoundException("Manifestation does not exists.");
 		}
 		
 		Manifestation manifestationForUpdate = mapper.Map(manifestation, request);

@@ -23,6 +23,7 @@ import core.requests.locations.CreateLocationRequest;
 import core.requests.locations.UpdateLocationRequest;
 import core.service.ILocationService;
 import core.service.IPaginationService;
+import core.servlets.exceptions.NotFoundException;
 import repository.DbContext;
 import services.PaginationService;
 
@@ -64,7 +65,12 @@ public class LocationsServlet extends AbstractServletBase {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Location readById(@PathParam("id") UUID id)
 	{
-		return locationService.read(id);
+		Location location = locationService.read(id);
+		if(location == null) {
+			throw new NotFoundException("Location does not exists.");
+		}
+
+		return location;
 	}
 	
 	@POST
@@ -90,7 +96,7 @@ public class LocationsServlet extends AbstractServletBase {
 
 		Location location = locationService.read(request.getId());
 		if(location == null) {
-			return null;
+			throw new NotFoundException("Location does not exists.");
 		}
 		Location LocationForUpdate = mapper.Map(location, request);
 		

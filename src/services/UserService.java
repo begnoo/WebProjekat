@@ -62,8 +62,7 @@ public class UserService extends CrudService<User> implements IUserService {
 			throw new MissingEntityException(String.format("User with id = %s does not exists.", userId));
 		}
 		
-		if(!user.getPassword().equals(currentPassword))
-		{
+		if(!user.getPassword().equals(currentPassword)) {
 			throw new BadLogicException("Given password does not match current password.");
 		}
 		

@@ -1,15 +1,10 @@
 package servlets;
 
-import java.util.UUID;
-
-import javax.servlet.http.HttpServletRequest;
-
 import core.domain.models.Address;
 import core.requests.locations.CreateAddressRequest;
 import core.requests.locations.UpdateAddressRequest;
 import core.service.IJwtService;
 import core.service.IServiceFactory;
-import core.servlets.exceptions.UnauthorizedException;
 import core.servlets.mappers.IMapper;
 import core.servlets.validators.IObjectValidator;
 import core.servlets.validators.IValidatorFactory;
@@ -39,23 +34,5 @@ public abstract class AbstractServletBase {
 		IObjectValidator<?> validator = validatorFactory.getValidator(request);
 		
 		validator.validate();
-	}
-	
-	protected UUID isAuthorized(HttpServletRequest request)
-	{
-		String authorization = (String) request.getHeader("Authorization");
-		if(authorization == null || !authorization.startsWith("Bearer "))
-		{
-			throw new UnauthorizedException();
-		}
-		
-		String token = authorization.substring(7);
-		UUID authenticatedUserId = jwtService.getUserIdDromJwtToken(token);
-		if(authenticatedUserId == null)
-		{
-			throw new UnauthorizedException();
-		}
-		
-		return authenticatedUserId;
 	}
 }

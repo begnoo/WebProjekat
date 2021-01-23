@@ -42,8 +42,7 @@ public class AuthorizationServlet extends AbstractServletBase {
 		super.validateRequest(credidentals);
 		
 		AuthorizedUser authorizedUser = authorizationService.authorize(credidentals);
-		if(authorizedUser == null)
-		{
+		if(authorizedUser == null) {
 			throw new UnauthorizedException("Combination of username and password does not match any account.");
 		}
 		

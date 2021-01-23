@@ -27,6 +27,7 @@ import core.requests.comments.UpdateCommentRequest;
 import core.responses.comments.WholeCommentObjectResponse;
 import core.service.ICommentService;
 import core.service.IPaginationService;
+import core.servlets.exceptions.NotFoundException;
 import repository.DbContext;
 import services.PaginationService;
 
@@ -67,10 +68,12 @@ public class CommentServlet extends AbstractServletBase {
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeCommentObjectResponse readById(@PathParam("id") UUID id) {
 		Comment comment = commentService.read(id);
+		if(comment == null) {
+			throw new NotFoundException("Comment does not exists.");
+		}
 		
 		return generateCommentObjectResponse(comment);
 	}
-	
 	
 	@GET
 	@Path("manifestations/{manifestationId}/comments")
@@ -130,7 +133,7 @@ public class CommentServlet extends AbstractServletBase {
 		
 		Comment comment = commentService.read(request.getId());
 		if(comment == null) {
-			return null;
+			throw new NotFoundException("Comment does not exists.");
 		}
 		Comment commentForUpdate = mapper.Map(comment, request);
 

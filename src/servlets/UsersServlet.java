@@ -101,9 +101,8 @@ public class UsersServlet extends AbstractServletBase {
 	public WholeUserObjectResponseBase readById(@PathParam("id") UUID id)
 	{
 		User user = userService.read(id);
-		if(user == null)
-		{
-			throw new NotFoundException("User not found.");
+		if(user == null) {
+			throw new NotFoundException("User does not exists.");
 		}
 				
 		return generateUserObjectResponse(user);
@@ -160,7 +159,7 @@ public class UsersServlet extends AbstractServletBase {
 
 		User user = userService.read(request.getId());
 		if(user == null) {
-			return null;
+			throw new NotFoundException("User does not exists.");
 		}
 		
 		User userForUpdate = mapper.Map(user, request);
@@ -179,10 +178,6 @@ public class UsersServlet extends AbstractServletBase {
 		super.validateRequest(request);
 		
 		User updatedUser = userService.changePassword(id, request.getNewPassword(), request.getCurrentPassword());
-		
-		if(updatedUser == null) {
-			return null;
-		}
 		
 		return generateUserObjectResponse(updatedUser);
 	}

@@ -20,6 +20,7 @@ import core.domain.models.BuyerType;
 import core.requests.buyerTypes.CreateBuyerTypeRequest;
 import core.requests.buyerTypes.UpdateBuyerTypeRequest;
 import core.service.IBuyerTypeService;
+import core.servlets.exceptions.NotFoundException;
 import repository.DbContext;
 
 @Path("buyer-type")
@@ -55,7 +56,12 @@ public class BuyerTypesServlet extends AbstractServletBase {
 	@Produces(MediaType.APPLICATION_JSON)
 	public BuyerType readById(@PathParam("id") UUID id)
 	{
-		return buyerTypeService.read(id);
+		BuyerType buyerType = buyerTypeService.read(id);
+		if(buyerType == null) {
+			throw new NotFoundException("BuyerType does not exists.");
+		}
+		
+		return buyerType;
 	}
 	
 	@POST
@@ -81,7 +87,7 @@ public class BuyerTypesServlet extends AbstractServletBase {
 
 		BuyerType buyerType = buyerTypeService.read(request.getId());
 		if(buyerType == null) {
-			return null;
+			throw new NotFoundException("BuyerType does not exists.");
 		}
 		BuyerType buyerTypeForUpdate = mapper.Map(buyerType, request);
 		
