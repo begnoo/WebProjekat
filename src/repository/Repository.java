@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import core.domain.models.BaseEntity;
+import core.exceptions.MissingEntityException;
 import core.repository.IDbSetStream;
 import core.repository.IRepository;
 
@@ -49,9 +50,10 @@ public class Repository<T extends BaseEntity> implements IRepository<T>{
 	public T delete(UUID entityID) {
 		T deletedEntity = entities.remove(entityID);
 		
-		// TODO: THROW EXCEPTION
 		if(deletedEntity != null) {
 			entities.save();
+		} else {
+			throw new MissingEntityException("Entity does not exist");
 		}
 		
 		return deletedEntity;

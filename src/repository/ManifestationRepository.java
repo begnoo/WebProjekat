@@ -3,6 +3,7 @@ package repository;
 import java.util.UUID;
 
 import core.domain.models.Manifestation;
+import core.exceptions.MissingEntityException;
 import core.repository.IDependencyLoader;
 import repository.utils.loaders.single.ManifestationDependencyLoader;
 
@@ -34,11 +35,13 @@ public class ManifestationRepository extends Repository<Manifestation> {
 	public Manifestation delete(UUID manifestationId) {
 		Manifestation deletedManifestation = entities.remove(manifestationId);
 		
-		if(deletedManifestation != null) {
-			deletedManifestation.getSeller().getManifestations().remove(deletedManifestation);
-			entities.save();
+		if(deletedManifestation == null) {
+			throw new MissingEntityException("Manifestation does not exist");
 		}
-		// TODO: EXCEPTION?
+		
+		deletedManifestation.getSeller().getManifestations().remove(deletedManifestation);
+		entities.save();
+
 		return deletedManifestation;
 	}
 	

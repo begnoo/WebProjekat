@@ -3,6 +3,7 @@ package repository;
 import java.util.UUID;
 
 import core.domain.models.Ticket;
+import core.exceptions.MissingEntityException;
 import core.repository.IDependencyLoader;
 import repository.utils.loaders.single.TicketDependencyLoader;
 
@@ -33,11 +34,13 @@ public class TicketRepository extends Repository<Ticket> {
 	public Ticket delete(UUID entityID) {
 		Ticket ticketForDelition = entities.remove(entityID);
 		
-		if(ticketForDelition != null) {
-			ticketForDelition.getBuyer().getTickets().remove(ticketForDelition);
-			entities.save();
+		if(ticketForDelition == null) {
+			throw new MissingEntityException("Ticket does not exist");
 		}
-		// TODO: EXCEPTION
+		
+		ticketForDelition.getBuyer().getTickets().remove(ticketForDelition);
+		entities.save();
+		
 		return ticketForDelition;
 	}
 

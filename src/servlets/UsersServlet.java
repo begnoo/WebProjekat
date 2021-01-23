@@ -198,12 +198,7 @@ public class UsersServlet extends AbstractServletBase {
 	}
 		
 	private WholeUserObjectResponseBase generateUserObjectResponse(User user)
-	{
-		if(user == null)
-		{
-			return null; // TODO: REMOVE
-		}
-		
+	{	
 		if(user.getRole() == UserRole.Buyer) {
 			return mapper.Map(new WholeBuyerObjectResponse(), user);
 		} else if (user.getRole() == UserRole.Seller) {

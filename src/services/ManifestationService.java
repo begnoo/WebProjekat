@@ -9,6 +9,8 @@ import core.domain.models.Comment;
 import core.domain.models.Location;
 import core.domain.models.Manifestation;
 import core.domain.models.Ticket;
+import core.exceptions.BadLogicException;
+import core.exceptions.MissingEntityException;
 import core.repository.IRepository;
 import core.service.ICommentService;
 import core.service.IManifestationService;
@@ -46,12 +48,12 @@ public class ManifestationService extends CrudService<Manifestation> implements 
 	public Manifestation create(Manifestation manifestation) {
 				
 		if(!checkIfLocationExists(manifestation.getLocationId())) {
-			return null;
+			throw new MissingEntityException(String.format("Location with id = %s does not exists.", manifestation.getLocationId()));
 		}
 		
 		List<Manifestation> manifestationsWithSameLocationAndOverlapingEventDate = readWithSameLocationAndOverlapingEventDate(manifestation);
 		if (!manifestationsWithSameLocationAndOverlapingEventDate.isEmpty()) {
-			return null;
+			throw new BadLogicException("There is already manifestation on given location at that time.");
 		}
 		
 		manifestation.setImagePath("../WebProjekat/rest/images/default.jpg");
@@ -61,9 +63,8 @@ public class ManifestationService extends CrudService<Manifestation> implements 
 
 	@Override
 	public Manifestation update(Manifestation manifestationForUpdate) {
-		
 		if(!checkIfLocationExists(manifestationForUpdate.getLocationId())) {
-			return null;
+			throw new MissingEntityException(String.format("Location with id = %s does not exists.", manifestationForUpdate.getLocationId()));
 		}
 
 		List<Manifestation> manifestationsWithSameLocationAndOverlapingEventDateWithoutThisOne = readWithSameLocationAndOverlapingEventDate(manifestationForUpdate)
@@ -72,7 +73,7 @@ public class ManifestationService extends CrudService<Manifestation> implements 
 				.collect(Collectors.toList());
 		
 		if (!manifestationsWithSameLocationAndOverlapingEventDateWithoutThisOne.isEmpty()) {
-			return null;
+			throw new BadLogicException("There is already manifestation on given location at that time.");
 		}
 		
 		return repository.update(manifestationForUpdate);
@@ -109,7 +110,7 @@ public class ManifestationService extends CrudService<Manifestation> implements 
 	{
 		Manifestation manifestation = repository.read(manifestationId);
 		if(manifestation == null) {
-			return null;
+			throw new MissingEntityException(String.format("Manifestation with id = %s does not exists.", manifestationId));
 		}
 		
 		List<Ticket> manifestationTickets = mediator.readTicketsByManifestaionId(manifestationId);

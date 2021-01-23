@@ -11,6 +11,8 @@ import core.domain.models.Buyer;
 import core.domain.models.Manifestation;
 import core.domain.models.Seller;
 import core.domain.models.Ticket;
+import core.exceptions.BadLogicException;
+import core.exceptions.MissingEntityException;
 import core.repository.IRepository;
 import core.service.ITicketService;
 import core.service.IUserTicketManifestationMediator;
@@ -50,7 +52,7 @@ public class TicketService extends CrudService<Ticket> implements ITicketService
 	public List<Ticket> readReservedTicketsOfSellersManifestations(UUID sellerId) {
 		Seller seller = (Seller) mediator.readUser(sellerId);
 		if (seller == null) {
-			return null;
+			throw new MissingEntityException(String.format("Seller with id = %s does not exists.", sellerId));
 		}
 
 		List<Ticket> tickets = new ArrayList<>();
@@ -74,7 +76,7 @@ public class TicketService extends CrudService<Ticket> implements ITicketService
 	public Ticket create(Ticket ticket) {		
 		Manifestation manifestation = ticket.getManifestation();		
 		if(mediator.updateNumberOfSeats(manifestation, -1) == null) {
-			return null;
+			throw new BadLogicException("There is not enough seats left.");
 		}
 		
 		Buyer buyer = ticket.getBuyer();
@@ -99,7 +101,7 @@ public class TicketService extends CrudService<Ticket> implements ITicketService
 	public Ticket delete(UUID ticketId) {
 		Ticket ticket = repository.read(ticketId);
 		if(ticket == null) {
-			return null;
+			throw new MissingEntityException(String.format("Ticket with id = %s does not exists.", ticketId));
 		}
 		
 		boolean hasNotStarted = ticket.getManifestationDate().isAfter(LocalDateTime.now());
@@ -113,8 +115,12 @@ public class TicketService extends CrudService<Ticket> implements ITicketService
 	@Override
 	public Ticket cancelTicket(UUID ticketId) {
 		Ticket ticket = repository.read(ticketId);
-		if(ticket == null || !checkIfNowIsSevenDaysBeforeEventDate(ticket.getManifestationDate())) {
-			return null;
+		if(ticket == null) {
+			throw new MissingEntityException(String.format("Ticket with id = %s does not exists.", ticketId));
+		}
+
+		if(!checkIfNowIsSevenDaysBeforeEventDate(ticket.getManifestationDate())) {
+			throw new BadLogicException("You can not cancel you ticket anymore.");
 		}
 			
 		returnSeatsAndTakeUserPoints(ticket, -4);

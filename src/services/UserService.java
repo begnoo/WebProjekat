@@ -14,6 +14,8 @@ import core.domain.models.Manifestation;
 import core.domain.models.Seller;
 import core.domain.models.Ticket;
 import core.domain.models.User;
+import core.exceptions.BadLogicException;
+import core.exceptions.MissingEntityException;
 import core.repository.IRepository;
 import core.service.IBuyerTypeService;
 import core.service.ICommentService;
@@ -35,9 +37,8 @@ public class UserService extends CrudService<User> implements IUserService {
 	
 	@Override
 	public User create(User user) {
-		
 		if(!isUsernameUnique(user.getUsername())) {
-			return null;
+			throw new BadLogicException("Username is taken.");
 		}
 		
 		if(user.getRole() == UserRole.Buyer) {
@@ -58,12 +59,12 @@ public class UserService extends CrudService<User> implements IUserService {
 	public User changePassword(UUID userId, String newPassword, String currentPassword) {
 		User user = repository.read(userId);
 		if(user == null) {
-			return null;
+			throw new MissingEntityException(String.format("User with id = %s does not exists.", userId));
 		}
 		
 		if(!user.getPassword().equals(currentPassword))
 		{
-			return null; // TODO: THROW BAD LOGIC EXCEPTION
+			throw new BadLogicException("Given password does not match current password.");
 		}
 		
 		user.setPassword(newPassword);
@@ -73,8 +74,11 @@ public class UserService extends CrudService<User> implements IUserService {
 	@Override
 	public User blockUser(UUID userId) {
 		User user = repository.read(userId);
-		if(user == null || user.getRole() == UserRole.Administrator) {
-			return null;
+		if(user == null) {
+			throw new MissingEntityException(String.format("User with id = %s does not exists.", userId));
+		}
+		if(user.getRole() == UserRole.Administrator) {
+			throw new BadLogicException("Administrator can not be blocked.");
 		}
 		
 		if(user.getRole() == UserRole.Buyer) {
