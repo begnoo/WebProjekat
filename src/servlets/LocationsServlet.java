@@ -19,14 +19,18 @@ import javax.ws.rs.core.MediaType;
 
 import core.domain.dto.Page;
 import core.domain.models.Location;
+import core.domain.models.Manifestation;
 import core.repository.IRepository;
 import core.requests.locations.CreateLocationRequest;
 import core.requests.locations.UpdateLocationRequest;
 import core.service.ICrudService;
+import core.service.IManifestationService;
 import core.service.IPaginationService;
 import repository.DbContext;
+import repository.ManifestationRepository;
 import repository.Repository;
-import services.CrudService;
+import services.LocationService;
+import services.ManifestationService;
 import services.PaginationService;
 
 @Path("locations")
@@ -47,7 +51,9 @@ public class LocationsServlet extends AbstractServletBase {
 	{
 		DbContext context = (DbContext) servletContext.getAttribute("DbContext");
 		IRepository<Location> locationRepository = new Repository<Location>(context, Location.class);
-		locationService = new CrudService<Location>(locationRepository);
+		IRepository<Manifestation> manifestationRepository = new ManifestationRepository(context);
+		IManifestationService manifestationService = new ManifestationService(manifestationRepository, locationRepository);
+		locationService = new LocationService(locationRepository, manifestationService);
 		paginationService = new PaginationService<Location>();	
 	}
 

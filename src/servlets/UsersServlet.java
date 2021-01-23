@@ -46,7 +46,6 @@ import services.BuyerTypeService;
 import services.PaginationService;
 import services.UserService;
 import services.UsersSearchService;
-import servlets.utils.filters.Authorize;
 
 @Path("/")
 public class UsersServlet extends AbstractServletBase {
@@ -79,7 +78,6 @@ public class UsersServlet extends AbstractServletBase {
 	
 	@GET
 	@Path("users/")
-	@Authorize(roles = "Administrator, Seller")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<User> readAll(@QueryParam("role") UserRole role, @QueryParam("number") int number, @QueryParam("size") int size)
 	{
@@ -198,13 +196,20 @@ public class UsersServlet extends AbstractServletBase {
 	@DELETE
 	@Path("users/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public boolean delete(@PathParam("id") UUID id)
+	public WholeUserObjectResponseBase delete(@PathParam("id") UUID id)
 	{
-		return userService.blockUser(id) != null;
+		User blockedUser = userService.blockUser(id);
+		
+		return generateUserObjectResponse(blockedUser);
 	}
 		
 	private WholeUserObjectResponseBase generateUserObjectResponse(User user)
 	{
+		if(user == null)
+		{
+			return null; // TODO: REMOVE
+		}
+		
 		if(user.getRole() == UserRole.Buyer) {
 			return mapper.Map(new WholeBuyerObjectResponse(), user);
 		} else if (user.getRole() == UserRole.Seller) {

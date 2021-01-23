@@ -67,8 +67,12 @@ public class UserService extends CrudService<User> implements IUserService {
 			return null;
 		}
 		
-		user.setActive(false);
-		return update(user);
+		boolean isDeleted = super.delete(userId);
+		if(!isDeleted) {
+			return null;
+		}
+		
+		return user;
 	}
 
 	@Override

@@ -19,12 +19,22 @@ public class ManifestationService extends CrudService<Manifestation> implements 
 		this.locationRepository = locationRepository;
 	}
 
+	@Override
 	public List<Manifestation> readOrderedByDescendingDate() {
 		return repository.read()
 				.stream()
 				.sorted((manifestation1, manifestation2) -> manifestation2.getEventDate().compareTo(manifestation1.getEventDate()))
 				.collect(Collectors.toList());
 	}
+
+	@Override
+	public List<Manifestation> readByLocationId(UUID locationId) {
+		return repository.read()
+				.stream()
+				.filter(manifestation -> manifestation.getLocationId().equals(locationId))
+				.collect(Collectors.toList());
+	}
+
 
 	@Override
 	public Manifestation create(Manifestation manifestation) {
@@ -76,7 +86,6 @@ public class ManifestationService extends CrudService<Manifestation> implements 
 	}
 	
 	private boolean checkIfOverlapingManifestationDate(Manifestation firstManifestation, Manifestation secondManifestation) {
-		//TODO: srediti ovo
 		LocalDateTime firstManifestationStart = firstManifestation.getEventDate();
 		LocalDateTime firstManifestationEnd = firstManifestation.getEventEndDate();
 	
