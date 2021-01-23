@@ -12,6 +12,8 @@ import core.domain.models.Comment;
 import core.domain.models.Manifestation;
 import core.domain.models.Ticket;
 import core.domain.models.User;
+import core.exceptions.BadLogicException;
+import core.exceptions.MissingEntityException;
 import core.repository.IRepository;
 import core.service.ICommentService;
 
@@ -29,18 +31,21 @@ public class CommentService extends CrudService<Comment> implements ICommentServ
 	@Override
 	public Comment create(Comment comment) {
 		Manifestation manifestation = manifestationRepository.read(comment.getManifestationId());
+		if(manifestation == null) {
+			throw new MissingEntityException(String.format("Manifestation with id = %s does not exists.", comment.getManifestationId()));
+		}
 		Buyer buyer = (Buyer) userRepository.read(comment.getBuyerId());
+		if(buyer == null) {
+			throw new MissingEntityException(String.format("Buyer with id = %s does not exists.", comment.getBuyerId()));
+		}
 		
 		List<Ticket> buyersReservedTickets = buyer.getTickets().stream()
 				.filter(ticket -> ticket.getManifestationId().equals(comment.getManifestationId()))
 				.filter(ticket -> ticket.getStatus() == TicketStatus.Reserved)
-				.collect(Collectors.toList()); // TODO: Mozda izmestiti ovu funkciju u ticket service?
+				.collect(Collectors.toList());
 		
 		if (manifestation.getEventEndDate().isAfter(LocalDateTime.now()) || buyersReservedTickets.isEmpty()) {
-			System.out.println("Count: " + buyersReservedTickets.size());
-			System.out.println("endDate before now: " + manifestation.getEventEndDate().isBefore(LocalDateTime.now()));
-
-			return null;
+			throw new BadLogicException("Buyer can not comment this manifestation.");
 		}
 
 		comment.setStatus(CommentStatus.Pending);

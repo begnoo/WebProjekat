@@ -1,8 +1,6 @@
 package servlets;
 
 import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -45,20 +43,14 @@ public class ImageServlet extends AbstractServletBase {
 	@GET
 	@Path("/{file-name}")
 	@Produces("image/jpeg")
-	public BufferedInputStream createImageForManifestation(@PathParam("file-name") String fileName) {
-		String filePath = "images/" + fileName;
-		try {
-			return new BufferedInputStream(new FileInputStream(filePath));
-		} catch (FileNotFoundException e) {
-			return null;
-		}
-
+	public BufferedInputStream getImage(@PathParam("file-name") String fileName) {
+		return imageService.getImage(fileName);
 	}
 	
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public WholeManifestationObjectResponse updateImageForManifestation(Base64ImageForManifestation request) {
+	public WholeManifestationObjectResponse updateImage(Base64ImageForManifestation request) {
 		super.validateRequest(request);
 		
 		Manifestation manifestationWithImage = imageService.updateImageForManifestation(request);

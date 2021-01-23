@@ -14,6 +14,8 @@ import core.domain.models.BuyerType;
 import core.domain.models.Manifestation;
 import core.domain.models.Ticket;
 import core.domain.models.User;
+import core.exceptions.BadLogicException;
+import core.exceptions.MissingEntityException;
 import core.repository.IRepository;
 import core.service.ITicketOrderService;
 import core.service.ITicketService;
@@ -34,17 +36,22 @@ public class TicketOrderService implements ITicketOrderService {
 
 	@Override
 	public List<Ticket> createTicketsFromOrder(TicketOrder ticketOrder) {
-		List<Ticket> tickets = new ArrayList<>();
-
 		Buyer buyer = (Buyer) userRepository.read(ticketOrder.getBuyerId());
-
-		Manifestation manifestation = manifestationRepository.read(ticketOrder.getManifestationId());
-		if (manifestation == null || manifestation.getEventDate().isBefore(LocalDateTime.now())) {
-			return null;
+		if(buyer == null) {
+			throw new MissingEntityException(String.format("Buyer with id = %s does not exists.", ticketOrder.getBuyerId()));
 		}
 
-		int numberOfAllTickets = ticketOrder.getNumberOfOrderedTicketsMap().values().stream().reduce(0, Integer::sum);
+		Manifestation manifestation = manifestationRepository.read(ticketOrder.getManifestationId());
+		if (manifestation == null) {
+			throw new MissingEntityException(String.format("Manifestation with id = %s does not exists.", ticketOrder.getManifestationId()));
+		}
+		
+		if(manifestation.getEventDate().isBefore(LocalDateTime.now())) {
+			throw new BadLogicException("Manifestation has already started.");
+		}
 
+		List<Ticket> tickets = new ArrayList<>();
+		int numberOfAllTickets = ticketOrder.getNumberOfOrderedTicketsMap().values().stream().reduce(0, Integer::sum);
 		if (numberOfAllTickets <= manifestation.getSeats()) {
 			ticketOrder.getNumberOfOrderedTicketsMap().forEach((ticketType, numberOfTickets) -> {
 				for (int i = 0; i < numberOfTickets; ++i) {
@@ -58,6 +65,8 @@ public class TicketOrderService implements ITicketOrderService {
 					tickets.add(ticketService.create(ticket));
 				}
 			});
+		} else {
+			throw new BadLogicException("There is not enough seats left.");
 		}
 
 		return tickets;
@@ -65,12 +74,14 @@ public class TicketOrderService implements ITicketOrderService {
 
 	private int getPriceOfTicket(int regularPrice, TicketType ticketType) {
 		int typeModifier = ticketType.getModifier();
+		
 		return regularPrice * typeModifier;
 	}
 
 	private int getPriceOfTicketWithDiscount(int price, BuyerType buyerType) {
 		double discount = (100.0 - buyerType.getDiscount()) / 100;
 		int priceWithDiscount = (int) (price * discount);
+		
 		return priceWithDiscount;
 	}
 
@@ -83,6 +94,7 @@ public class TicketOrderService implements ITicketOrderService {
 				getPriceOfTicketWithDiscount(getPriceOfTicket(regularPrice, TicketType.FanPit), buyerType));
 		ticketPricesMap.put(TicketType.Regular,
 				getPriceOfTicketWithDiscount(getPriceOfTicket(regularPrice, TicketType.Regular), buyerType));
+		
 		return ticketPricesMap;
 	}
 }
