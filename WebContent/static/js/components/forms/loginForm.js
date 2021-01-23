@@ -33,7 +33,7 @@ Vue.component('login-form', {
         login: function(event)
         {
             event.preventDefault();
-            axios.post('/WebProjekat/rest/auhtorization', 
+            axios.post('/WebProjekat/rest/authorization', 
             {
                 'username': this.username,
                 'password': this.password

@@ -46,6 +46,7 @@ import services.BuyerTypeService;
 import services.PaginationService;
 import services.UserService;
 import services.UsersSearchService;
+import servlets.utils.filters.Authorize;
 
 @Path("/")
 public class UsersServlet extends AbstractServletBase {
@@ -78,6 +79,7 @@ public class UsersServlet extends AbstractServletBase {
 	
 	@GET
 	@Path("users/")
+	@Authorize(roles = "Administrator, Seller")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<User> readAll(@QueryParam("role") UserRole role, @QueryParam("number") int number, @QueryParam("size") int size)
 	{

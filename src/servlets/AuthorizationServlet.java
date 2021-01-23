@@ -21,7 +21,7 @@ import repository.UserRepository;
 import services.AuthorizationService;
 import services.JwtService;
 
-@Path("auhtorization")
+@Path("authorization")
 public class AuthorizationServlet extends AbstractServletBase {
 	
 	@Context

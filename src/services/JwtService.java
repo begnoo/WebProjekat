@@ -38,10 +38,11 @@ public class JwtService implements IJwtService {
 	public UUID getUserIdDromJwtToken(String jwtToken) {
 		try
 		{
+			String tokenWithoutScheme = jwtToken.substring(7);
 			Claims claims = Jwts.parserBuilder()
 		            .setSigningKey(DatatypeConverter.parseBase64Binary(SECRET))
 		            .build()
-		            .parseClaimsJws(jwtToken)
+		            .parseClaimsJws(tokenWithoutScheme)
 		            .getBody();
 
 			return UUID.fromString(claims.getSubject());
