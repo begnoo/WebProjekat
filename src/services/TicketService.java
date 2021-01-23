@@ -100,18 +100,28 @@ public class TicketService extends CrudService<Ticket> implements ITicketService
 	}
 	
 	@Override
+	public boolean delete(UUID ticketId) {
+		Ticket ticket = repository.read(ticketId);
+		if(ticket == null) {
+			return false;
+		}
+		
+		boolean hasNotStarted = ticket.getManifestationDate().isAfter(LocalDateTime.now());
+		if(hasNotStarted) {
+			returnSeatsAndTakeUserPoints(ticket, -1);
+		}
+		
+		return super.delete(ticketId);
+	}
+	
+	@Override
 	public Ticket cancelTicket(UUID ticketId) {
 		Ticket ticket = repository.read(ticketId);
 		if(ticket == null || !checkIfNowIsSevenDaysBeforeEventDate(ticket.getManifestationDate())) {
 			return null;
 		}
 			
-		Manifestation manifestation = manifestationService.read(ticket.getManifestationId());
-		manifestationService.updateNumberOfSeats(manifestation, 1);
-		
-		Buyer buyer = ticket.getBuyer();
-		int penaltyPoints = getPointValue(ticket.getPrice()) * -4;
-		userService.updateBuyerPointsFor(buyer, penaltyPoints);
+		returnSeatsAndTakeUserPoints(ticket, -4);
 
 		ticket.setStatus(TicketStatus.Canceled);
 		return repository.update(ticket);
@@ -121,6 +131,15 @@ public class TicketService extends CrudService<Ticket> implements ITicketService
 		return LocalDateTime.now()
 							.plusDays(7)
 							.isBefore(eventDate);
+	}
+	
+	private void returnSeatsAndTakeUserPoints(Ticket ticket, int pointCoenficient) {
+		Manifestation manifestation = manifestationService.read(ticket.getManifestationId());
+		manifestationService.updateNumberOfSeats(manifestation, 1);
+
+		Buyer buyer = ticket.getBuyer();
+		int penaltyPoints = getPointValue(ticket.getPrice()) * pointCoenficient;
+		userService.updateBuyerPointsFor(buyer, penaltyPoints);
 	}
 	
 	private int getPointValue(int price) {

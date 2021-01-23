@@ -9,18 +9,25 @@ import core.domain.enums.TicketStatus;
 import core.domain.enums.UserRole;
 import core.domain.models.Buyer;
 import core.domain.models.BuyerType;
+import core.domain.models.Comment;
+import core.domain.models.Ticket;
 import core.domain.models.User;
 import core.repository.IRepository;
 import core.service.IBuyerTypeService;
+import core.service.ICommentService;
+import core.service.ITicketService;
 import core.service.IUserService;
 
 public class UserService extends CrudService<User> implements IUserService {
 
-	IBuyerTypeService buyerTypeService;
+	private IBuyerTypeService buyerTypeService;
+	private ITicketService ticketService;
+	private ICommentService commentService;
 	
-	public UserService(IRepository<User> repository, IBuyerTypeService buyerTypeService) {
+	public UserService(IRepository<User> repository, IBuyerTypeService buyerTypeService, ICommentService commentService) {
 		super(repository);
 		this.buyerTypeService = buyerTypeService;
+		this.commentService = commentService;
 	}
 	
 	@Override
@@ -67,12 +74,30 @@ public class UserService extends CrudService<User> implements IUserService {
 			return null;
 		}
 		
+		if(user.getRole() == UserRole.Buyer) {
+			blockBuyer((Buyer)user);
+		}
+		
 		boolean isDeleted = super.delete(userId);
 		if(!isDeleted) {
 			return null;
 		}
 		
 		return user;
+	}
+	
+	private void blockBuyer(Buyer buyer) {
+		UUID buyerId = buyer.getId();
+		List<Comment> buyerComments = commentService.readByBuyerId(buyerId);
+		for(Comment comment : buyerComments) {
+			commentService.delete(comment.getId());
+		}
+		
+		List<Ticket> buyerTickets = ticketService.readByBuyerId(buyerId);
+		for(Ticket ticket : buyerTickets) {
+			ticketService.delete(ticket.getId());
+		}
+
 	}
 
 	@Override
@@ -124,6 +149,10 @@ public class UserService extends CrudService<User> implements IUserService {
 		int newPoints = currentPoints + additionalPoints;
 		
 		return Math.max(0, newPoints);
+	}
+	
+	public void setTicketService(ITicketService ticketService) {
+		this.ticketService = ticketService;
 	}
 
 }

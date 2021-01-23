@@ -11,7 +11,6 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -24,6 +23,7 @@ import core.domain.dto.TicketOrder;
 import core.domain.dto.TicketsSearchParamethers;
 import core.domain.enums.TicketType;
 import core.domain.models.BuyerType;
+import core.domain.models.Comment;
 import core.domain.models.Location;
 import core.domain.models.Manifestation;
 import core.domain.models.Ticket;
@@ -32,17 +32,19 @@ import core.repository.IRepository;
 import core.responses.tickets.WholeTicketObjectResponse;
 import core.service.IAdvanceSearchService;
 import core.service.IBuyerTypeService;
+import core.service.ICommentService;
 import core.service.IManifestationService;
 import core.service.IPaginationService;
 import core.service.ITicketOrderService;
 import core.service.ITicketService;
-import core.service.IUserService;
+import repository.CommentRepository;
 import repository.DbContext;
 import repository.ManifestationRepository;
 import repository.Repository;
 import repository.TicketRepository;
 import repository.UserRepository;
 import services.BuyerTypeService;
+import services.CommentService;
 import services.ManifestationService;
 import services.PaginationService;
 import services.TicketOrderService;
@@ -73,12 +75,18 @@ public class TicketServlet extends AbstractServletBase {
 		IRepository<BuyerType> buyerTypeRepository = new Repository<BuyerType>(context, BuyerType.class);
 		IRepository<Manifestation> manifestationRepository = new ManifestationRepository(context);
 		IRepository<Location> locationRepository = new Repository<Location>(context, Location.class);
+		IRepository<Comment> commentRepository = new CommentRepository(context);
 		
+		ICommentService commentService = new CommentService(commentRepository, manifestationRepository, userRepository);
 		IBuyerTypeService buyerTypeService = new BuyerTypeService(buyerTypeRepository);
-		IUserService userService = new UserService(userRepository, buyerTypeService);
+		UserService userService = new UserService(userRepository, buyerTypeService, commentService);
 		IManifestationService manifestationService = new ManifestationService(manifestationRepository, locationRepository);
+		
 		ticketService = new TicketService(ticketRepository, userService, manifestationService);
 		ticketOrderService = new TicketOrderService(ticketService, userRepository, manifestationRepository, buyerTypeRepository);
+		
+		userService.setTicketService(ticketService);
+		
 		searchService = new TicketsSearchService(ticketRepository);
 		paginationService = new PaginationService<Ticket>();
 	}
@@ -182,8 +190,8 @@ public class TicketServlet extends AbstractServletBase {
 		return response;
 	}
 
-	@PUT
-	@Path("tickets/{id}/cancel")
+	@DELETE
+	@Path("tickets/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeTicketObjectResponse cancelTicket(@PathParam("id") UUID id) {
 		Ticket canceledTicket = ticketService.cancelTicket(id);
@@ -193,14 +201,6 @@ public class TicketServlet extends AbstractServletBase {
 		return generateTicketObjectResponse(canceledTicket);
 	}
 	
-	@DELETE
-	@Path("tickets/{id}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public boolean delete(@PathParam("id") UUID id)
-	{
-		return ticketService.delete(id);
-	}
-
 	private WholeTicketObjectResponse generateTicketObjectResponse(Ticket ticket)
 	{
 		return mapper.Map(new WholeTicketObjectResponse(), ticket);

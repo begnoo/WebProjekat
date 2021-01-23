@@ -7,6 +7,7 @@ import core.domain.enums.CommentStatus;
 import core.domain.models.Comment;
 
 public interface ICommentService extends ICrudService<Comment> {
+	List<Comment> readByBuyerId(UUID buyerId);
 	List<Comment> readByManifestationId(UUID manifestationId);
 	List<Comment> readNonPendingCommentsByManifestationId(UUID manifestationId);
 	List<Comment> readByManifestationIdAndStatus(UUID manifestationId, CommentStatus commentStatus);

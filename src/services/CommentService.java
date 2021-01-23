@@ -49,6 +49,13 @@ public class CommentService extends CrudService<Comment> implements ICommentServ
 	}
 
 	@Override
+	public List<Comment> readByBuyerId(UUID buyerId) {
+		return repository.read().stream()
+				.filter(comment -> comment.getBuyerId().equals(buyerId))
+				.collect(Collectors.toList());
+	}
+
+	@Override
 	public List<Comment> readByManifestationId(UUID manifestationId) {
 		return repository.read().stream()
 				.filter(comment -> comment.getManifestationId().equals(manifestationId))
@@ -68,4 +75,5 @@ public class CommentService extends CrudService<Comment> implements ICommentServ
 				.filter(comment -> comment.getStatus() == commentStatus)
 				.collect(Collectors.toList());
 	}
+
 }
