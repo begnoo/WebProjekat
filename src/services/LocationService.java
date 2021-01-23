@@ -6,9 +6,10 @@ import java.util.UUID;
 import core.domain.models.Location;
 import core.domain.models.Manifestation;
 import core.repository.IRepository;
+import core.service.ILocationService;
 import core.service.IManifestationService;
 
-public class LocationService extends CrudService<Location> {
+public class LocationService extends CrudService<Location> implements ILocationService {
 
 	private IManifestationService manifestationService;
 	

@@ -23,9 +23,6 @@ import core.domain.dto.Page;
 import core.domain.dto.UsersSearchParamethers;
 import core.domain.enums.UserRole;
 import core.domain.models.Buyer;
-import core.domain.models.BuyerType;
-import core.domain.models.Comment;
-import core.domain.models.Manifestation;
 import core.domain.models.Seller;
 import core.domain.models.User;
 import core.repository.IRepository;
@@ -38,21 +35,11 @@ import core.responses.users.WholeBuyerObjectResponse;
 import core.responses.users.WholeSellerObjectResponse;
 import core.responses.users.WholeUserObjectResponseBase;
 import core.service.IAdvanceSearchService;
-import core.service.IBuyerTypeService;
-import core.service.ICommentService;
 import core.service.IPaginationService;
 import core.service.IUserService;
-import core.service.IUserTicketManifestationMediator;
-import repository.CommentRepository;
 import repository.DbContext;
-import repository.ManifestationRepository;
-import repository.Repository;
 import repository.UserRepository;
-import services.BuyerTypeService;
-import services.CommentService;
 import services.PaginationService;
-import services.UserService;
-import services.UserTicketManifestationMediator;
 import services.UsersSearchService;
 
 @Path("/")
@@ -74,17 +61,12 @@ public class UsersServlet extends AbstractServletBase {
 	public void init()
 	{
 		DbContext context = (DbContext) servletContext.getAttribute("DbContext");
-		IUserTicketManifestationMediator mediator = new UserTicketManifestationMediator(context);
-		IRepository<User> userRepository = new UserRepository(context);
-		IRepository<BuyerType> buyerTypeRepository = new Repository<BuyerType>(context, BuyerType.class);
-		IRepository<Comment> commentRepository = new CommentRepository(context);
-		IRepository<Manifestation> manifestationRepository = new ManifestationRepository(context);
 		
-		IBuyerTypeService buyerTypeService = new BuyerTypeService(buyerTypeRepository);
-		ICommentService commentService = new CommentService(commentRepository, manifestationRepository, userRepository);
-		userService = new UserService(userRepository, buyerTypeService, commentService, mediator);
-		
+		userService = (IUserService) serviceFactory.getService(IUserService.class, context);
+				
 		paginationService = new PaginationService<User>();
+		
+		IRepository<User> userRepository = new UserRepository(context);
 		searchService = new UsersSearchService(userRepository);
 	}
 	

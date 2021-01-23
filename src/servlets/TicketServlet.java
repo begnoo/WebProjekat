@@ -22,27 +22,17 @@ import core.domain.dto.Page;
 import core.domain.dto.TicketOrder;
 import core.domain.dto.TicketsSearchParamethers;
 import core.domain.enums.TicketType;
-import core.domain.models.BuyerType;
-import core.domain.models.Manifestation;
 import core.domain.models.Ticket;
-import core.domain.models.User;
 import core.repository.IRepository;
 import core.responses.tickets.WholeTicketObjectResponse;
 import core.service.IAdvanceSearchService;
 import core.service.IPaginationService;
 import core.service.ITicketOrderService;
 import core.service.ITicketService;
-import core.service.IUserTicketManifestationMediator;
 import repository.DbContext;
-import repository.ManifestationRepository;
-import repository.Repository;
 import repository.TicketRepository;
-import repository.UserRepository;
 import services.PaginationService;
-import services.TicketOrderService;
-import services.TicketService;
 import services.TicketsSearchService;
-import services.UserTicketManifestationMediator;
 
 @Path("/")
 public class TicketServlet extends AbstractServletBase {
@@ -62,17 +52,14 @@ public class TicketServlet extends AbstractServletBase {
 	@PostConstruct
 	public void init() {
 		DbContext context = (DbContext) servletContext.getAttribute("DbContext");
-		IUserTicketManifestationMediator mediator = new UserTicketManifestationMediator(context);
-		IRepository<Ticket> ticketRepository = new TicketRepository(context);
-		IRepository<User> userRepository = new UserRepository(context);
-		IRepository<BuyerType> buyerTypeRepository = new Repository<BuyerType>(context, BuyerType.class);
-		IRepository<Manifestation> manifestationRepository = new ManifestationRepository(context);
 		
-		ticketService = new TicketService(ticketRepository, mediator);
-		ticketOrderService = new TicketOrderService(ticketService, userRepository, manifestationRepository, buyerTypeRepository);
+		ticketService = (ITicketService) serviceFactory.getService(ITicketService.class, context);
+		ticketOrderService = (ITicketOrderService) serviceFactory.getService(ITicketOrderService.class, context);
 		
-		searchService = new TicketsSearchService(ticketRepository);
 		paginationService = new PaginationService<Ticket>();
+
+		IRepository<Ticket> ticketRepository = new TicketRepository(context);
+		searchService = new TicketsSearchService(ticketRepository);
 	}
 
 	@GET

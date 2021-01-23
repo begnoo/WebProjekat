@@ -22,19 +22,12 @@ import core.domain.dto.Page;
 import core.domain.enums.CommentStatus;
 import core.domain.enums.UserRole;
 import core.domain.models.Comment;
-import core.domain.models.Manifestation;
-import core.domain.models.User;
-import core.repository.IRepository;
 import core.requests.comments.CreateCommentRequest;
 import core.requests.comments.UpdateCommentRequest;
 import core.responses.comments.WholeCommentObjectResponse;
 import core.service.ICommentService;
 import core.service.IPaginationService;
-import repository.CommentRepository;
 import repository.DbContext;
-import repository.ManifestationRepository;
-import repository.UserRepository;
-import services.CommentService;
 import services.PaginationService;
 
 @Path("/")
@@ -54,10 +47,9 @@ public class CommentServlet extends AbstractServletBase {
 	@PostConstruct
 	public void init() {
 		DbContext context = (DbContext) servletContext.getAttribute("DbContext");
-		IRepository<Comment> commentRepository = new CommentRepository(context);
-		IRepository<Manifestation> manifestationRepository = new ManifestationRepository(context);
-		IRepository<User> userRepository = new UserRepository(context);
-		commentService = new CommentService(commentRepository, manifestationRepository, userRepository);
+		
+		commentService = (ICommentService) serviceFactory.getService(ICommentService.class, context);
+		
 		paginationService = new PaginationService<Comment>();
 	}
 

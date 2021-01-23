@@ -19,29 +19,18 @@ import javax.ws.rs.core.MediaType;
 
 import core.domain.dto.ManifestationsSearchParamethers;
 import core.domain.dto.Page;
-import core.domain.models.Comment;
-import core.domain.models.Location;
 import core.domain.models.Manifestation;
-import core.domain.models.User;
 import core.repository.IRepository;
 import core.requests.manifestations.CreateManifestationRequest;
 import core.requests.manifestations.UpdateManifestationRequest;
 import core.responses.manifestations.WholeManifestationObjectResponse;
 import core.service.IAdvanceSearchService;
-import core.service.ICommentService;
 import core.service.IManifestationService;
 import core.service.IPaginationService;
-import core.service.IUserTicketManifestationMediator;
-import repository.CommentRepository;
 import repository.DbContext;
 import repository.ManifestationRepository;
-import repository.Repository;
-import repository.UserRepository;
-import services.CommentService;
 import services.ManifestationSearchService;
-import services.ManifestationService;
 import services.PaginationService;
-import services.UserTicketManifestationMediator;
 
 @Path("/")
 public class ManifestationServlet extends AbstractServletBase {
@@ -60,15 +49,13 @@ public class ManifestationServlet extends AbstractServletBase {
 	@PostConstruct
 	public void init() {
 		DbContext context = (DbContext) servletContext.getAttribute("DbContext");
-		IUserTicketManifestationMediator mediator = new UserTicketManifestationMediator(context);
-		IRepository<Manifestation> manifestationRepository = new ManifestationRepository(context);
-		IRepository<Location> locationRepository = new Repository<Location>(context, Location.class);
-		IRepository<Comment> commentRepository = new CommentRepository(context);
-		IRepository<User> userRepository = new UserRepository(context);
-		ICommentService commentService = new CommentService(commentRepository, manifestationRepository, userRepository);
-		manifestationService = new ManifestationService(manifestationRepository, locationRepository, commentService, mediator);
-		searchService = new ManifestationSearchService(manifestationRepository);
+		
+		manifestationService = (IManifestationService) serviceFactory.getService(IManifestationService.class, context);
+
 		paginationService = new PaginationService<Manifestation>();
+				
+		IRepository<Manifestation> manifestationRepository = new ManifestationRepository(context);
+		searchService = new ManifestationSearchService(manifestationRepository);
 	}
 
 	@GET

@@ -16,13 +16,10 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import core.domain.models.Manifestation;
-import core.repository.IRepository;
 import core.requests.images.Base64ImageForManifestation;
 import core.responses.manifestations.WholeManifestationObjectResponse;
 import core.service.IImageService;
 import repository.DbContext;
-import repository.ManifestationRepository;
-import services.ImageService;
 
 @Path("images")
 public class ImageServlet extends AbstractServletBase {
@@ -41,8 +38,8 @@ public class ImageServlet extends AbstractServletBase {
 	public void init()
 	{
 		DbContext context = (DbContext) servletContext.getAttribute("DbContext");
-		IRepository<Manifestation> manifestationRepository = new ManifestationRepository(context);
-		imageService = new ImageService(manifestationRepository);
+		
+		imageService = (IImageService) serviceFactory.getService(IImageService.class, context);
 	}
 	
 	@GET

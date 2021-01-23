@@ -11,15 +11,9 @@ import javax.ws.rs.core.MediaType;
 
 import core.domain.dto.AuthorizedUser;
 import core.domain.dto.Credidentals;
-import core.domain.models.User;
-import core.repository.IRepository;
 import core.service.IAuthorizationService;
-import core.service.IJwtService;
 import core.servlets.exceptions.UnauthorizedException;
 import repository.DbContext;
-import repository.UserRepository;
-import services.AuthorizationService;
-import services.JwtService;
 
 @Path("authorization")
 public class AuthorizationServlet extends AbstractServletBase {
@@ -37,9 +31,8 @@ public class AuthorizationServlet extends AbstractServletBase {
 	@PostConstruct
 	public void init() {
 		DbContext context = (DbContext) servletContext.getAttribute("DbContext");
-		IRepository<User> userRepository = new UserRepository(context);
-		IJwtService jwtService = new JwtService();
-		authorizationService = new AuthorizationService(userRepository, jwtService);
+		
+		authorizationService = (IAuthorizationService) serviceFactory.getService(IAuthorizationService.class, context);
 	}
 	
 	@POST

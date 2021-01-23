@@ -17,13 +17,10 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import core.domain.models.BuyerType;
-import core.repository.IRepository;
 import core.requests.buyerTypes.CreateBuyerTypeRequest;
 import core.requests.buyerTypes.UpdateBuyerTypeRequest;
 import core.service.IBuyerTypeService;
 import repository.DbContext;
-import repository.Repository;
-import services.BuyerTypeService;
 
 @Path("buyer-type")
 public class BuyerTypesServlet extends AbstractServletBase {
@@ -41,8 +38,8 @@ public class BuyerTypesServlet extends AbstractServletBase {
 	public void init()
 	{
 		DbContext context = (DbContext) servletContext.getAttribute("DbContext");
-		IRepository<BuyerType> buyerTypeRepository = new Repository<BuyerType>(context, BuyerType.class);
-		buyerTypeService = new BuyerTypeService(buyerTypeRepository);
+		
+		buyerTypeService = (IBuyerTypeService) serviceFactory.getService(IBuyerTypeService.class, context);
 	}
 	
 	@GET
