@@ -57,7 +57,7 @@ public class CommentServlet extends AbstractServletBase {
 	@GET
 	@Path("comments/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Comment> readAll(@QueryParam("role") UserRole role, @QueryParam("number") int number, @QueryParam("size") int size) {
+	public List<Comment> readAll(@QueryParam("number") int number, @QueryParam("size") int size) {
 		List<Comment> comments = commentService.read();
 		
 		return paginationService.readPage(comments, new Page(number, size));

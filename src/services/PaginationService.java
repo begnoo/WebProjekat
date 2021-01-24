@@ -17,7 +17,7 @@ public class PaginationService<T extends BaseEntity> implements IPaginationServi
 	
 	@Override
 	public List<T> readPage(List<T> entities, Page page) {
-		if(page.getNumber() <= 0 || page.getSize() <= 0) {
+		if(page.getNumber() < 0 || page.getSize() < 0) {
 			throw new BadLogicException("Pagination parameters can not be negative.");
 		}
 		
