@@ -42,6 +42,7 @@ import repository.UserRepository;
 import services.PaginationService;
 import services.UsersSearchService;
 import servlets.utils.filters.Authorize;
+import servlets.utils.filters.DenyAuthorized;
 
 @Path("/")
 public class UsersServlet extends AbstractServletBase {
@@ -124,9 +125,9 @@ public class UsersServlet extends AbstractServletBase {
 		return paginationService.readPage(users, new Page(number, size));
 	}
 	
-	// TODO: NOT AUTHORIZED (MOZDA KAO ANOTACIJA NOVA)
 	@POST
 	@Path("users/buyer")
+	@DenyAuthorized()
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeUserObjectResponseBase createBuyer(CreateBuyerRequest request)

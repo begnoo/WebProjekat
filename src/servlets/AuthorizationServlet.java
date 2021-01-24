@@ -14,6 +14,7 @@ import core.domain.dto.Credidentals;
 import core.service.IAuthorizationService;
 import core.servlets.exceptions.UnauthorizedException;
 import repository.DbContext;
+import servlets.utils.filters.DenyAuthorized;
 
 @Path("authorization")
 public class AuthorizationServlet extends AbstractServletBase {
@@ -35,8 +36,8 @@ public class AuthorizationServlet extends AbstractServletBase {
 		authorizationService = (IAuthorizationService) serviceFactory.getService(IAuthorizationService.class, context);
 	}
 	
-	// TODO: NOT AUTENTIFIKOVAN ATRIBUT
 	@POST
+	@DenyAuthorized()
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public AuthorizedUser authorize(Credidentals credidentals) {
