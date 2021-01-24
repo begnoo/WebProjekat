@@ -34,6 +34,7 @@ import repository.TicketRepository;
 import services.PaginationService;
 import services.TicketsSearchService;
 import servlets.utils.filters.Authorize;
+import servlets.utils.filters.UserSpecificEntity;
 
 @Path("/")
 public class TicketServlet extends AbstractServletBase {
@@ -77,6 +78,7 @@ public class TicketServlet extends AbstractServletBase {
 	@GET
 	@Path("manifestations/{manifestationId}/tickets")
 	@Authorize(roles = "Administrator,Seller")
+	@UserSpecificEntity(what = "Manifestation", belongsTo = "Seller")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<WholeTicketObjectResponse> readByManifestationId(@PathParam("manifestationId") UUID manifestationId, @QueryParam("number") int number, @QueryParam("size") int size) {
 		List<Ticket> ticketsForManifestation = ticketService.readByManifestationId(manifestationId);
