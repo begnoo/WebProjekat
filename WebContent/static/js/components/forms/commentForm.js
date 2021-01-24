@@ -55,13 +55,13 @@ Vue.component('comment-form', {
 			let userId = loggedUser.user.id;	
 			let manifestationId = this.$route.params.id;
 			
-			axios.post('/WebProjekat/rest/comments', 
+			axios(postRestConfig('/WebProjekat/rest/comments', {}, 
             {
                 'text': this.commentText,
                 'rating': this.rating,
                 'buyerId': userId,
                 'manifestationId': manifestationId
-            }
+            })
     
             ).then(response => alert("Uspesno") )
              .catch(function(error)

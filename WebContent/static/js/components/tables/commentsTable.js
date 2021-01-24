@@ -1,6 +1,6 @@
 
 Vue.component("comments-table", {
-    template: `
+	template: `
 	<div class="container">
 		<div v-for="comment in comments">
 			<div class="card mb-2" style="background-color:#f5f5f5;">
@@ -27,32 +27,30 @@ Vue.component("comments-table", {
 		</div>
 	</div>
 	`,
-    data: function () {
-        return {
-            comments: [],
-        };
-    },
+	data: function() {
+		return {
+			comments: [],
+		};
+	},
 
-    methods: {
-        getCommentsForManifestation: function(){
+	methods: {
+		getCommentsForManifestation: function() {
 			let manifestationId = this.$route.params.id;
-        
-			axios.get("/WebProjekat/rest/manifestations/" + manifestationId + "/comments", 
-			{
-				params: {
-					"status" : "Approved"
+
+			axios(getRestConfig("/WebProjekat/rest/manifestations/" + manifestationId + "/comments",
+				{
+					"status": "Approved"
 				}
-			}
-			).then(response => {
+			)).then(response => {
 				this.comments = response.data;
 			})
-			.catch(error => alert(error));
+				.catch(error => alert(error));
 		}
-		
-		
-    },
 
-	mounted: function(){
+
+	},
+
+	mounted: function() {
 		this.getCommentsForManifestation();
 	}
 });

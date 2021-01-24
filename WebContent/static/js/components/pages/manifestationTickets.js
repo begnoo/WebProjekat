@@ -68,7 +68,11 @@ Vue.component("manifestation-tickets", {
 			ticketType: "Regular",
 			ticketAmount: 1,
 			sharedState: store.state,
-			ticketPricesWithDiscounts: {},
+			ticketPricesWithDiscounts: {
+				Regular: 0,
+				Vip: 0,
+				FanPit: 0,
+			},
 		};
 	},
 
@@ -81,21 +85,22 @@ Vue.component("manifestation-tickets", {
 	methods: {
 		getTicketPriceForUser: function() {
 			const regularTicketPrice = this.manifestation.regularTicketPrice;
-			const { buyerTypeId } = window.localStorage.getObject(
-				"loggedUser"
-			).user;
-			axios
-				.get(
-					"../WebProjekat/rest/tickets/buyer-type/" +
-					buyerTypeId +
-					"/prices/" +
-					regularTicketPrice
-				)
-				.then(
-					(response) =>
-						(this.ticketPricesWithDiscounts = response.data)
-				)
-				.catch((error) => alert(error));
+			const loggedUser = window.localStorage.getObject("loggedUser");
+			if (loggedUser && loggedUser.user.buyerTypeId) {
+				axios
+					.get(
+						"../WebProjekat/rest/tickets/prices?buyerTypeId=" +
+						loggedUser.user.buyerTypeId +
+						"&price=" +
+						regularTicketPrice
+					)
+					.then(
+						(response) =>
+							(this.ticketPricesWithDiscounts = response.data)
+					)
+					.catch((error) => alert(error));
+			}
+
 		},
 		addToCart: function(event) {
 			event.preventDefault();
@@ -113,7 +118,7 @@ Vue.component("manifestation-tickets", {
 						FanPit: 0,
 					},
 					prices: this.ticketPricesWithDiscounts,
-				};		
+				};
 			}
 			shoppingCart[this.manifestation.id].order[this.ticketType] += this.ticketAmount;
 			localStorage.setObject("shoppingCart", shoppingCart);

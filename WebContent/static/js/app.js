@@ -7,7 +7,7 @@ const ManifestationForm = { template: "<manifestation-form></manifestation-form>
 const ManifestationImageForm = {
     template: "<manifestation-image-form></manifestation-image-form>",
 };
-const Users = { template: "<users-table></users-table>" };
+const Users = { template: "<users-page></users-page>" };
 const HomePage = {template: "<home-page></home-page>"};
 const ManifestationPage = {template: "<manifestation-page></manifestation-page>"};
 const OrderTable = {template: "<order-table></order-table>"};
