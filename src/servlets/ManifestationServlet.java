@@ -59,6 +59,7 @@ public class ManifestationServlet extends AbstractServletBase {
 		searchService = new ManifestationSearchService(manifestationRepository);
 	}
 
+	// TODO: SVI
 	@GET
 	@Path("manifestations/")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -73,6 +74,8 @@ public class ManifestationServlet extends AbstractServletBase {
 		return paginationService.readPage(manifestations, new Page(number, size));
 	}
 	
+	
+	// TODO: SVI
 	@GET
 	@Path("manifestations/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -85,6 +88,7 @@ public class ManifestationServlet extends AbstractServletBase {
 		return generateManifestationObjectResponse(manifestation);
 	}
 
+	// TODO: SVI
 	@POST
 	@Path("manifestations/advance-search")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -96,6 +100,7 @@ public class ManifestationServlet extends AbstractServletBase {
 		return paginationService.readPage(manifestations, new Page(number, size));
 	}
 	
+	// TODO: SELLER
 	@POST
 	@Path("manifestations/")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -110,6 +115,8 @@ public class ManifestationServlet extends AbstractServletBase {
 		return generateManifestationObjectResponse(createdManifestation);
 	}
 
+	// TODO: SELLER
+	// TODO: SELER MOZE SAMO SVOJE
 	@PUT
 	@Path("manifestations/")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -129,6 +136,8 @@ public class ManifestationServlet extends AbstractServletBase {
 		return generateManifestationObjectResponse(updatedManifestation);
 	}
 	
+	// TODO: SELLER ADMINISTRATOR
+	// TODO: SELER MOZE SAMO SVOJE
 	@DELETE
 	@Path("manifestations/{id}")
 	@Produces(MediaType.APPLICATION_JSON)

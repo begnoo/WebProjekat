@@ -63,6 +63,7 @@ public class TicketServlet extends AbstractServletBase {
 		searchService = new TicketsSearchService(ticketRepository);
 	}
 
+	// TODO: ADMINISTRATOR
 	@GET
 	@Path("tickets/")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -72,6 +73,7 @@ public class TicketServlet extends AbstractServletBase {
 		return paginationService.readPage(tickets, new Page(number, size)); 
 	}
 
+	// TODO: REMOVE
 	@GET
 	@Path("tickets/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -84,6 +86,8 @@ public class TicketServlet extends AbstractServletBase {
 		return generateTicketObjectResponse(ticket);
 	}
 
+	// TODO: SELLER I ADMINISRATOR
+	// TODO: SELLER SAMO SVOJE
 	@GET
 	@Path("manifestations/{manifestationId}/tickets")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -98,6 +102,8 @@ public class TicketServlet extends AbstractServletBase {
 		return wholeTicketObjectsForManifestation;
 	}
 	
+	// TODO: SELLER I ADMINISRATOR
+	// TODO: SELLER SAMO SVOJE
 	@GET
 	@Path("users/sellers/{sellerId}/manifestations/tickets/reserved")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -112,6 +118,8 @@ public class TicketServlet extends AbstractServletBase {
 		return wholeTicketObjectsForSellersManifestation;
 	}
 	
+	// TODO: BUYER I ADMINISTRATOR
+	// TODO: BUYER SAMO SVOJE
 	@GET
 	@Path("users/buyers/{buyerId}/tickets")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -131,13 +139,18 @@ public class TicketServlet extends AbstractServletBase {
 		return wholeTicketObjectsOfBuyers;
 	}
 	
+	// TODO: SVI
 	@GET
-	@Path("tickets/buyer-type/{buyerTypeId}/prices/{price}")
+	@Path("tickets/prices")
 	@Produces(MediaType.APPLICATION_JSON)
-	public HashMap<TicketType, Integer> getTicketPricesForBuyerType(@PathParam("buyerTypeId") UUID buyerTypeId, @PathParam("price") int regularPrice){
+	public HashMap<TicketType, Integer> getTicketPricesForBuyerType(@QueryParam("buyerTypeId") UUID buyerTypeId, @QueryParam("price") int regularPrice){
+		if(buyerTypeId == null) {
+			// TODO: URADI BEZ POPUSTA OVO
+		}
 		return ticketOrderService.getTicketPrices(regularPrice, buyerTypeId);
 	}
 	
+	// AUTORIZOVAN
 	@POST
 	@Path("tickets/advance-search")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -149,6 +162,7 @@ public class TicketServlet extends AbstractServletBase {
 		return paginationService.readPage(tickets, new Page(number, size));
 	}
 	
+	// BUYER
 	@POST
 	@Path("tickets/")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -165,6 +179,8 @@ public class TicketServlet extends AbstractServletBase {
 		return response;
 	}
 
+	// BUYER
+	// BUYER SAMO SVOJE
 	@DELETE
 	@Path("tickets/{id}")
 	@Produces(MediaType.APPLICATION_JSON)

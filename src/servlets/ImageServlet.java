@@ -40,6 +40,7 @@ public class ImageServlet extends AbstractServletBase {
 		imageService = (IImageService) serviceFactory.getService(IImageService.class, context);
 	}
 	
+	// TODO: SVI
 	@GET
 	@Path("/{file-name}")
 	@Produces("image/jpeg")
@@ -47,6 +48,7 @@ public class ImageServlet extends AbstractServletBase {
 		return imageService.getImage(fileName);
 	}
 	
+	// TODO: SELLER
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)

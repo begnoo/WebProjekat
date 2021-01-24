@@ -49,7 +49,8 @@ public class LocationsServlet extends AbstractServletBase {
 		
 		paginationService = new PaginationService<Location>();	
 	}
-
+	
+	// TODO: SELLER I ADMINISTRATOR
 	@GET
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -60,6 +61,7 @@ public class LocationsServlet extends AbstractServletBase {
 		return paginationService.readPage(locations, new Page(number, size));
 	}
 	
+	// TODO: ADMINISTRATOR
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -73,6 +75,7 @@ public class LocationsServlet extends AbstractServletBase {
 		return location;
 	}
 	
+	// TODO: SELLER I ADMINISTRATOR
 	@POST
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -86,6 +89,7 @@ public class LocationsServlet extends AbstractServletBase {
 		return locationService.create(location);
 	}
 	
+	// TODO: ADMINISTRATOR
 	@PUT
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -103,6 +107,7 @@ public class LocationsServlet extends AbstractServletBase {
 		return locationService.update(LocationForUpdate);
 	}
 	
+	// TODO: ADMINISTRATOR
 	@DELETE
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)

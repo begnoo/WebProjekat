@@ -70,6 +70,7 @@ public class UsersServlet extends AbstractServletBase {
 		searchService = new UsersSearchService(userRepository);
 	}
 	
+	// TODO: ADMINISTRATOR
 	@GET
 	@Path("users/")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -84,7 +85,8 @@ public class UsersServlet extends AbstractServletBase {
 		
 		return paginationService.readPage(users, new Page(number, size));
 	}
-		
+	
+	// TODO: ADMINISTRATOR
 	@GET
 	@Path("users/buyers/distrustful")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -95,6 +97,7 @@ public class UsersServlet extends AbstractServletBase {
 		return paginationService.readPage(users, new Page(number, size));
 	}
 	
+	// TODO: AUTENTIFIKOVAN
 	@GET
 	@Path("users/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -108,6 +111,7 @@ public class UsersServlet extends AbstractServletBase {
 		return generateUserObjectResponse(user);
 	}
 	
+	// TODO: ADMINISTRATOR
 	@POST
 	@Path("users/advance-search")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -119,6 +123,7 @@ public class UsersServlet extends AbstractServletBase {
 		return paginationService.readPage(users, new Page(number, size));
 	}
 	
+	// TODO: NOT AUTHORIZED (MOZDA KAO ANOTACIJA NOVA)
 	@POST
 	@Path("users/buyer")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -134,6 +139,7 @@ public class UsersServlet extends AbstractServletBase {
 		return generateUserObjectResponse(createdUser);
 	}
 	
+	// TODO: ADMINISTRATOR
 	@POST
 	@Path("users/seller")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -149,6 +155,8 @@ public class UsersServlet extends AbstractServletBase {
 		return generateUserObjectResponse(createdUser);
 	}
 	
+	// TODO: AUTENTIFIKOVAN
+	// TODO: PROFILE SPECIFIC
 	@PUT
 	@Path("users/")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -156,7 +164,7 @@ public class UsersServlet extends AbstractServletBase {
 	public WholeUserObjectResponseBase update(UpdateUserRequest request)
 	{
 		super.validateRequest(request);
-
+		Class.forName("Manifestation");
 		User user = userService.read(request.getId());
 		if(user == null) {
 			throw new NotFoundException("User does not exists.");
@@ -169,6 +177,8 @@ public class UsersServlet extends AbstractServletBase {
 		return generateUserObjectResponse(updatedUser);
 	}
 	
+	// TODO: AUTENTIFIKOVAN
+	// TODO: PROFILE SPECIFIC
 	@PUT
 	@Path("users/{id}/password")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -182,6 +192,7 @@ public class UsersServlet extends AbstractServletBase {
 		return generateUserObjectResponse(updatedUser);
 	}
 	
+	// TODO: ADMINISTRATOR
 	@DELETE
 	@Path("users/{id}")
 	@Produces(MediaType.APPLICATION_JSON)

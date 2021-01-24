@@ -23,6 +23,7 @@ import core.service.IBuyerTypeService;
 import core.servlets.exceptions.NotFoundException;
 import repository.DbContext;
 
+//TODO: OBRISI
 @Path("buyer-type")
 public class BuyerTypesServlet extends AbstractServletBase {
 	@Context

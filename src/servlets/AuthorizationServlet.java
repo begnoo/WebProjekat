@@ -35,6 +35,7 @@ public class AuthorizationServlet extends AbstractServletBase {
 		authorizationService = (IAuthorizationService) serviceFactory.getService(IAuthorizationService.class, context);
 	}
 	
+	// TODO: NOT AUTENTIFIKOVAN ATRIBUT
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)

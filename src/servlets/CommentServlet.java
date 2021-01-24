@@ -54,6 +54,7 @@ public class CommentServlet extends AbstractServletBase {
 		paginationService = new PaginationService<Comment>();
 	}
 
+	// TODO: REMOVE
 	@GET
 	@Path("comments/")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -63,6 +64,7 @@ public class CommentServlet extends AbstractServletBase {
 		return paginationService.readPage(comments, new Page(number, size));
 	}
 
+	// TODO: REMOVE
 	@GET
 	@Path("comments/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -75,6 +77,8 @@ public class CommentServlet extends AbstractServletBase {
 		return generateCommentObjectResponse(comment);
 	}
 	
+	// TODO: AUTENTIFIKOVAN seller ili administrator
+	// TODO: SELLER SAMO OD SVOJIH MANIFESTACIJA, ADMIN SVE
 	@GET
 	@Path("manifestations/{manifestationId}/comments")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -95,10 +99,11 @@ public class CommentServlet extends AbstractServletBase {
 		return wholeCommentObjectsForManifestation;
 	}
 	
+	// TODO: CHANGE TO approved i ne mora biti autentifikovan
 	@GET
 	@Path("manifestations/{manifestationId}/comments/non-pending")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<WholeCommentObjectResponse> readNonPendingCommentsByManifestationId(@PathParam("manifestationId") UUID manifestationId, @QueryParam("role") UserRole role, @QueryParam("number") int number, @QueryParam("size") int size)
+	public List<WholeCommentObjectResponse> readNonPendingCommentsByManifestationId(@PathParam("manifestationId") UUID manifestationId, @QueryParam("number") int number, @QueryParam("size") int size)
 	{
 		List<Comment> commentsForManifestation = commentService.readNonPendingCommentsByManifestationId(manifestationId);
 		List<Comment> paginatedComments = paginationService.readPage(commentsForManifestation, new Page(number, size));
@@ -110,6 +115,7 @@ public class CommentServlet extends AbstractServletBase {
 		return wholeCommentObjectsForManifestation;
 	}
 
+	// TODO: AUTENTIFIKOVAN BUYER
 	@POST
 	@Path("comments/")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -124,6 +130,8 @@ public class CommentServlet extends AbstractServletBase {
 		return generateCommentObjectResponse(createdComment);
 	}
 
+	// TODO: BUYER I AKO SE PROMENO STATUS PONOVO IDE NA PENDING
+	// TODO: BUYER MOZE MENJATI SAMO SVOJE KOMENTARE
 	@PUT
 	@Path("comments/")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -142,6 +150,11 @@ public class CommentServlet extends AbstractServletBase {
 		return generateCommentObjectResponse(updatedComment);
 	}
 	
+	// TODO: DODATI APPROVE RUTU SELLER AUTENTIFIKOVAN
+	// TODO: SELER MOZE MENJATI SAMO KOMENTAR KOJI PRIPADA NJEGOVOJ MANIFESTACIJI
+	
+	// TODO: SELLER CANCEL
+	// TODO: KOMENTAR MORA PRIPADATI NJEGOJ MANIFESTACIJI
 	@DELETE
 	@Path("comments/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
