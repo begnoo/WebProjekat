@@ -85,7 +85,8 @@ public class TicketOrderService implements ITicketOrderService {
 		return priceWithDiscount;
 	}
 
-	public HashMap<TicketType, Integer> getTicketPrices(int regularPrice, UUID buyerTypeId) {
+	@Override
+	public HashMap<TicketType, Integer> getTicketPricesWithBuyerDiscount(int regularPrice, UUID buyerTypeId) {
 		HashMap<TicketType, Integer> ticketPricesMap = new HashMap<TicketType, Integer>();
 		BuyerType buyerType = buyerTypeRepository.read(buyerTypeId);
 		ticketPricesMap.put(TicketType.Vip,
@@ -94,6 +95,16 @@ public class TicketOrderService implements ITicketOrderService {
 				getPriceOfTicketWithDiscount(getPriceOfTicket(regularPrice, TicketType.FanPit), buyerType));
 		ticketPricesMap.put(TicketType.Regular,
 				getPriceOfTicketWithDiscount(getPriceOfTicket(regularPrice, TicketType.Regular), buyerType));
+		
+		return ticketPricesMap;
+	}
+	
+	@Override
+	public HashMap<TicketType, Integer> getTicketPricesWithoutDiscount(int regularPrice) {
+		HashMap<TicketType, Integer> ticketPricesMap = new HashMap<TicketType, Integer>();
+		ticketPricesMap.put(TicketType.Vip, getPriceOfTicket(regularPrice, TicketType.Vip));
+		ticketPricesMap.put(TicketType.FanPit, getPriceOfTicket(regularPrice, TicketType.FanPit));
+		ticketPricesMap.put(TicketType.Regular, getPriceOfTicket(regularPrice, TicketType.Regular));
 		
 		return ticketPricesMap;
 	}

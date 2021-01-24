@@ -129,11 +129,12 @@ public class TicketServlet extends AbstractServletBase {
 	@GET
 	@Path("tickets/prices")
 	@Produces(MediaType.APPLICATION_JSON)
-	public HashMap<TicketType, Integer> getTicketPricesForBuyerType(@QueryParam("buyerTypeId") UUID buyerTypeId, @QueryParam("price") int regularPrice){
+	public HashMap<TicketType, Integer> getTicketPrices(@QueryParam("buyerTypeId") UUID buyerTypeId, @QueryParam("price") int regularPrice){
 		if(buyerTypeId == null) {
-			// TODO: URADI BEZ POPUSTA OVO
+			return ticketOrderService.getTicketPricesWithoutDiscount(regularPrice);
 		}
-		return ticketOrderService.getTicketPrices(regularPrice, buyerTypeId);
+		
+		return ticketOrderService.getTicketPricesWithBuyerDiscount(regularPrice, buyerTypeId);
 	}
 	
 	@POST

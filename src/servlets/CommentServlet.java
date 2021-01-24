@@ -20,7 +20,6 @@ import javax.ws.rs.core.MediaType;
 
 import core.domain.dto.Page;
 import core.domain.enums.CommentStatus;
-import core.domain.enums.UserRole;
 import core.domain.models.Comment;
 import core.requests.comments.CreateCommentRequest;
 import core.requests.comments.UpdateCommentRequest;
