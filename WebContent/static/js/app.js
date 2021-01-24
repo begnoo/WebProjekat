@@ -1,5 +1,6 @@
 const Login = { template: "<login-form></login-form>" };
-const Register = { template: "<register-form></register-form>" };
+const RegisterPage = { template: "<registration-page></registration-page>" };
+const ChangePassword = { template: "<change-password-form></change-password-form>" };
 const Comment = { template: "<comment-form></comment-form>" };
 const Comments = { template: "<comments-table></comments-table>" };
 const LocationForm = { template: "<location-form></location-form>" };
@@ -14,12 +15,11 @@ const OrderTable = {template: "<order-table></order-table>"};
 const BuyerTicketsPage = {template: "<buyer-tickets-page></buyer-tickets-page>"};
 
 
-
 const router = new VueRouter({
     mode: "hash",
     routes: [
         { path: "/login", component: Login },
-        { path: "/register", component: Register },
+        { path: "/register", component: RegisterPage },
         { path: "/add-location", component: LocationForm },
         { path: "/add-manifestation", component: ManifestationForm },
         { path: "/add-manifestation-image", component: ManifestationImageForm },
@@ -31,6 +31,7 @@ const router = new VueRouter({
 		{ path: "/cart", component: OrderTable },
 		{ path: "/buyer-tickets/", component: BuyerTicketsPage },
 		{ path: "/buyer-tickets/:id", component: BuyerTicketsPage },
+		{ path: "/change-password", component: ChangePassword },
     ],
 });
 
