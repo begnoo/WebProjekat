@@ -16,7 +16,7 @@ Vue.component("buyer-tickets-page", {
             </div>
             <div v-show="tickets && tickets.length != 0" class="col-8 mt-3">
                 <buyer-tickets-table :tickets="tickets"></buyer-tickets-table>
-				<pagination ref="pagination-comp" :restConfig="restConfig" :pageSize="pageSize" v-on:update-page-data="setTickets"></pagination>
+				<pagination :trigger="trigger" :restConfig="restConfig" :pageSize="pageSize" v-on:update-page-data="setTickets"></pagination>
             </div>
 			<div v-show="selectFilter &&  tickets.length === 0" class="row">
 				<div class="col mt-5">
@@ -37,6 +37,7 @@ Vue.component("buyer-tickets-page", {
 			pageSize: 5,
 			selectedPage : 1,
 			selectFilter: false,
+			trigger: false,
         }
     },
     
@@ -49,7 +50,7 @@ Vue.component("buyer-tickets-page", {
 		},
 		getBuyerTickets: function(){
 			this.restConfig.params["only-reserved"] = this.selectFilter;
-			this.$refs["pagination-comp"].resetPages();
+			this.trigger = !this.trigger;
 		}
 
     },

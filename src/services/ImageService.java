@@ -59,6 +59,6 @@ public class ImageService implements IImageService {
 	}
 
 	private byte[] getImageByteArray(String base64string) {
-		return Base64.getDecoder().decode(base64string);
+		return Base64.getDecoder().decode(base64string.split(",")[1]);
 	}
 }
