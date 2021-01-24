@@ -128,8 +128,16 @@ public class CommentServlet extends AbstractServletBase {
 		return generateCommentObjectResponse(updatedComment);
 	}
 	
-	// TODO: DODATI APPROVE RUTU SELLER AUTENTIFIKOVAN
 	// TODO: SELER MOZE MENJATI SAMO KOMENTAR KOJI PRIPADA NJEGOVOJ MANIFESTACIJI
+	@PUT
+	@Path("comments/{id}/status")
+	@Authorize(roles = "Seller")
+	@Produces(MediaType.APPLICATION_JSON)
+	public WholeCommentObjectResponse update(@PathParam("id") UUID id, @QueryParam("status") CommentStatus status) {
+		Comment updatedComment = commentService.changeStatus(id, status);
+		
+		return generateCommentObjectResponse(updatedComment);
+	}
 	
 	// TODO: KOMENTAR MORA PRIPADATI NJEGOJ MANIFESTACIJI
 	@DELETE

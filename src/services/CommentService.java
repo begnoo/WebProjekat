@@ -52,6 +52,13 @@ public class CommentService extends CrudService<Comment> implements ICommentServ
 
 		return repository.create(comment);
 	}
+	
+	@Override
+	public Comment update(Comment comment) {
+		comment.setStatus(CommentStatus.Pending);
+
+		return super.update(comment);
+	}
 
 	@Override
 	public List<Comment> readByBuyerId(UUID buyerId) {
@@ -79,6 +86,25 @@ public class CommentService extends CrudService<Comment> implements ICommentServ
 		return readByManifestationId(manifestationId).stream()
 				.filter(comment -> comment.getStatus() == commentStatus)
 				.collect(Collectors.toList());
+	}
+
+	@Override
+	public Comment changeStatus(UUID commentId, CommentStatus commentStatus) {
+		Comment comment = repository.read(commentId);
+		if(comment == null) {
+			throw new MissingEntityException(String.format("Comment with id = %s does not exists.", commentId));
+		}
+		
+		if(comment.getStatus() != CommentStatus.Pending) {
+			throw new BadLogicException("You can not change status of this comment.");
+		}
+		
+		if(commentStatus == CommentStatus.Pending) {
+			throw new BadLogicException("You can not change status of comment to Pending.");
+		}
+		
+		comment.setStatus(commentStatus);
+		return super.update(comment);
 	}
 
 }

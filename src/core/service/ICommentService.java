@@ -11,4 +11,5 @@ public interface ICommentService extends ICrudService<Comment> {
 	List<Comment> readByManifestationId(UUID manifestationId);
 	List<Comment> readNonPendingCommentsByManifestationId(UUID manifestationId);
 	List<Comment> readByManifestationIdAndStatus(UUID manifestationId, CommentStatus commentStatus);
+	Comment changeStatus(UUID commentId, CommentStatus commentStatus);
 }
