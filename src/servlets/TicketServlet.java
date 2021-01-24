@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -170,7 +171,7 @@ public class TicketServlet extends AbstractServletBase {
 
 	// BUYER
 	// BUYER SAMO SVOJE
-	@PUT
+	@DELETE
 	@Path("tickets/{id}")
 	@Authorize(roles = "Buyer")
 	@Produces(MediaType.APPLICATION_JSON)
