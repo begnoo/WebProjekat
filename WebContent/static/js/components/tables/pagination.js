@@ -49,6 +49,17 @@ Vue.component('pagination',
     },
     
     methods: {
+		resetPages: function(){
+			this.selectedPage = 1;
+			this.pages = [1, 2, 3];	
+			this.loadPage(this.selectedPage, () =>
+	    	{
+	    		this.pageData = this.nextPageData;
+				this.emitData();
+	
+	    	});
+		},
+		
     	loadPage : function(page, callback) {
 			this.restConfig.url = `${this.restConfig.pageTemp}?number=${page}&size=${this.pageSize}`;
     		axios(this.restConfig, this.params)

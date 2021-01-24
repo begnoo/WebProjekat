@@ -11,22 +11,19 @@ Vue.component("buyer-tickets-page", {
 				      <option value="true">Only Reserved Tickets</option>
 				    </select>
 				  </div>
-				<button v-on:click="getBuyerTickets(selectFilter)" type="submit" class="btn btn-primary">Submit</button>
+				<button v-on:click="getBuyerTickets()" type="submit" class="btn btn-primary">Submit</button>
 				</form>
             </div>
-            <div v-if="tickets" class="col-8 mt-3">
+            <div v-show="tickets && tickets.length != 0" class="col-8 mt-3">
                 <buyer-tickets-table :tickets="tickets"></buyer-tickets-table>
-				<pagination :restConfig="restConfig" :pageSize="pageSize" v-on:update-page-data="setTickets"></pagination>
+				<pagination ref="pagination-comp" :restConfig="restConfig" :pageSize="pageSize" v-on:update-page-data="setTickets"></pagination>
             </div>
-			<div v-else class="col-8 mt-5">
-				<h3>You have no reserved tickets.</h3>
-			</div>
-        </div>
-		<div v-else-if="!selectFilter && tickets && tickets.length !== 0" class="row">
-			<div class="col mt-3">
-				<h3>You have no tickets.</h3>
-			</div>
-		</div>
+			<div v-show="selectFilter &&  tickets.length === 0" class="row">
+				<div class="col mt-5">
+					<h3>No such tickets.</h3>
+				</div>
+			</div>		
+		</div>		
     </div>
     `,
 
@@ -42,18 +39,17 @@ Vue.component("buyer-tickets-page", {
 			selectFilter: false,
         }
     },
-
-	watch: {
-		"selectFilter" : function(newFilter){
-			this.restConfig.params["only-reserved"] = (newFilter === "true")
-		}
-	},
     
     methods: {
 		
 		setTickets: function({emittedData, selectedPage}){
+			console.log(emittedData)
 			this.tickets = emittedData;
 			this.selectedPage = selectedPage;
+		},
+		getBuyerTickets: function(){
+			this.restConfig.params["only-reserved"] = this.selectFilter;
+			this.$refs["pagination-comp"].resetPages();
 		}
 
     },
