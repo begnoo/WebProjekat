@@ -41,8 +41,7 @@ Vue.component("location-combo-box", {
 
     methods: {
         getLocations: function () {
-            axios
-                .get("/WebProjekat/rest/locations")
+            axios(getRestConfig("/WebProjekat/rest/locations"))
                 .then((response) => {
                     this.locations = response.data;
                     this.locationsToShow = this.locations;

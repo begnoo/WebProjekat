@@ -62,6 +62,9 @@ Vue.component("manifestation-form", {
                         <label for="locationField">Location:</label>
                         <location-combo-box v-on:location-value-change="updateLocationId"></location-combo-box>
                     </div>
+
+					<manifestation-image-form :manifestationId="manifestationId"></manifestation-image-form>
+
                     <div class="form-group">
                         <div class="d-flex d-flex justify-content-between">
                             <button class="btn btn-primary">Add Manifestation</button>
@@ -86,6 +89,7 @@ Vue.component("manifestation-form", {
             regularTicketPrice: null,
             locationId: null,
             types: ["Theater", "Festival", "Concert"],
+			manifestationId: "",
         };
     },
 
@@ -93,8 +97,7 @@ Vue.component("manifestation-form", {
         createManifestation: function (event) {
             event.preventDefault();
             console.log(this.locationId);
-            axios
-                .post("/WebProjekat/rest/manifestations", {
+            axios(postRestConfig("/WebProjekat/rest/manifestations", {}, {
                     name: this.name,
                     type: this.type,
                     seats: this.seats,
@@ -104,10 +107,11 @@ Vue.component("manifestation-form", {
                     locationId: this.locationId,
                     sellerId: window.localStorage.getObject("loggedUser").user
                         .id,
-                })
+                }))
                 .then((response) => {
-                    alert("Uspesno");
-                    console.log(response);
+					this.manifestationId = response.data.id;
+                    alert("Uspesno dodata manifestacija");
+                    console.log(response.data);
                 })
                 .catch(function (error) {
                     alert(error.response.data.errorMessage);

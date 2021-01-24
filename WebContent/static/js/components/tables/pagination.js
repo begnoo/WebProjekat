@@ -36,7 +36,7 @@ Vue.component('pagination',
 	  		</nav>
     `,
 
-	props: ["restConfig", "pageSize"],
+	props: ["restConfig", "pageSize", "trigger"],
 
     data: function() {
         return {
@@ -47,6 +47,12 @@ Vue.component('pagination',
             
         }
     },
+
+	watch: {
+		trigger: function(){
+			this.resetPages()
+		}
+	},
     
     methods: {
 		resetPages: function(){
