@@ -30,6 +30,7 @@ import core.service.IPaginationService;
 import core.servlets.exceptions.NotFoundException;
 import repository.DbContext;
 import services.PaginationService;
+import servlets.utils.filters.Authorize;
 
 @Path("/")
 public class CommentServlet extends AbstractServletBase {
@@ -53,34 +54,11 @@ public class CommentServlet extends AbstractServletBase {
 		
 		paginationService = new PaginationService<Comment>();
 	}
-
-	// TODO: REMOVE
-	@GET
-	@Path("comments/")
-	@Produces(MediaType.APPLICATION_JSON)
-	public List<Comment> readAll(@QueryParam("number") int number, @QueryParam("size") int size) {
-		List<Comment> comments = commentService.read();
-		
-		return paginationService.readPage(comments, new Page(number, size));
-	}
-
-	// TODO: REMOVE
-	@GET
-	@Path("comments/{id}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public WholeCommentObjectResponse readById(@PathParam("id") UUID id) {
-		Comment comment = commentService.read(id);
-		if(comment == null) {
-			throw new NotFoundException("Comment does not exists.");
-		}
-		
-		return generateCommentObjectResponse(comment);
-	}
 	
-	// TODO: AUTENTIFIKOVAN seller ili administrator
 	// TODO: SELLER SAMO OD SVOJIH MANIFESTACIJA, ADMIN SVE
 	@GET
 	@Path("manifestations/{manifestationId}/comments")
+	@Authorize(roles = "Administrator,Seller")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<WholeCommentObjectResponse> readByManifestationId(@PathParam("manifestationId") UUID manifestationId, @QueryParam("status") CommentStatus commentStatus, @QueryParam("number") int number, @QueryParam("size") int size)
 	{
@@ -115,9 +93,9 @@ public class CommentServlet extends AbstractServletBase {
 		return wholeCommentObjectsForManifestation;
 	}
 
-	// TODO: AUTENTIFIKOVAN BUYER
 	@POST
 	@Path("comments/")
+	@Authorize(roles = "Buyer")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeCommentObjectResponse create(CreateCommentRequest request) {
@@ -134,6 +112,7 @@ public class CommentServlet extends AbstractServletBase {
 	// TODO: BUYER MOZE MENJATI SAMO SVOJE KOMENTARE
 	@PUT
 	@Path("comments/")
+	@Authorize(roles = "Buyer")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeCommentObjectResponse update(UpdateCommentRequest request) {
@@ -153,10 +132,10 @@ public class CommentServlet extends AbstractServletBase {
 	// TODO: DODATI APPROVE RUTU SELLER AUTENTIFIKOVAN
 	// TODO: SELER MOZE MENJATI SAMO KOMENTAR KOJI PRIPADA NJEGOVOJ MANIFESTACIJI
 	
-	// TODO: SELLER CANCEL
 	// TODO: KOMENTAR MORA PRIPADATI NJEGOJ MANIFESTACIJI
 	@DELETE
 	@Path("comments/{id}")
+	@Authorize(roles = "Seller")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Comment delete(@PathParam("id") UUID id)
 	{

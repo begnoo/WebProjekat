@@ -29,11 +29,11 @@ import core.service.IAdvanceSearchService;
 import core.service.IPaginationService;
 import core.service.ITicketOrderService;
 import core.service.ITicketService;
-import core.servlets.exceptions.NotFoundException;
 import repository.DbContext;
 import repository.TicketRepository;
 import services.PaginationService;
 import services.TicketsSearchService;
+import servlets.utils.filters.Authorize;
 
 @Path("/")
 public class TicketServlet extends AbstractServletBase {
@@ -63,9 +63,9 @@ public class TicketServlet extends AbstractServletBase {
 		searchService = new TicketsSearchService(ticketRepository);
 	}
 
-	// TODO: ADMINISTRATOR
 	@GET
 	@Path("tickets/")
+	@Authorize(roles = "Administrator")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Ticket> readAll(@QueryParam("number") int number, @QueryParam("size") int size) {
 		List<Ticket> tickets = ticketService.read();
@@ -73,23 +73,10 @@ public class TicketServlet extends AbstractServletBase {
 		return paginationService.readPage(tickets, new Page(number, size)); 
 	}
 
-	// TODO: REMOVE
-	@GET
-	@Path("tickets/{id}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public WholeTicketObjectResponse readById(@PathParam("id") UUID id) {
-		Ticket ticket = ticketService.read(id);
-		if(ticket == null) {
-			throw new NotFoundException("Ticket does not exists.");
-		}
-		
-		return generateTicketObjectResponse(ticket);
-	}
-
-	// TODO: SELLER I ADMINISRATOR
 	// TODO: SELLER SAMO SVOJE
 	@GET
 	@Path("manifestations/{manifestationId}/tickets")
+	@Authorize(roles = "Administrator,Seller")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<WholeTicketObjectResponse> readByManifestationId(@PathParam("manifestationId") UUID manifestationId, @QueryParam("number") int number, @QueryParam("size") int size) {
 		List<Ticket> ticketsForManifestation = ticketService.readByManifestationId(manifestationId);
@@ -102,10 +89,10 @@ public class TicketServlet extends AbstractServletBase {
 		return wholeTicketObjectsForManifestation;
 	}
 	
-	// TODO: SELLER I ADMINISRATOR
 	// TODO: SELLER SAMO SVOJE
 	@GET
 	@Path("users/sellers/{sellerId}/manifestations/tickets/reserved")
+	@Authorize(roles = "Administrator,Seller")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<WholeTicketObjectResponse> readReservedTicketsOfSellersManifestations(@PathParam("sellerId") UUID sellerId, @QueryParam("number") int number, @QueryParam("size") int size) {
 		List<Ticket> ticketsForSellersManifestation = ticketService.readReservedTicketsOfSellersManifestations(sellerId);
@@ -118,10 +105,10 @@ public class TicketServlet extends AbstractServletBase {
 		return wholeTicketObjectsForSellersManifestation;
 	}
 	
-	// TODO: BUYER I ADMINISTRATOR
 	// TODO: BUYER SAMO SVOJE
 	@GET
 	@Path("users/buyers/{buyerId}/tickets")
+	@Authorize(roles = "Administrator,Buyer")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<WholeTicketObjectResponse> readByBuyerId(@PathParam("buyerId") UUID buyerId, @QueryParam("only-reserved") boolean onlyReserved, @QueryParam("number") int number, @QueryParam("size") int size) {
 		List<Ticket> ticketsOfBuyer;
@@ -139,7 +126,6 @@ public class TicketServlet extends AbstractServletBase {
 		return wholeTicketObjectsOfBuyers;
 	}
 	
-	// TODO: SVI
 	@GET
 	@Path("tickets/prices")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -150,9 +136,9 @@ public class TicketServlet extends AbstractServletBase {
 		return ticketOrderService.getTicketPrices(regularPrice, buyerTypeId);
 	}
 	
-	// AUTORIZOVAN
 	@POST
 	@Path("tickets/advance-search")
+	@Authorize()
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Ticket> advanceSearch(TicketsSearchParamethers searchParamethers, @QueryParam("number") int number, @QueryParam("size") int size) {
 		super.validateRequest(searchParamethers);
@@ -162,9 +148,9 @@ public class TicketServlet extends AbstractServletBase {
 		return paginationService.readPage(tickets, new Page(number, size));
 	}
 	
-	// BUYER
 	@POST
 	@Path("tickets/")
+	@Authorize(roles = "Buyer")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<WholeTicketObjectResponse> create(TicketOrder ticketOrder) {
@@ -179,10 +165,10 @@ public class TicketServlet extends AbstractServletBase {
 		return response;
 	}
 
-	// BUYER
-	// BUYER SAMO SVOJE
+	// TODO: BUYER SAMO SVOJE
 	@DELETE
 	@Path("tickets/{id}")
+	@Authorize(roles = "Buyer")
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeTicketObjectResponse cancelTicket(@PathParam("id") UUID id) {
 		Ticket canceledTicket = ticketService.cancelTicket(id);

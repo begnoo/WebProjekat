@@ -26,6 +26,7 @@ import core.service.IPaginationService;
 import core.servlets.exceptions.NotFoundException;
 import repository.DbContext;
 import services.PaginationService;
+import servlets.utils.filters.Authorize;
 
 @Path("locations")
 public class LocationsServlet extends AbstractServletBase {
@@ -50,9 +51,9 @@ public class LocationsServlet extends AbstractServletBase {
 		paginationService = new PaginationService<Location>();	
 	}
 	
-	// TODO: SELLER I ADMINISTRATOR
 	@GET
 	@Path("/")
+	@Authorize(roles = "Administrator,Seller")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Location> readAll(@QueryParam("number") int number, @QueryParam("size") int size)
 	{
@@ -61,9 +62,9 @@ public class LocationsServlet extends AbstractServletBase {
 		return paginationService.readPage(locations, new Page(number, size));
 	}
 	
-	// TODO: ADMINISTRATOR
 	@GET
 	@Path("/{id}")
+	@Authorize(roles = "Administrator")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Location readById(@PathParam("id") UUID id)
 	{
@@ -75,9 +76,9 @@ public class LocationsServlet extends AbstractServletBase {
 		return location;
 	}
 	
-	// TODO: SELLER I ADMINISTRATOR
 	@POST
 	@Path("/")
+	@Authorize(roles = "Administrator,Seller")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Location create(CreateLocationRequest request)
@@ -89,9 +90,9 @@ public class LocationsServlet extends AbstractServletBase {
 		return locationService.create(location);
 	}
 	
-	// TODO: ADMINISTRATOR
 	@PUT
 	@Path("/")
+	@Authorize(roles = "Administrator")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Location update(UpdateLocationRequest request)
@@ -107,9 +108,9 @@ public class LocationsServlet extends AbstractServletBase {
 		return locationService.update(LocationForUpdate);
 	}
 	
-	// TODO: ADMINISTRATOR
 	@DELETE
 	@Path("/{id}")
+	@Authorize(roles = "Administrator")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Location delete(@PathParam("id") UUID id)
 	{

@@ -41,6 +41,7 @@ import repository.DbContext;
 import repository.UserRepository;
 import services.PaginationService;
 import services.UsersSearchService;
+import servlets.utils.filters.Authorize;
 
 @Path("/")
 public class UsersServlet extends AbstractServletBase {
@@ -70,9 +71,9 @@ public class UsersServlet extends AbstractServletBase {
 		searchService = new UsersSearchService(userRepository);
 	}
 	
-	// TODO: ADMINISTRATOR
 	@GET
 	@Path("users/")
+	@Authorize(roles = "Administrator")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<User> readAll(@QueryParam("role") UserRole role, @QueryParam("number") int number, @QueryParam("size") int size)
 	{
@@ -86,9 +87,9 @@ public class UsersServlet extends AbstractServletBase {
 		return paginationService.readPage(users, new Page(number, size));
 	}
 	
-	// TODO: ADMINISTRATOR
 	@GET
 	@Path("users/buyers/distrustful")
+	@Authorize(roles = "Administrator")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<User> readAllDistrustfulBuyers(@QueryParam("number") int number, @QueryParam("size") int size)
 	{
@@ -97,9 +98,9 @@ public class UsersServlet extends AbstractServletBase {
 		return paginationService.readPage(users, new Page(number, size));
 	}
 	
-	// TODO: AUTENTIFIKOVAN
 	@GET
 	@Path("users/{id}")
+	@Authorize()
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeUserObjectResponseBase readById(@PathParam("id") UUID id)
 	{
@@ -111,9 +112,9 @@ public class UsersServlet extends AbstractServletBase {
 		return generateUserObjectResponse(user);
 	}
 	
-	// TODO: ADMINISTRATOR
 	@POST
 	@Path("users/advance-search")
+	@Authorize(roles = "Administrator")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<User> advanceSearch(UsersSearchParamethers searchParamethers, @QueryParam("number") int number, @QueryParam("size") int size) {
 		super.validateRequest(searchParamethers);
@@ -139,9 +140,9 @@ public class UsersServlet extends AbstractServletBase {
 		return generateUserObjectResponse(createdUser);
 	}
 	
-	// TODO: ADMINISTRATOR
 	@POST
 	@Path("users/seller")
+	@Authorize(roles = "Administrator")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeUserObjectResponseBase createSeller(CreateSellerRequest request)
@@ -155,16 +156,17 @@ public class UsersServlet extends AbstractServletBase {
 		return generateUserObjectResponse(createdUser);
 	}
 	
-	// TODO: AUTENTIFIKOVAN
+	
 	// TODO: PROFILE SPECIFIC
 	@PUT
 	@Path("users/")
+	@Authorize()
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeUserObjectResponseBase update(UpdateUserRequest request)
 	{
 		super.validateRequest(request);
-		Class.forName("Manifestation");
+
 		User user = userService.read(request.getId());
 		if(user == null) {
 			throw new NotFoundException("User does not exists.");
@@ -177,10 +179,10 @@ public class UsersServlet extends AbstractServletBase {
 		return generateUserObjectResponse(updatedUser);
 	}
 	
-	// TODO: AUTENTIFIKOVAN
 	// TODO: PROFILE SPECIFIC
 	@PUT
 	@Path("users/{id}/password")
+	@Authorize()
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeUserObjectResponseBase changePassword(@PathParam("id") UUID id, ChangePasswordRequest request)
@@ -192,9 +194,9 @@ public class UsersServlet extends AbstractServletBase {
 		return generateUserObjectResponse(updatedUser);
 	}
 	
-	// TODO: ADMINISTRATOR
 	@DELETE
 	@Path("users/{id}")
+	@Authorize(roles = "Administrator")
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeUserObjectResponseBase delete(@PathParam("id") UUID id)
 	{
