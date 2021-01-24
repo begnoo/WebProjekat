@@ -10,5 +10,9 @@ import core.domain.models.Ticket;
 
 public interface ITicketOrderService {
 	List<Ticket> createTicketsFromOrder(TicketOrder ticketOrder);
-	HashMap<TicketType, Integer> getTicketPrices(int regularPrice, UUID buyerTypeId);
+	
+	HashMap<TicketType, Integer> getTicketPricesWithBuyerDiscount(int regularPrice, UUID buyerTypeId);
+
+	HashMap<TicketType, Integer> getTicketPricesWithoutDiscount(int regularPrice);
+
 }

@@ -9,12 +9,6 @@ public class UpdateCommentRequestValidator extends AbstractObjectValidator<Updat
 		
 		ruleFor(validatedObject.getId()).notNull()
 										.supplyErrorMessage("Id can not be empty.");
-
-		ruleFor(validatedObject.getBuyerId()).notNull()
-											 .supplyErrorMessage("Buyer id can not be empty.");
-	
-		ruleFor(validatedObject.getManifestationId()).notNull()
-		 									 		 .supplyErrorMessage("Manifestation id can not be empty.");
 		
 		ruleFor(validatedObject.getText()).notNull()
 										  .notEmpty()
@@ -24,9 +18,5 @@ public class UpdateCommentRequestValidator extends AbstractObjectValidator<Updat
 		ruleFor(validatedObject.getRating()).notNull()
 											.range(1, 5)
 											.supplyErrorMessage("Rating must be between 1 and 5.");
-		
-		ruleFor(validatedObject.getStatus()).notNull()
-											.supplyErrorMessage("Status can not be empty.");
-
 	}
 }

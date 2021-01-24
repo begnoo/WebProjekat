@@ -32,6 +32,7 @@ import repository.DbContext;
 import repository.ManifestationRepository;
 import services.ManifestationSearchService;
 import services.PaginationService;
+import servlets.utils.filters.Authorize;
 
 @Path("/")
 public class ManifestationServlet extends AbstractServletBase {
@@ -59,7 +60,6 @@ public class ManifestationServlet extends AbstractServletBase {
 		searchService = new ManifestationSearchService(manifestationRepository);
 	}
 
-	// TODO: SVI
 	@GET
 	@Path("manifestations/")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -75,7 +75,6 @@ public class ManifestationServlet extends AbstractServletBase {
 	}
 	
 	
-	// TODO: SVI
 	@GET
 	@Path("manifestations/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -88,7 +87,6 @@ public class ManifestationServlet extends AbstractServletBase {
 		return generateManifestationObjectResponse(manifestation);
 	}
 
-	// TODO: SVI
 	@POST
 	@Path("manifestations/advance-search")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -100,9 +98,9 @@ public class ManifestationServlet extends AbstractServletBase {
 		return paginationService.readPage(manifestations, new Page(number, size));
 	}
 	
-	// TODO: SELLER
 	@POST
 	@Path("manifestations/")
+	@Authorize(roles = "Seller")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeManifestationObjectResponse create(CreateManifestationRequest request) {
@@ -115,10 +113,10 @@ public class ManifestationServlet extends AbstractServletBase {
 		return generateManifestationObjectResponse(createdManifestation);
 	}
 
-	// TODO: SELLER
 	// TODO: SELER MOZE SAMO SVOJE
 	@PUT
 	@Path("manifestations/")
+	@Authorize(roles = "Seller")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeManifestationObjectResponse update(UpdateManifestationRequest request) {
@@ -136,10 +134,10 @@ public class ManifestationServlet extends AbstractServletBase {
 		return generateManifestationObjectResponse(updatedManifestation);
 	}
 	
-	// TODO: SELLER ADMINISTRATOR
 	// TODO: SELER MOZE SAMO SVOJE
 	@DELETE
 	@Path("manifestations/{id}")
+	@Authorize(roles = "Administrator,Seller")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Manifestation delete(@PathParam("id") UUID id)
 	{

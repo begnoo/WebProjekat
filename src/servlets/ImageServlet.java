@@ -18,6 +18,7 @@ import core.requests.images.Base64ImageForManifestation;
 import core.responses.manifestations.WholeManifestationObjectResponse;
 import core.service.IImageService;
 import repository.DbContext;
+import servlets.utils.filters.Authorize;
 
 @Path("images")
 public class ImageServlet extends AbstractServletBase {
@@ -40,7 +41,6 @@ public class ImageServlet extends AbstractServletBase {
 		imageService = (IImageService) serviceFactory.getService(IImageService.class, context);
 	}
 	
-	// TODO: SVI
 	@GET
 	@Path("/{file-name}")
 	@Produces("image/jpeg")
@@ -48,8 +48,8 @@ public class ImageServlet extends AbstractServletBase {
 		return imageService.getImage(fileName);
 	}
 	
-	// TODO: SELLER
 	@PUT
+	@Authorize(roles = "Seller")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeManifestationObjectResponse updateImage(Base64ImageForManifestation request) {
