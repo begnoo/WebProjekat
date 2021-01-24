@@ -30,6 +30,7 @@ import repository.DbContext;
 import services.PaginationService;
 import servlets.utils.filters.Authorize;
 import servlets.utils.filters.UserSpecificEntity;
+import servlets.utils.filters.UserSpecificManifestationsComment;
 
 @Path("/")
 public class CommentServlet extends AbstractServletBase {
@@ -126,12 +127,13 @@ public class CommentServlet extends AbstractServletBase {
 		return generateCommentObjectResponse(updatedComment);
 	}
 	
-	// TODO: SELER MOZE MENJATI SAMO KOMENTAR KOJI PRIPADA NJEGOVOJ MANIFESTACIJI
+	
 	@PUT
-	@Path("comments/{id}/status")
+	@Path("comments/{commentId}/status")
 	@Authorize(roles = "Seller")
+	@UserSpecificManifestationsComment()
 	@Produces(MediaType.APPLICATION_JSON)
-	public WholeCommentObjectResponse update(@PathParam("id") UUID id, @QueryParam("status") CommentStatus status) {
+	public WholeCommentObjectResponse update(@PathParam("commentId") UUID id, @QueryParam("status") CommentStatus status) {
 		Comment updatedComment = commentService.changeStatus(id, status);
 		
 		return generateCommentObjectResponse(updatedComment);
