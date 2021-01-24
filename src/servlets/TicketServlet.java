@@ -34,6 +34,7 @@ import repository.TicketRepository;
 import services.PaginationService;
 import services.TicketsSearchService;
 import servlets.utils.filters.Authorize;
+import servlets.utils.filters.UserSpecific;
 import servlets.utils.filters.UserSpecificEntity;
 
 @Path("/")
@@ -90,10 +91,10 @@ public class TicketServlet extends AbstractServletBase {
 		return wholeTicketObjectsForManifestation;
 	}
 	
-	// TODO: SELLER SAMO SVOJE
 	@GET
 	@Path("users/sellers/{sellerId}/manifestations/tickets/reserved")
 	@Authorize(roles = "Administrator,Seller")
+	@UserSpecific()
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<WholeTicketObjectResponse> readReservedTicketsOfSellersManifestations(@PathParam("sellerId") UUID sellerId, @QueryParam("number") int number, @QueryParam("size") int size) {
 		List<Ticket> ticketsForSellersManifestation = ticketService.readReservedTicketsOfSellersManifestations(sellerId);
@@ -106,10 +107,10 @@ public class TicketServlet extends AbstractServletBase {
 		return wholeTicketObjectsForSellersManifestation;
 	}
 	
-	// TODO: BUYER SAMO SVOJE
 	@GET
 	@Path("users/buyers/{buyerId}/tickets")
 	@Authorize(roles = "Administrator,Buyer")
+	@UserSpecific()
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<WholeTicketObjectResponse> readByBuyerId(@PathParam("buyerId") UUID buyerId, @QueryParam("only-reserved") boolean onlyReserved, @QueryParam("number") int number, @QueryParam("size") int size) {
 		List<Ticket> ticketsOfBuyer;

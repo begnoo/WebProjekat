@@ -43,6 +43,7 @@ import services.PaginationService;
 import services.UsersSearchService;
 import servlets.utils.filters.Authorize;
 import servlets.utils.filters.DenyAuthorized;
+import servlets.utils.filters.UserSpecific;
 
 @Path("/")
 public class UsersServlet extends AbstractServletBase {
@@ -157,11 +158,10 @@ public class UsersServlet extends AbstractServletBase {
 		return generateUserObjectResponse(createdUser);
 	}
 	
-	
-	// TODO: PROFILE SPECIFIC
 	@PUT
 	@Path("users/")
 	@Authorize()
+	@UserSpecific(allowTopRole = false)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeUserObjectResponseBase update(UpdateUserRequest request)
@@ -179,10 +179,10 @@ public class UsersServlet extends AbstractServletBase {
 		return generateUserObjectResponse(updatedUser);
 	}
 	
-	// TODO: PROFILE SPECIFIC
 	@PUT
 	@Path("users/{id}/password")
 	@Authorize()
+	@UserSpecific(allowTopRole = false)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeUserObjectResponseBase changePassword(@PathParam("id") UUID id, ChangePasswordRequest request)

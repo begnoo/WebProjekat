@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -137,17 +136,7 @@ public class CommentServlet extends AbstractServletBase {
 		
 		return generateCommentObjectResponse(updatedComment);
 	}
-	
-	// TODO: KOMENTAR MORA PRIPADATI NJEGOJ MANIFESTACIJI
-	@DELETE
-	@Path("comments/{id}")
-	@Authorize(roles = "Seller")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Comment delete(@PathParam("id") UUID id)
-	{
-		return commentService.delete(id);
-	}
-	
+		
 	private WholeCommentObjectResponse generateCommentObjectResponse(Comment comment)
 	{
 		return mapper.Map(new WholeCommentObjectResponse(), comment);
