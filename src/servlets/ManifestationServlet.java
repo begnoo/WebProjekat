@@ -33,6 +33,7 @@ import repository.ManifestationRepository;
 import services.ManifestationSearchService;
 import services.PaginationService;
 import servlets.utils.filters.Authorize;
+import servlets.utils.filters.UserSpecificEntity;
 
 @Path("/")
 public class ManifestationServlet extends AbstractServletBase {
@@ -113,10 +114,10 @@ public class ManifestationServlet extends AbstractServletBase {
 		return generateManifestationObjectResponse(createdManifestation);
 	}
 
-	// TODO: SELER MOZE SAMO SVOJE
 	@PUT
 	@Path("manifestations/")
 	@Authorize(roles = "Seller")
+	@UserSpecificEntity(what = "Manifestation", belongsTo = "Seller")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeManifestationObjectResponse update(UpdateManifestationRequest request) {
@@ -134,12 +135,12 @@ public class ManifestationServlet extends AbstractServletBase {
 		return generateManifestationObjectResponse(updatedManifestation);
 	}
 	
-	// TODO: SELER MOZE SAMO SVOJE
 	@DELETE
-	@Path("manifestations/{id}")
+	@Path("manifestations/{manifestationId}")
 	@Authorize(roles = "Administrator,Seller")
+	@UserSpecificEntity(what = "Manifestation", belongsTo = "Seller")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Manifestation delete(@PathParam("id") UUID id)
+	public Manifestation delete(@PathParam("manifestationId") UUID id)
 	{
 		return manifestationService.delete(id);
 	}

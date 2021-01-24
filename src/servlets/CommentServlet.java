@@ -30,6 +30,7 @@ import core.servlets.exceptions.NotFoundException;
 import repository.DbContext;
 import services.PaginationService;
 import servlets.utils.filters.Authorize;
+import servlets.utils.filters.UserSpecificEntity;
 
 @Path("/")
 public class CommentServlet extends AbstractServletBase {
@@ -54,10 +55,10 @@ public class CommentServlet extends AbstractServletBase {
 		paginationService = new PaginationService<Comment>();
 	}
 	
-	// TODO: SELLER SAMO OD SVOJIH MANIFESTACIJA, ADMIN SVE
 	@GET
 	@Path("manifestations/{manifestationId}/comments")
 	@Authorize(roles = "Administrator,Seller")
+	@UserSpecificEntity(what = "Manifestation", belongsTo = "Seller")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<WholeCommentObjectResponse> readByManifestationId(@PathParam("manifestationId") UUID manifestationId, @QueryParam("status") CommentStatus commentStatus, @QueryParam("number") int number, @QueryParam("size") int size)
 	{
@@ -107,11 +108,10 @@ public class CommentServlet extends AbstractServletBase {
 		return generateCommentObjectResponse(createdComment);
 	}
 
-	// TODO: BUYER I AKO SE PROMENO STATUS PONOVO IDE NA PENDING
-	// TODO: BUYER MOZE MENJATI SAMO SVOJE KOMENTARE
 	@PUT
 	@Path("comments/")
 	@Authorize(roles = "Buyer")
+	@UserSpecificEntity(what = "Comment", belongsTo = "Buyer")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeCommentObjectResponse update(UpdateCommentRequest request) {

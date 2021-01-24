@@ -11,7 +11,6 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -75,7 +74,6 @@ public class TicketServlet extends AbstractServletBase {
 		return paginationService.readPage(tickets, new Page(number, size)); 
 	}
 
-	// TODO: SELLER SAMO SVOJE
 	@GET
 	@Path("manifestations/{manifestationId}/tickets")
 	@Authorize(roles = "Administrator,Seller")
@@ -169,13 +167,12 @@ public class TicketServlet extends AbstractServletBase {
 		return response;
 	}
 
-	// BUYER
-	// BUYER SAMO SVOJE
 	@DELETE
-	@Path("tickets/{id}")
+	@Path("tickets/{ticketId}")
 	@Authorize(roles = "Buyer")
+	@UserSpecificEntity(what = "Ticket", belongsTo = "Buyer")
 	@Produces(MediaType.APPLICATION_JSON)
-	public WholeTicketObjectResponse cancelTicket(@PathParam("id") UUID id) {
+	public WholeTicketObjectResponse cancelTicket(@PathParam("ticketId") UUID id) {
 		Ticket canceledTicket = ticketService.cancelTicket(id);
 		if(canceledTicket == null) {
 			return null;
