@@ -89,7 +89,7 @@ Vue.component("order-table", {
 					}
 				}
 
-				axios.post("../WebProjekat/rest/tickets/", shoppingCartToSend)
+				axios(postRestConfig("../WebProjekat/rest/tickets/", {}, shoppingCartToSend))
 					.then(response => {
 						const updatedBuyer = response.data[0].buyer;
 						this.updateBuyerInLocalStorage(updatedBuyer);

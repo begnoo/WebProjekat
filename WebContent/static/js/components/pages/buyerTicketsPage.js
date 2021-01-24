@@ -14,8 +14,9 @@ Vue.component("buyer-tickets-page", {
 				<button v-on:click="getBuyerTickets(selectFilter)" type="submit" class="btn btn-primary">Submit</button>
 				</form>
             </div>
-            <div v-if="tickets.length !== 0" class="col-8 mt-3">
-                <tickets-table :tickets="this.tickets"></tickets-table>
+            <div v-if="tickets" class="col-8 mt-3">
+                <buyer-tickets-table :tickets="tickets"></buyer-tickets-table>
+				<pagination :restConfig="restConfig" :pageSize="pageSize" v-on:update-page-data="setTickets"></pagination>
             </div>
 			<div v-else class="col-8 mt-5">
 				<h3>You have no reserved tickets.</h3>
@@ -29,31 +30,41 @@ Vue.component("buyer-tickets-page", {
     </div>
     `,
 
-	data: function(){
-		return {
-			tickets: null,
+
+    data: function() {
+	    return {
+	        tickets: [],
+			restPath : "",
+			params: null,
+			restConfig: null,
+			pageSize: 5,
+			selectedPage : 1,
 			selectFilter: false,
-		};
-	},
-	
-	methods: {
-		getBuyerTickets: function(onlyReserved){
-			console.log("nesto ne radi kme");
-			const buyerId = localStorage.getObject("loggedUser").user.id;
-			axios.get("/WebProjekat/rest/users/buyers/" + buyerId + "/tickets", {
-				params:{
-					"only-reserved": onlyReserved,
-				}
-			})
-			.then(response => {
-				this.tickets = response.data;
-				console.log(this.tickets);
-			})
-			.catch(error => console.log(error));
+        }
+    },
+
+	watch: {
+		"selectFilter" : function(newFilter){
+			this.restConfig.params["only-reserved"] = (newFilter === "true")
 		}
 	},
+    
+    methods: {
+		
+		setTickets: function({emittedData, selectedPage}){
+			this.tickets = emittedData;
+			this.selectedPage = selectedPage;
+		}
+
+    },
+
+	created: function(){
+		const buyerId = localStorage.getObject("loggedUser").user.id;	
+		this.restPath = "/WebProjekat/rest/users/buyers/" + buyerId + "/tickets";
+		this.params = {
+			"only-reserved": this.selectFilter
+		};
+		this.restConfig = getRestConfig(this.restPath, this.params);
+	},
 	
-	mounted: function(){
-		this.getBuyerTickets(false);
-	}
 });

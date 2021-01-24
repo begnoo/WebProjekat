@@ -167,7 +167,6 @@ public class UsersServlet extends AbstractServletBase {
 	public WholeUserObjectResponseBase update(UpdateUserRequest request)
 	{
 		super.validateRequest(request);
-
 		User user = userService.read(request.getId());
 		if(user == null) {
 			throw new NotFoundException("User does not exists.");

@@ -37,7 +37,7 @@ Vue.component("manifestation-page", {
 
 	methods: {
 		getManifestation: function(id) {
-			axios.get("/WebProjekat/rest/manifestations/" + id)
+			axios(getRestConfig("/WebProjekat/rest/manifestations/" + id))
 				.then(response => this.manifestation = response.data)
 				.catch(error => console.log(error));
 		}

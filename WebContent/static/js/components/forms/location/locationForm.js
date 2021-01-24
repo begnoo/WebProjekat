@@ -1,5 +1,5 @@
 Vue.component("location-form", {
-    template: `
+	template: `
     <div class="container">
     <div class="row">
         <div class="col">
@@ -66,113 +66,112 @@ Vue.component("location-form", {
         </div>
     </div>
     `,
-    data: function () {
-        return {
-            latitude: null,
-            longitude: null,
-            street: null,
-            houseNumber: null,
-            place: null,
-            postalCode: null,
-        };
-    },
-    methods: {
-        updateCoordinatesHandler: function (coordinates) {
-            this.longitude = coordinates[0];
-            this.latitude = coordinates[1];
-        },
-        createLocation: function (event) {
-            event.preventDefault();
-            axios
-                .post("/WebProjekat/rest/locations", {
-                    latitude: this.latitude,
-                    longitude: this.longitude,
-                    address: {
-                        street: this.street,
-                        houseNumber: this.houseNumber,
-                        place: this.place,
-                        postalCode: this.postalCode,
-                    },
-                })
-                .then((response) => {
-                    console.log(response.data);
-                    alert("Uspesno");
-                })
-                .catch(function (error) {
-                    alert(error.response.data.errorMessage);
-                });
-        },
-        guessLocationFromCoordinates: function (event) {
-            event.preventDefault();
-            axios
-                .get("https://nominatim.openstreetmap.org/reverse", {
-                    params: {
-                        lat: this.latitude,
-                        lon: this.longitude,
-                        format: "json",
-                    },
-                })
-                .then((response) => {
-                    this.updateFieldsFromResponseData(response.data);
-                })
-                .catch(function (error) {
-                    alert(
-                        "Could not find a location based on given coordinates"
-                    );
-                });
-        },
-        updateFieldsFromResponseData: function (data) {
-            const { address } = data;
-            if (address) {
-                if (address.street) {
-                    this.street = address.street;
-                }
-                if (address.town) {
-                    this.place = address.town;
-                }
-                if (address.city) {
-                    this.place = address.city;
-                }
-                if (address.road) {
-                    this.street = address.road;
-                }
-                if (address.postCode) {
-                    this.postalCode = address.postCode;
-                }
-                if (address.postcode) {
-                    this.postalCode = address.postcode;
-                }
-                if (address["house-number"]) {
-                    this.houseNumber = address["house-number"];
-                }
-            }
-        },
-        guessCoordinatesFromLocation: function (event) {
-            event.preventDefault();
-            const url =
-                "https://nominatim.openstreetmap.org/search/" +
-                this.place +
-                ", " +
-                this.houseNumber +
-                " " +
-                this.street;
-            axios
-                .get(url, {
-                    params: {
-                        format: "json",
-                        limit: 1,
-                        "accept-language": "en",
-                    },
-                })
-                .then((response) => {
-                    if (response.data && response.data.lenght != 0) {
-                        const { lon, lat } = response.data[0];
-                        this.updateCoordinatesHandler([lon, lat]);
-                    }
-                })
-                .catch(function (error) {
-                    alert("Could not find coordinates based on given info");
-                });
-        },
-    },
+	data: function() {
+		return {
+			latitude: null,
+			longitude: null,
+			street: null,
+			houseNumber: null,
+			place: null,
+			postalCode: null,
+		};
+	},
+	methods: {
+		updateCoordinatesHandler: function(coordinates) {
+			this.longitude = coordinates[0];
+			this.latitude = coordinates[1];
+		},
+		createLocation: function(event) {
+			event.preventDefault();
+			axios(postRestConfig("/WebProjekat/rest/locations", {},
+				{
+					latitude: this.latitude,
+					longitude: this.longitude,
+					address: {
+						street: this.street,
+						houseNumber: this.houseNumber,
+						place: this.place,
+						postalCode: this.postalCode,
+					},
+				}))
+				.then((response) => {
+					console.log(response.data);
+					alert("Uspesno");
+				})
+				.catch(function(error) {
+					alert(error.response.data.errorMessage);
+				});
+		},
+		guessLocationFromCoordinates: function(event) {
+			event.preventDefault();
+			axios.get("https://nominatim.openstreetmap.org/reverse", {
+					params: {
+						lat: this.latitude,
+						lon: this.longitude,
+						format: "json",
+					},
+				})
+				.then((response) => {
+					this.updateFieldsFromResponseData(response.data);
+				})
+				.catch(function(error) {
+					alert(
+						"Could not find a location based on given coordinates"
+					);
+				});
+		},
+		updateFieldsFromResponseData: function(data) {
+			const { address } = data;
+			if (address) {
+				if (address.street) {
+					this.street = address.street;
+				}
+				if (address.town) {
+					this.place = address.town;
+				}
+				if (address.city) {
+					this.place = address.city;
+				}
+				if (address.road) {
+					this.street = address.road;
+				}
+				if (address.postCode) {
+					this.postalCode = address.postCode;
+				}
+				if (address.postcode) {
+					this.postalCode = address.postcode;
+				}
+				if (address["house-number"]) {
+					this.houseNumber = address["house-number"];
+				}
+			}
+		},
+		guessCoordinatesFromLocation: function(event) {
+			event.preventDefault();
+			const url =
+				"https://nominatim.openstreetmap.org/search/" +
+				this.place +
+				", " +
+				this.houseNumber +
+				" " +
+				this.street;
+			axios
+				.get(url, {
+					params: {
+						format: "json",
+						limit: 1,
+						"accept-language": "en",
+					},
+				})
+				.then((response) => {
+					if (response.data && response.data.lenght != 0) {
+						const { lon, lat } = response.data[0];
+						this.updateCoordinatesHandler([lon, lat]);
+					}
+				})
+				.catch(function(error) {
+					alert("Could not find coordinates based on given info");
+				});
+		},
+	},
 });
