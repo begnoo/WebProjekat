@@ -77,13 +77,12 @@ public class CommentServlet extends AbstractServletBase {
 		return wholeCommentObjectsForManifestation;
 	}
 	
-	// TODO: CHANGE TO approved i ne mora biti autentifikovan
 	@GET
-	@Path("manifestations/{manifestationId}/comments/non-pending")
+	@Path("manifestations/{manifestationId}/comments/approved")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<WholeCommentObjectResponse> readNonPendingCommentsByManifestationId(@PathParam("manifestationId") UUID manifestationId, @QueryParam("number") int number, @QueryParam("size") int size)
+	public List<WholeCommentObjectResponse> readApprovedCommentsByManifestationId(@PathParam("manifestationId") UUID manifestationId, @QueryParam("number") int number, @QueryParam("size") int size)
 	{
-		List<Comment> commentsForManifestation = commentService.readNonPendingCommentsByManifestationId(manifestationId);
+		List<Comment> commentsForManifestation = commentService.readByManifestationIdAndStatus(manifestationId, CommentStatus.Approved);
 		List<Comment> paginatedComments = paginationService.readPage(commentsForManifestation, new Page(number, size));
 
 		List<WholeCommentObjectResponse> wholeCommentObjectsForManifestation = paginatedComments.stream()
