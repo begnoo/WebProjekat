@@ -55,6 +55,9 @@ public class UserSpecificEntityFilter implements ContainerRequestFilter {
     	Class<?> entityClass = getEntityClass(entityClassName);
     	String entityIdName = getEntityIdName(entityClassName);
     	UUID entityId = getEntityId(requestContext, entityIdName);
+    	if(entityId == null) {
+    		entityId = getEntityId(requestContext, "id");
+    	}
     	
     	DbContext dbContext = (DbContext) context.getAttribute("DbContext");
 		DbSet<?> entities = (DbSet<?>) dbContext.getSet(entityClass);

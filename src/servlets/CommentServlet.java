@@ -30,6 +30,7 @@ import core.servlets.exceptions.NotFoundException;
 import repository.DbContext;
 import services.PaginationService;
 import servlets.utils.filters.Authorize;
+import servlets.utils.filters.UserSpecificEntity;
 
 @Path("/")
 public class CommentServlet extends AbstractServletBase {
@@ -54,10 +55,10 @@ public class CommentServlet extends AbstractServletBase {
 		paginationService = new PaginationService<Comment>();
 	}
 	
-	// TODO: SELLER SAMO OD SVOJIH MANIFESTACIJA, ADMIN SVE
 	@GET
 	@Path("manifestations/{manifestationId}/comments")
 	@Authorize(roles = "Administrator,Seller")
+	@UserSpecificEntity(what = "Manifestation", belongsTo = "Seller")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<WholeCommentObjectResponse> readByManifestationId(@PathParam("manifestationId") UUID manifestationId, @QueryParam("status") CommentStatus commentStatus, @QueryParam("number") int number, @QueryParam("size") int size)
 	{
@@ -76,13 +77,12 @@ public class CommentServlet extends AbstractServletBase {
 		return wholeCommentObjectsForManifestation;
 	}
 	
-	// TODO: CHANGE TO approved i ne mora biti autentifikovan
 	@GET
-	@Path("manifestations/{manifestationId}/comments/non-pending")
+	@Path("manifestations/{manifestationId}/comments/approved")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<WholeCommentObjectResponse> readNonPendingCommentsByManifestationId(@PathParam("manifestationId") UUID manifestationId, @QueryParam("number") int number, @QueryParam("size") int size)
+	public List<WholeCommentObjectResponse> readApprovedCommentsByManifestationId(@PathParam("manifestationId") UUID manifestationId, @QueryParam("number") int number, @QueryParam("size") int size)
 	{
-		List<Comment> commentsForManifestation = commentService.readNonPendingCommentsByManifestationId(manifestationId);
+		List<Comment> commentsForManifestation = commentService.readByManifestationIdAndStatus(manifestationId, CommentStatus.Approved);
 		List<Comment> paginatedComments = paginationService.readPage(commentsForManifestation, new Page(number, size));
 
 		List<WholeCommentObjectResponse> wholeCommentObjectsForManifestation = paginatedComments.stream()
@@ -107,11 +107,10 @@ public class CommentServlet extends AbstractServletBase {
 		return generateCommentObjectResponse(createdComment);
 	}
 
-	// TODO: BUYER I AKO SE PROMENO STATUS PONOVO IDE NA PENDING
-	// TODO: BUYER MOZE MENJATI SAMO SVOJE KOMENTARE
 	@PUT
 	@Path("comments/")
 	@Authorize(roles = "Buyer")
+	@UserSpecificEntity(what = "Comment", belongsTo = "Buyer")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public WholeCommentObjectResponse update(UpdateCommentRequest request) {

@@ -75,13 +75,6 @@ public class CommentService extends CrudService<Comment> implements ICommentServ
 	}
 
 	@Override
-	public List<Comment> readNonPendingCommentsByManifestationId(UUID manifestationId) {
-		return readByManifestationId(manifestationId).stream()
-				.filter(comment -> comment.getStatus() != CommentStatus.Pending)
-				.collect(Collectors.toList());
-	}
-
-	@Override
 	public List<Comment> readByManifestationIdAndStatus(UUID manifestationId, CommentStatus commentStatus) {
 		return readByManifestationId(manifestationId).stream()
 				.filter(comment -> comment.getStatus() == commentStatus)
