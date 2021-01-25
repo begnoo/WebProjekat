@@ -7,7 +7,7 @@ Vue.component("search-tickets-form", {
 		    	<div class="col">
 		      		<input v-model="manifestationName" type="text" class="form-control" id="inputName" placeholder="Manifestation Name">
 				</div>
-				<div class="form-group row">
+				<div class="row">
 				    <div class="col-sm-10">
 					    <div class="input-group">	
 							<div class="btn-group" role="group" aria-label="Basic example">
@@ -56,9 +56,9 @@ Vue.component("search-tickets-form", {
 				    <div class="col-10">
 						<select v-model="type" class="form-control" id="selectType">
 							<option value="">All</option>
-							<option value="Concert">Concert</option>
-							<option value="Festival">Festival</option>
-							<option value="Theater">Theater</option>
+							<option value="Regular">Regular</option>
+							<option value="Vip">Vip</option>
+							<option value="FanPit">Fan Pit</option>
 						</select>
 				    </div>
 			 	</div>
@@ -68,7 +68,7 @@ Vue.component("search-tickets-form", {
 				    <div class="col-10">
 						<select v-model="status" class="form-control" id="selectStatus">
 							<option value="">All</option>
-							<option value="Reserved">Reserverd</option>
+							<option value="Reserved">Reserved</option>
 							<option value="Canceled">Canceled</option>
 						</select>
 				    </div>
@@ -79,10 +79,9 @@ Vue.component("search-tickets-form", {
 				    <div class="col-5">
 						<select v-model="sortBy" class="form-control" id="selectSort">
 							<option value="">None</option>
-							<option value="name">Name</option>
-							<option value="eventDate">Date</option>
-							<option value="regularTicketPrice">Price</option>
-							<option value="regularTicketPrice">Location</option>
+							<option value="manifestation">Manifestation</option>
+							<option value="price">Price</option>
+							<option value="manifestationDate">Date</option>
 						</select>
 				    </div>
 				    <div class="col-5">

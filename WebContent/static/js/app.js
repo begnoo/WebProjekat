@@ -12,6 +12,8 @@ const ManifestationPage = {template: "<manifestation-page></manifestation-page>"
 const AccountPage = {template: "<account-page></account-page>"};
 const OrderTable = {template: "<order-table></order-table>"};
 const BuyerTicketsPage = {template: "<buyer-tickets-page></buyer-tickets-page>"};
+const UserTicketsPage = {template: "<user-tickets-page></user-tickets-page>"};
+
 
 
 const router = new VueRouter({
@@ -28,7 +30,7 @@ const router = new VueRouter({
 		//{ path: "/manifestations/:id/nice-comments", component: CommentsBigTable }, // OVO INTEGRISATI U MANIFESTACIJE
 		{ path: "/cart", component: OrderTable },
 		{ path: "/buyer-tickets/", component: BuyerTicketsPage },
-		{ path: "/buyer-tickets/:id", component: BuyerTicketsPage },
+		{ path: "/buyer-tickets/:id", component: UserTicketsPage },
 		{ path: "/change-password", component: ChangePassword },
 		{ path: "/account", component: AccountPage },
 		{ path: "/manifestations/:id/comments", component: CommentsPage }

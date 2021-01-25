@@ -1,10 +1,9 @@
-Vue.component("buyer-tickets-page", {
+Vue.component("user-tickets-page", {
     template: `
     <div class="container">
 		<search-tickets-form v-on:search-tickets-data="getBuyerTickets"></search-tickets-form>
-        <div v-if="tickets" class="row mx-auto">
             <div v-show="tickets && tickets.length != 0" class="col mt-3">
-                <buyer-tickets-table :tickets="tickets"></buyer-tickets-table>
+                <tickets-table :tickets="tickets"></tickets-table>
 				<pagination :trigger="trigger" :restConfig="restConfig" :pageSize="pageSize" v-on:update-page-data="setTickets"></pagination>
             </div>
 			<div v-show="selectFilter &&  tickets.length === 0" class="row">
@@ -12,7 +11,6 @@ Vue.component("buyer-tickets-page", {
 					<h3>No such tickets.</h3>
 				</div>
 			</div>		
-		</div>		
     </div>
     `,
 
@@ -29,6 +27,14 @@ Vue.component("buyer-tickets-page", {
 			trigger: false,
         }
     },
+
+	watch:{
+		"$route.params.id": function(newValue){
+			console.log(newValue)
+			this.refresh();
+			this.trigger = !this.trigger;
+		},
+	},
     
     methods: {
 		
@@ -37,20 +43,24 @@ Vue.component("buyer-tickets-page", {
 			this.selectedPage = selectedPage;
 		},
 		getBuyerTickets: function(searchData){
-			searchData["buyerId"] = localStorage.getObject("loggedUser").user.id;
+			console.log(searchData);
+			searchData["buyerId"] = this.$route.params.id;
 			this.restConfig = postRestConfig("/WebProjekat/rest/tickets/advance-search", {}, searchData);
 			this.trigger = !this.trigger;
+		},
+		refresh: function(){
+			const buyerId = this.$route.params.id;	
+			this.restPath = "/WebProjekat/rest/users/buyers/" + buyerId + "/tickets";
+			this.params = {
+				"only-reserved": false
+			};
+			this.restConfig = getRestConfig(this.restPath, this.params);
 		}
 
     },
 
 	created: function(){
-		const buyerId = localStorage.getObject("loggedUser").user.id;	
-		this.restPath = "/WebProjekat/rest/users/buyers/" + buyerId + "/tickets";
-		this.params = {
-			"only-reserved": this.selectFilter
-		};
-		this.restConfig = getRestConfig(this.restPath, this.params);
+		this.refresh();
 	},
 	
 });
