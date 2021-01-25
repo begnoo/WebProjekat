@@ -1,5 +1,4 @@
-
-Vue.component("comments-table", {
+Vue.component("comments-big-table", {
 	template: `
 	<div class="container">
 		<div v-for="comment in comments">
