@@ -35,7 +35,7 @@ Vue.component("buyer-tickets-table", {
 
 	methods: {
 		cancelTicket: function(ticketId) {
-			axios(putRestConfig("/WebProjekat/rest/tickets/" + ticketId))
+			axios(deleteRestConfig("/WebProjekat/rest/tickets/" + ticketId))
 				.then(response => {
 					if (this.updateTicket(response.data)) {
 						this.updateBuyerInLocalStorage(response.data.buyer);

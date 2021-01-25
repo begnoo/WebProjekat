@@ -1,7 +1,7 @@
 Vue.component("navbar", {
     template: `
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-	  <a class="navbar-brand" href="#">WebProjekat</a>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+	  <router-link class="navbar-brand" to="/">WebProjekat</router-link>
 	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 	    <span class="navbar-toggler-icon"></span>
 	  </button>
@@ -52,7 +52,9 @@ Vue.component("navbar", {
 			],
 			sellerOptions: [				
 				{name : "ManifestationForm", path : "/add-manifestation"},
-				{name : "ManifestationFormImage", path : "/add-manifestation-image"},],
+				{name : "LocationForm", path : "/add-location"},
+
+			],
 			adminOptions: [
 				{name : "LocationForm", path : "/add-location"},
 				{name : "Users", path : "/users"},
