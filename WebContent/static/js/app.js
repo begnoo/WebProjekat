@@ -2,7 +2,8 @@ const Login = { template: "<login-form></login-form>" };
 const RegisterPage = { template: "<registration-page></registration-page>" };
 const ChangePassword = { template: "<change-password-form></change-password-form>" };
 const Comment = { template: "<comment-form></comment-form>" };
-const Comments = { template: "<comments-table></comments-table>" };
+const CommentsBigTable = { template: "<comments-big-table></comments-big-table>" };
+const CommentsPage = { template: "<comments-page></comments-page>" };
 const LocationForm = { template: "<location-form></location-form>" };
 const ManifestationForm = { template: "<manifestation-form></manifestation-form>" };
 const Users = { template: "<users-page></users-page>" };
@@ -24,12 +25,13 @@ const router = new VueRouter({
         { path: "/users", component: Users },
 		{ path: "/manifestations/:id", component: ManifestationPage },
 		{ path: "/manifestations/:id/comment", component: Comment },
-		{ path: "/manifestations/:id/comments", component: Comments },
+		//{ path: "/manifestations/:id/nice-comments", component: CommentsBigTable }, // OVO INTEGRISATI U MANIFESTACIJE
 		{ path: "/cart", component: OrderTable },
 		{ path: "/buyer-tickets/", component: BuyerTicketsPage },
 		{ path: "/buyer-tickets/:id", component: BuyerTicketsPage },
 		{ path: "/change-password", component: ChangePassword },
-		{ path: "/account", component: AccountPage }
+		{ path: "/account", component: AccountPage },
+		{ path: "/manifestations/:id/comments", component: CommentsPage }
     ],
 });
 
