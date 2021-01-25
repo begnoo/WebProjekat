@@ -1,5 +1,5 @@
 Vue.component("manifestation-info", {
-    template: `
+	template: `
     <div class="container">
         <div class="row mt-3 no-gutters">
             <div class="col">
@@ -40,38 +40,35 @@ Vue.component("manifestation-info", {
 			</div>
 		</div>
 		<custom-modal modalName="editModal" title="Edit manifestation">
-			<edit-manifestation-page :value="manifestation"></edit-manifestation-page>
+			<edit-manifestation-page :value="manifestation" v-on:update-success="manifestation => this.$emit('update-success', manifestation)"></edit-manifestation-page>
 		</custom-modal>
     </div>
     `,
 	props: ['manifestation'],
-	
+
 	methods: {
-		getEventStatus: function(){
+		getEventStatus: function() {
 			//ruzna html realizacija, menjati ako ostane vremena
 			const eventDate = moment(this.manifestation.eventDate, "YYYY-MM-DD hh:mm");
 			const eventEndDate = moment(this.manifestation.eventEndDate, "YYYY-MM-DD hh:mm");
-			if(eventDate > Date.now() && this.manifestation.seats > 0){
+			if (eventDate > Date.now() && this.manifestation.seats > 0) {
 				return "EVENT AVAILABLE";
 			}
-			if(eventEndDate <= Date.now()){
+			if (eventEndDate <= Date.now()) {
 				return "EVENT ENDED";
 			}
-			else if(eventDate <= Date.now()){
+			else if (eventDate <= Date.now()) {
 				return "EVENT STARTED";
 			}
 		},
-		getCoordinates: function(){
+		getCoordinates: function() {
 			return [this.manifestation.location.longitude, this.manifestation.location.latitude];
 		},
-		openModal: function(){
-			
-		},
-		redirectToInfo: function(id){
+		redirectToInfo: function(id) {
 			this.$router.push("../manifestations/" + id + "/comment");
 		} // removeLater
-		
+
 	},
-	
+
 
 });

@@ -58,7 +58,7 @@ Vue.component("manifestation-form", {
                     </div>
                     <div class="form-group">
                         <label for="locationField">Location:</label>
-                        <location-combo-box v-on:location-value-change="updateLocationId"></location-combo-box>
+                        <location-combo-box v-on:location-value-change="updateLocationId" :initialLocationId="value.locationId"></location-combo-box>
                     </div>
 
 					<manifestation-image-form :manifestationId="value.id"></manifestation-image-form>

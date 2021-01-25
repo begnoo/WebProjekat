@@ -23,6 +23,9 @@ Vue.component("location-combo-box", {
         </div>
     </div>
     `,
+
+	props: ["initialLocationId"],
+	
     data: function () {
         return {
             locations: null,
@@ -45,6 +48,10 @@ Vue.component("location-combo-box", {
                 .then((response) => {
                     this.locations = response.data;
                     this.locationsToShow = this.locations;
+					if(this.initialLocationId){
+						propsLocation = this.locations.find(location => this.initialLocationId == location.id);
+						this.selectLocation(propsLocation)
+					}
                 })
                 .catch((error) => {
                     console.log(error);
@@ -79,5 +86,6 @@ Vue.component("location-combo-box", {
     },
     mounted: function () {
         this.getLocations();
+		
     },
 });

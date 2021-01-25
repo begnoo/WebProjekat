@@ -17,7 +17,8 @@ Vue.component("manifestation-page", {
 				</ul>
 				<div class="tab-content" id="myTabContent">
 					<div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info-tab">
-						<manifestation-info v-bind:manifestation="this.manifestation"></manifestation-info>
+						<manifestation-info v-bind:manifestation="this.manifestation" v-on:update-success="updatedManifestation => manifestation = updatedManifestation">
+						</manifestation-info>
 					</div>
 					<div class="tab-pane fade" id="tickets" role="tabpanel" aria-labelledby="tickets-tab">
 						<manifestation-tickets v-bind:manifestation="this.manifestation"></manifestation-tickets>

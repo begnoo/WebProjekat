@@ -30,6 +30,7 @@ Vue.component("edit-manifestation-page", {
             axios(putRestConfig("/WebProjekat/rest/manifestations", {}, data))
                 .then((response) => {
                     alert("Uspesno azurirana manifestacija");
+					this.$emit("update-success", response.data);
                     console.log(response.data);
                 })
                 .catch(function (error) {
