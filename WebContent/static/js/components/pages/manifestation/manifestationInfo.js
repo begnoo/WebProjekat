@@ -3,9 +3,10 @@ Vue.component("manifestation-info", {
     <div class="container">
         <div class="row mt-3 no-gutters">
             <div class="col">
-			<img :src="this.manifestation.imagePath" width=400 height=400>
+				<img :src="this.manifestation.imagePath" width=400 height=400>
             </div>
 			<div class="col align-self-center">
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal">Edit</button>
 				<p>
 					<a v-show="this.manifestation.seats == 0" style="color: red"><b>SOLD OUT</b></a> <br>
 					<span v-if="getEventStatus() == 'EVENT AVAILABLE'">
@@ -38,6 +39,9 @@ Vue.component("manifestation-info", {
 				<location-form-map :coordinates="this.getCoordinates()" :zoom="15"></location-form-map>
 			</div>
 		</div>
+		<custom-modal modalName="editModal" title="Edit manifestation">
+			<edit-manifestation-page :value="manifestation"></edit-manifestation-page>
+		</custom-modal>
     </div>
     `,
 	props: ['manifestation'],
@@ -59,6 +63,9 @@ Vue.component("manifestation-info", {
 		},
 		getCoordinates: function(){
 			return [this.manifestation.location.longitude, this.manifestation.location.latitude];
+		},
+		openModal: function(){
+			
 		},
 		redirectToInfo: function(id){
 			this.$router.push("../manifestations/" + id + "/comment");

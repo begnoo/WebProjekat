@@ -35,7 +35,6 @@ Vue.component("home-page", {
 		},
 		
 		searchManifestations: function(searchData){
-			console.log(searchData);
 			this.restConfig = postRestConfig("/WebProjekat/rest/manifestations/advance-search", {}, searchData);
 			this.trigger = !this.trigger;
 		},

@@ -34,7 +34,7 @@ Vue.component("location-combo-box", {
     },
 
     watch: {
-        locationFilter: function (newValue, oldValue) {
+        locationFilter: function (newValue) {
             this.filterLocations();
         },
     },

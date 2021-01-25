@@ -23,7 +23,6 @@ Vue.component("manifestation-image-form", {
 
 	watch: {
 		"manifestationId": function() {
-			console.log("Ovde sam")
 			this.addManifestationImage()
 		}
 	},
@@ -38,7 +37,6 @@ Vue.component("manifestation-image-form", {
 				reader.onload = (event) => {
 					this.loading = true;
 					this.image = event.target.result;
-					console.log(this.image);
 					this.loading = false;
 				};
 				reader.onerror = function (error) {
@@ -56,7 +54,6 @@ Vue.component("manifestation-image-form", {
 				}))
 				.then((response) => {
 					alert("Uspesno dodata slika");
-					console.log(response.data);
 					this.loading = false;
 				})
 				.catch(function(error) {
