@@ -11,6 +11,13 @@ import javax.ws.rs.core.MediaType;
 
 import core.domain.dto.AuthorizedUser;
 import core.domain.dto.Credidentals;
+import core.domain.enums.UserRole;
+import core.domain.models.User;
+import core.responses.users.AuthorizedUserResponse;
+import core.responses.users.WholeAdministratorObjectResponse;
+import core.responses.users.WholeBuyerObjectResponse;
+import core.responses.users.WholeSellerObjectResponse;
+import core.responses.users.WholeUserObjectResponseBase;
 import core.service.IAuthorizationService;
 import core.servlets.exceptions.UnauthorizedException;
 import repository.DbContext;
@@ -40,7 +47,7 @@ public class AuthorizationServlet extends AbstractServletBase {
 	@DenyAuthorized()
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public AuthorizedUser authorize(Credidentals credidentals) {
+	public AuthorizedUserResponse authorize(Credidentals credidentals) {
 		super.validateRequest(credidentals);
 		
 		AuthorizedUser authorizedUser = authorizationService.authorize(credidentals);
@@ -48,6 +55,17 @@ public class AuthorizationServlet extends AbstractServletBase {
 			throw new UnauthorizedException("Combination of username and password does not match any account.");
 		}
 		
-		return authorizedUser;
+		return new AuthorizedUserResponse(authorizedUser.getToken(), generateUserObjectResponse(authorizedUser.getUser()));
+	}
+	
+	private WholeUserObjectResponseBase generateUserObjectResponse(User user)
+	{	
+		if(user.getRole() == UserRole.Buyer) {
+			return mapper.Map(new WholeBuyerObjectResponse(), user);
+		} else if (user.getRole() == UserRole.Seller) {
+			return mapper.Map(new WholeSellerObjectResponse(), user);
+		} else {
+			return mapper.Map(new WholeAdministratorObjectResponse(), user);
+		}
 	}
 }

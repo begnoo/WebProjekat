@@ -11,6 +11,7 @@ const ManifestationImageForm = {
 const Users = { template: "<users-page></users-page>" };
 const HomePage = {template: "<home-page></home-page>"};
 const ManifestationPage = {template: "<manifestation-page></manifestation-page>"};
+const AccountPage = {template: "<account-page></account-page>"};
 const OrderTable = {template: "<order-table></order-table>"};
 const BuyerTicketsPage = {template: "<buyer-tickets-page></buyer-tickets-page>"};
 
@@ -18,13 +19,13 @@ const BuyerTicketsPage = {template: "<buyer-tickets-page></buyer-tickets-page>"}
 const router = new VueRouter({
     mode: "hash",
     routes: [
+		{ path: "/", component: HomePage },
         { path: "/login", component: Login },
         { path: "/register", component: RegisterPage },
         { path: "/add-location", component: LocationForm },
         { path: "/add-manifestation", component: ManifestationForm },
         { path: "/add-manifestation-image", component: ManifestationImageForm },
         { path: "/users", component: Users },
-		{ path: "/", component: HomePage },
 		{ path: "/manifestations/:id", component: ManifestationPage },
 		{ path: "/manifestations/:id/comment", component: Comment },
 		{ path: "/manifestations/:id/comments", component: Comments },
@@ -32,6 +33,7 @@ const router = new VueRouter({
 		{ path: "/buyer-tickets/", component: BuyerTicketsPage },
 		{ path: "/buyer-tickets/:id", component: BuyerTicketsPage },
 		{ path: "/change-password", component: ChangePassword },
+		{ path: "/account", component: AccountPage }
     ],
 });
 

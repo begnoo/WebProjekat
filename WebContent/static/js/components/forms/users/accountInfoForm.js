@@ -5,20 +5,22 @@ Vue.component('account-info-form', {
 		    <div class="form-row">
 		        <div class="form-group col-md-6">
 			        <label for="registrationUsername">Username</label>
-			        <input v-model="username" type="text" class="form-control" id="registrationUsername" placeholder="Username">
+			        <input v-model="value.username" type="text" class="form-control" id="registrationUsername" placeholder="Username">
 		        </div>
 		        <div class="form-group col-md-6">
 			        <label for="registrationPassword">Password</label>
-			        <input v-model="password" type="password" class="form-control" id="registrationPassword" placeholder="Password">
+			        <input v-model="value.password" type="password" class="form-control" id="registrationPassword" placeholder="Password">
 		        </div>
 		    </div>
 		</div>
     `,
 
-    data: function() {
-        return {
-            username: null,
-            password: null
+    props: ['value'],
+    
+    watch: {
+        value() {
+            this.$emit('input', this.value);
         }
     }
+
 });
