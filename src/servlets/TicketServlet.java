@@ -143,12 +143,18 @@ public class TicketServlet extends AbstractServletBase {
 	@Path("tickets/advance-search")
 	@Authorize()
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Ticket> advanceSearch(TicketsSearchParamethers searchParamethers, @QueryParam("number") int number, @QueryParam("size") int size) {
+	public List<WholeTicketObjectResponse> advanceSearch(TicketsSearchParamethers searchParamethers, @QueryParam("number") int number, @QueryParam("size") int size) {
 		super.validateRequest(searchParamethers);
 		
 		List<Ticket> tickets = searchService.search(searchParamethers);
 		
-		return paginationService.readPage(tickets, new Page(number, size));
+		List<Ticket> paginatedTickets = paginationService.readPage(tickets, new Page(number, size));
+		
+		List<WholeTicketObjectResponse> wholeTicketObjects = paginatedTickets.stream()
+				.map(ticket -> generateTicketObjectResponse(ticket))
+				.collect(Collectors.toList());
+
+		return wholeTicketObjects;
 	}
 	
 	@POST
