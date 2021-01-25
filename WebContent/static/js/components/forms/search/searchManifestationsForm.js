@@ -35,6 +35,7 @@ Vue.component("search-manifestations-form", {
 				    </div>
 				</div>
 				
+				
 				<div class="form-row mt-3">
 					<label for="dateFromField" class="col-sm-3 col-form-label">Date from:</label>
 					<div class="col-5">
@@ -54,7 +55,6 @@ Vue.component("search-manifestations-form", {
 						<input type="time" class="form-control" id="eventEndTimeField" v-model="timeTo">
 					</div>
 				</div>
-
 		
 				<div class="form-row mt-3">
 				    <label for="selectRole" class="col-sm-2 col-form-label">Type:</label>
@@ -67,6 +67,19 @@ Vue.component("search-manifestations-form", {
 						</select>
 				    </div>
 			 	</div>
+			
+				<div class="form-row mt-3">
+					<div class="col-4">
+						<label class="form-check-label" for="defaultCheck1">
+						   Only not sold out: 
+						 </label>
+					</div>
+
+				    <div class="col-auto">
+
+						<input v-model="onlyNotSolved" class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+				    </div>
+				 </div>
 		
 				<div class="form-row mt-3 mb-3">
 				    <label for="selectSort" class="col-sm-2 col-form-label">Sort by:</label>

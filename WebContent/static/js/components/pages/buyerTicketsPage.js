@@ -1,20 +1,9 @@
 Vue.component("buyer-tickets-page", {
     template: `
     <div class="container">
+		<search-tickets-form v-on:search-tickets-data="getBuyerTickets"></search-tickets-form>
         <div v-if="tickets" class="row mx-auto">
-            <div class="col-4 mt-3">
-				<form>
-	              <div class="form-group">
-				    <label for="filterSelect">Show: </label>
-				    <select v-model="selectFilter" class="form-control" id="filterSelect">
-				      <option value="false">All Tickets</option>
-				      <option value="true">Only Reserved Tickets</option>
-				    </select>
-				  </div>
-				<button v-on:click="getBuyerTickets()" type="submit" class="btn btn-primary">Submit</button>
-				</form>
-            </div>
-            <div v-show="tickets && tickets.length != 0" class="col-8 mt-3">
+            <div v-show="tickets && tickets.length != 0" class="col mt-3">
                 <buyer-tickets-table :tickets="tickets"></buyer-tickets-table>
 				<pagination :trigger="trigger" :restConfig="restConfig" :pageSize="pageSize" v-on:update-page-data="setTickets"></pagination>
             </div>
@@ -48,8 +37,10 @@ Vue.component("buyer-tickets-page", {
 			this.tickets = emittedData;
 			this.selectedPage = selectedPage;
 		},
-		getBuyerTickets: function(){
-			this.restConfig.params["only-reserved"] = this.selectFilter;
+		getBuyerTickets: function(searchData){
+			console.log("hej evo me");
+			searchData["buyerId"] = localStorage.getObject("loggedUser").user.id;
+			this.restConfig = postRestConfig("/WebProjekat/rest/tickets/advance-search", {}, searchData);
 			this.trigger = !this.trigger;
 		}
 

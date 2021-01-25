@@ -66,10 +66,10 @@ Vue.component("search-tickets-form", {
 			<div class="form-row mt-3">
 				    <label for="selectRole" class="col-sm-2 col-form-label">Status:</label>
 				    <div class="col-10">
-						<select v-model="status" class="form-control" id="selectStatu">
+						<select v-model="status" class="form-control" id="selectStatus">
 							<option value="">All</option>
-							<option value="Reserved">Concert</option>
-							<option value="Canceled">Festival</option>
+							<option value="Reserved">Reserverd</option>
+							<option value="Canceled">Canceled</option>
 						</select>
 				    </div>
 			 	</div>
@@ -109,7 +109,7 @@ Vue.component("search-tickets-form", {
 			timeTo: null,
 			dateFrom: null,
 			timeFrom: null,
-			status: null,
+			status: "",
 			sortBy: "",
 			orderBy: "Ascending",
 			showForm: false,
