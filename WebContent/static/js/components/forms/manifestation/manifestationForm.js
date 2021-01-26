@@ -61,11 +61,13 @@ Vue.component("manifestation-form", {
                         <location-combo-box v-on:location-value-change="updateLocationId" :initialLocationId="value.locationId"></location-combo-box>
                     </div>
 
-					<manifestation-image-form :manifestationId="value.id"></manifestation-image-form>
+					<manifestation-image-form :manifestationId="value.id" 
+											  :trigger="trigger"
+											  v-on:update-success="manifestation => this.$emit('update-success', manifestation)"></manifestation-image-form>
 
                     <div class="form-group">
                         <div class="d-flex d-flex justify-content-between">
-                            <button class="btn btn-primary">Add Manifestation</button>
+                            <button class="btn btn-primary">Submit</button>
                         </div>
                     </div>
                 </form>
@@ -73,7 +75,7 @@ Vue.component("manifestation-form", {
         </div>
     </div>
     `,
-    props: ["value"],
+    props: ["value", "trigger"],
 
 	data: function(){
 		return {

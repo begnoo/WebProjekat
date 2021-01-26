@@ -12,7 +12,7 @@ Vue.component("manifestation-image-form", {
 
     `,
 
-	props: ["manifestationId"],
+	props: ["manifestationId", "trigger"],
 
 	data: function() {
 		return {
@@ -23,7 +23,11 @@ Vue.component("manifestation-image-form", {
 
 	watch: {
 		"manifestationId": function() {
-			this.addManifestationImage()
+			this.addManifestationImage();
+		},
+		"trigger": function() {
+			console.log("nesto se desilo");
+			this.addManifestationImage();
 		}
 	},
 
@@ -46,20 +50,23 @@ Vue.component("manifestation-image-form", {
 			}
 		},
 		addManifestationImage: function() {
-			this.loading = true;
-			axios(putRestConfig("/WebProjekat/rest/images", {},
+			if(this.image){
+				this.loading = true;
+				axios(putRestConfig("/WebProjekat/rest/images", {},
 				{
 					base64Representation: this.image,
 					manifestationId: this.manifestationId,
 				}))
 				.then((response) => {
 					alert("Uspesno dodata slika");
+					this.$emit("update-success", response.data);
 					this.loading = false;
 				})
 				.catch(function(error) {
 					alert(error.response.data.errorMessage);
 					this.loading = false;
 				});
+			}
 		},
 	},
 });

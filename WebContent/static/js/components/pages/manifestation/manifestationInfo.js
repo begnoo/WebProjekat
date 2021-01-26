@@ -40,7 +40,9 @@ Vue.component("manifestation-info", {
 			</div>
 		</div>
 		<custom-modal modalName="editModal" title="Edit manifestation">
-			<edit-manifestation-page :value="manifestation" v-on:update-success="manifestation => this.$emit('update-success', manifestation)"></edit-manifestation-page>
+			<edit-manifestation-page :value="manifestation" 
+									  v-on:update-success="manifestation => this.$emit('update-success', manifestation)">
+			</edit-manifestation-page>
 		</custom-modal>
     </div>
     `,

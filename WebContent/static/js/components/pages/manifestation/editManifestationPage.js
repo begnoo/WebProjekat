@@ -1,7 +1,12 @@
 Vue.component("edit-manifestation-page", {
     template: `
     <div class="container">
-        <manifestation-form :value="updatedValue" v-on:inputChange="newValue => updatedValue = newValue" v-on:submit-value="updateManifestation"></manifestation-form>
+        <manifestation-form :trigger="trigger"
+							:value="updatedValue"
+							v-on:image-update-done=""
+							v-on:inputChange="newValue => updatedValue = newValue" 
+							v-on:submit-value="updateManifestation">
+		</manifestation-form>
     </div>
     `,
    
@@ -9,7 +14,8 @@ Vue.component("edit-manifestation-page", {
 	
 	data: function(){
 		return {
-			updatedValue: {}
+			updatedValue: {},
+			trigger: false,
 		}
 	},
 
@@ -30,8 +36,8 @@ Vue.component("edit-manifestation-page", {
             axios(putRestConfig("/WebProjekat/rest/manifestations", {}, data))
                 .then((response) => {
                     alert("Uspesno azurirana manifestacija");
+					this.trigger = !this.trigger;
 					this.$emit("update-success", response.data);
-                    console.log(response.data);
                 })
                 .catch(function (error) {
                     alert(error.response.data.errorMessage);
