@@ -12,13 +12,7 @@ Vue.component('custom-modal',
 		    		</button>
 		    	</div>
 				<div class="modal-body">
-					<div class="card-body">
-						<div class="container">
-						  <div class="row">
-						  	<slot></slot>
-						  </div>
-						</div>
-					 </div>
+				  	<slot></slot>
 				</div>
 			</div>
 		</div>

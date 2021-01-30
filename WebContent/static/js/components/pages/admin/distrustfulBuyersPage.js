@@ -32,7 +32,6 @@ Vue.component('distrustful-buyers-page',
 		setUsers: function({emittedData, selectedPage}){
 			this.users = emittedData
 			this.selectedPage = selectedPage
-			console.log(this.users)
 		},
 
     },

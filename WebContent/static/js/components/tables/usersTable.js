@@ -26,11 +26,28 @@ Vue.component('users-table',
 							<td>{{ user.gender }}</td>
 							<td>{{ user.birthdate }}</td>
 						  <td v-if="block" style="text-align: center">
-							<button class="btn btn-danger btn-sm" v-on:click="blockUser(user)">Block</button>
+							<button type="button"
+							 class="btn btn-danger btn-sm"
+							 data-toggle="modal"
+							 data-target="#blockUser"
+						 	 v-on:click="userToBlock = user">
+							 	Block
+							 </button>
 						  </td>	
 					  </tr>
 				</tbody>
-	      </table>	      
+	      </table>
+		  <custom-modal modalName="blockUser" title="Block user">
+			<div class="container">
+				<div class="row">
+					<p>Are you sure, that you want to block this user?</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="blockUser(userToBlock)">Yes</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal" data-target="#blockUser">No</button>
+				</div>
+			</div>
+		  </custom-modal>
   	</div>
     `,
 
@@ -39,6 +56,7 @@ Vue.component('users-table',
     data: function() {
         return {
             selectedUser: null,
+			userToBlock: null,
         }
     },
     
