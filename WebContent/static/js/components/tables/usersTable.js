@@ -11,8 +11,7 @@ Vue.component('users-table',
 							<th scope="col">Username</th>
 							<th scope="col">Gender</th>
 							<th scope="col">Birthdate</th>
-							<th scope=""></th>
-							<th scope=""></th>
+							<th v-if="block" scope=""></th>
 					  </tr>
 				</thead>
 				<tbody>
@@ -26,15 +25,16 @@ Vue.component('users-table',
 							<td>{{ user.username }}</td>
 							<td>{{ user.gender }}</td>
 							<td>{{ user.birthdate }}</td>
-							<td>Edit</td>
-							<td>Delete</td>
+						  <td v-if="block" style="text-align: center">
+							<button class="btn btn-danger btn-sm" v-on:click="blockUser(user)">Block</button>
+						  </td>	
 					  </tr>
 				</tbody>
 	      </table>	      
   	</div>
     `,
 
-	props: ["users", "selectedPage", "pageSize"],
+	props: ["users", "selectedPage", "pageSize", "block"],
 
     data: function() {
         return {
@@ -47,6 +47,13 @@ Vue.component('users-table',
     	selectUser: function(user) {
     		this.selectedUser = user;
 		},
-
+		
+		blockUser: function(user) {
+    		axios(deleteRestConfig("/WebProjekat/rest/users/" + user.id))
+				.then(response => {
+					this.$emit("deleted-user", response.data);
+				})
+				.catch(error => console.log(error));
+		},
     }
 });

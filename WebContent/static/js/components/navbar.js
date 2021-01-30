@@ -58,6 +58,8 @@ Vue.component("navbar", {
 			adminOptions: [
 				{name : "LocationForm", path : "/add-location"},
 				{name : "Users", path : "/users"},
+				{name : "Distrustful Buyers", path : "/distrustful-buyers"},
+
 			],
 			userOptions:[
 				{name: "Account", path:"account"},

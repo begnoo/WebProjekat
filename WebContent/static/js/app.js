@@ -13,6 +13,8 @@ const AccountPage = {template: "<account-page></account-page>"};
 const OrderTable = {template: "<order-table></order-table>"};
 const BuyerTicketsPage = {template: "<buyer-tickets-page></buyer-tickets-page>"};
 const UserTicketsPage = {template: "<user-tickets-page></user-tickets-page>"};
+const DistrustfulBuyersPage = {template: "<distrustful-buyers-page></distrustful-buyers-page>"};
+
 
 
 
@@ -31,6 +33,7 @@ const router = new VueRouter({
 		{ path: "/cart", component: OrderTable },
 		{ path: "/buyer-tickets/", component: BuyerTicketsPage },
 		{ path: "/buyer-tickets/:id", component: UserTicketsPage },
+		{ path: "/distrustful-buyers/", component: DistrustfulBuyersPage },
 		{ path: "/change-password", component: ChangePassword },
 		{ path: "/account", component: AccountPage },
 		{ path: "/manifestations/:id/comments", component: CommentsPage }
