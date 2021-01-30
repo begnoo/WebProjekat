@@ -26,7 +26,7 @@ Vue.component("manifestation-tickets", {
 						<label for="ticketsPrice" class="form-label">Price of tickets: </label>
 						<input type="text" style="background-color: white;" :value="ticketsPrice" class="form-control" name="ticketsPriceField" disabled>
 					</div>
-					<div class="mb-3" >
+					<div v-if="isBuyer" class="mb-3" >
 						<button v-on:click="addToCart" class="btn btn-primary">Add to Cart</button>
 					</div>
 				</form>
@@ -66,6 +66,7 @@ Vue.component("manifestation-tickets", {
 	data: function() {
 		return {
 			ticketType: "Regular",
+			isBuyer: false,
 			ticketAmount: 1,
 			sharedState: store.state,
 			ticketPricesWithDiscounts: {
@@ -86,14 +87,12 @@ Vue.component("manifestation-tickets", {
 		getTicketPriceForUser: function() {
 			const regularTicketPrice = this.manifestation.regularTicketPrice;
 			const loggedUser = window.localStorage.getObject("loggedUser");
-			if (loggedUser && loggedUser.user.buyerTypeId) {
-				axios
-					.get(
-						"../WebProjekat/rest/tickets/prices?buyerTypeId=" +
-						loggedUser.user.buyerTypeId +
-						"&price=" +
-						regularTicketPrice
-					)
+			if (loggedUser) {
+				const buyerTypeId = this.isBuyer ? loggedUser.user.buyerTypeId : null;
+				axios(getRestConfig("../WebProjekat/rest/tickets/prices", {
+					buyerTypeId: buyerTypeId,
+					price: regularTicketPrice,
+				}))
 					.then(
 						(response) =>
 							(this.ticketPricesWithDiscounts = response.data)
@@ -104,29 +103,32 @@ Vue.component("manifestation-tickets", {
 		},
 		addToCart: function(event) {
 			event.preventDefault();
-			if (!localStorage.getObject("shoppingCart")) {
+			if(this.isBuyer){
+				if (!localStorage.getObject("shoppingCart")) {
 				const shoppingCart = {};
 				localStorage.setObject("shoppingCart", shoppingCart);
+				}
+				const shoppingCart = localStorage.getObject("shoppingCart");
+				if (!shoppingCart[this.manifestation.id]) {
+					shoppingCart[this.manifestation.id] = {
+						manifestation: this.manifestation,
+						order: {
+							Vip: 0,
+							Regular: 0,
+							FanPit: 0,
+						},
+						prices: this.ticketPricesWithDiscounts,
+					};
+				}
+				shoppingCart[this.manifestation.id].order[this.ticketType] += this.ticketAmount;
+				localStorage.setObject("shoppingCart", shoppingCart);
+				alert("Uspeno");
 			}
-			const shoppingCart = localStorage.getObject("shoppingCart");
-			if (!shoppingCart[this.manifestation.id]) {
-				shoppingCart[this.manifestation.id] = {
-					manifestation: this.manifestation,
-					order: {
-						Vip: 0,
-						Regular: 0,
-						FanPit: 0,
-					},
-					prices: this.ticketPricesWithDiscounts,
-				};
-			}
-			shoppingCart[this.manifestation.id].order[this.ticketType] += this.ticketAmount;
-			localStorage.setObject("shoppingCart", shoppingCart);
-			alert("Uspeno");
 		}
 	},
 
 	mounted: function() {
+		this.isBuyer = !!localStorage.getObject("loggedUser").user.buyerTypeId
 		this.getTicketPriceForUser();
 	},
 });
