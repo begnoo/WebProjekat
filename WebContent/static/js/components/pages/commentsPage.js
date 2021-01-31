@@ -14,9 +14,11 @@ Vue.component('comments-page',
 				</div>
 			</div>
 			<div v-else>
-				<comments-big-table :comments="comments"></comments-big-table>
-			    <pagination :trigger="trigger" :restConfig="restConfig" :pageSize="pageSize" :selectedPage="selectedPage" v-on:update-page-data="setComments"></pagination>
-				<comment-form v-if="isBuyer()"></comment-form>
+				<div v-show="comments.length != 0">
+					<comments-big-table :comments="comments"></comments-big-table>
+				    <pagination :trigger="trigger" :restConfig="restConfig" :pageSize="pageSize" :selectedPage="selectedPage" v-on:update-page-data="setComments"></pagination>
+					<comment-form v-if="isBuyer()"></comment-form>
+				</div>
 			</div>
 		</div>
   	</div>

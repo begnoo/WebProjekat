@@ -43,7 +43,6 @@ Vue.component("add-manifestation-modal", {
 					this.value.id = response.data.id;
 					this.$emit("add-manifestation-success");
                     alert("Uspesno dodata manifestacija");
-					console.log("pokusavam");
 					this.updateSeller(response.data);
                 })
                 .catch(function (error) {
