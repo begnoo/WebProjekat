@@ -40,9 +40,9 @@ Vue.component("add-manifestation-modal", {
                         .id,
                 }))
                 .then((response) => {
-					this.value.id = response.data.id;
-					this.$emit("add-manifestation-success");
                     alert("Uspesno dodata manifestacija");
+					this.value.id = response.data.id;
+					this.$emit("add-manifestation-success", response.data);
 					this.updateSeller(response.data);
                 })
                 .catch(function (error) {

@@ -1,12 +1,12 @@
 Vue.component("home-page", {
-    template: `
+	template: `
     <div class="container">
         <div class="row">
             <div class="col">
             </div>
             <div class="col-10 mt-3">
 				<search-manifestations-form v-on:search-manifestation-data="searchManifestations"></search-manifestations-form>
-                <manifestation-table v-on:add-manifestation-success="trigger = !trigger" :manifestations="manifestations"></manifestation-table>
+                <manifestation-table :manifestations="manifestations"></manifestation-table>
 				
 				<button 
 				 v-if="isSeller()"
@@ -27,39 +27,39 @@ Vue.component("home-page", {
 			<div class="col">
             </div>
         </div>
-		<add-manifestation-modal v-if="isSeller()"></add-manifestation-modal>
+		<add-manifestation-modal v-if="isSeller()" v-on:add-manifestation-success="trigger = !trigger"></add-manifestation-modal>
     </div>
     `,
-    
-	data: function () {
-        return {
-            manifestations: [],
+
+	data: function() {
+		return {
+			manifestations: [],
 			pageSize: 3,
 			selectedPage: 1,
 			restConfig: null,
 			restPath: "/WebProjekat/rest/manifestations",
-			params: {"order-by-date" : true},
+			params: { "order-by-date": true },
 			trigger: false,
-        };
-    },
+		};
+	},
 
-    methods: {
-	
-		setManifestations: function({emittedData, selectedPage}){
+	methods: {
+
+		setManifestations: function({ emittedData, selectedPage }) {
 			this.manifestations = emittedData;
 			this.selectedPage = selectedPage;
 		},
-		
-		searchManifestations: function(searchData){
+
+		searchManifestations: function(searchData) {
 			this.restConfig = postRestConfig("/WebProjekat/rest/manifestations/advance-search", {}, searchData);
 			this.trigger = !this.trigger;
 		},
-		isSeller: function(){
+		isSeller: function() {
 			return localStorage.isLoggedUserRole(['Seller']);
 		}
 	},
-	
-	created: function(){
+
+	created: function() {
 		this.restConfig = getRestConfig(this.restPath, this.params);
 	}
 });
