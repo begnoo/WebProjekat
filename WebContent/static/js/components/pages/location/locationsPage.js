@@ -72,8 +72,6 @@ Vue.component('locations-page',
 
 		created: function() {
 			this.restConfig = getRestConfig(this.restPath);
-			console.log("ovcica22");
-
 			
 			//triggers necessery for rendering map on model open without resize
 			$(document).on('show.bs.modal','#editLocationModal',  () => {

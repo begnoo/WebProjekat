@@ -43,11 +43,17 @@ Vue.component("add-manifestation-modal", {
 					this.value.id = response.data.id;
 					this.$emit("add-manifestation-success");
                     alert("Uspesno dodata manifestacija");
-                    console.log(response.data);
+					console.log("pokusavam");
+					this.updateSeller(response.data);
                 })
                 .catch(function (error) {
                     alert(error.response.data.errorMessage);
                 });
-        }
+        },
+		updateSeller: function(manifestation){
+			let loggedUser = localStorage.getObject("loggedUser");
+			loggedUser.user.manifestations.push(manifestation);
+			localStorage.setObject("loggedUser", loggedUser);
+		}
     },
 });
