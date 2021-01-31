@@ -6,7 +6,7 @@ Vue.component("manifestation-info", {
 				<img :src="this.manifestation.imagePath" width=400 height=400>
             </div>
 			<div class="col align-self-center">
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editManifestationModal">Edit</button>
+				<button v-if="isSeller()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#editManifestationModal">Edit</button>
 				<p>
 					<a v-show="this.manifestation.seats == 0" style="color: red"><b>SOLD OUT</b></a> <br>
 					<span v-if="getEventStatus() == 'EVENT AVAILABLE'">
@@ -39,7 +39,7 @@ Vue.component("manifestation-info", {
 				<location-form-map :coordinates="this.getCoordinates()" :zoom="15"></location-form-map>
 			</div>
 		</div>
-		<edit-manifestation-modal :value="manifestation" 
+		<edit-manifestation-modal v-if="isSeller()" :value="manifestation" 
 								  v-on:update-success="manifestation => this.$emit('update-success', manifestation)">
 		</edit-manifestation-modal>
     </div>
@@ -66,7 +66,10 @@ Vue.component("manifestation-info", {
 		},
 		redirectToInfo: function(id) {
 			this.$router.push("../manifestations/" + id + "/comment");
-		} // removeLater
+		}, // removeLater
+		isSeller: function(){
+			return localStorage.isLoggedUserRole(['Seller']);
+		}
 
 	},
 

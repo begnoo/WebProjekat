@@ -27,14 +27,13 @@ const router = new VueRouter({
         { path: "/users", component: Users },
 		{ path: "/manifestations/:id", component: ManifestationPage },
 		{ path: "/manifestations/:id/comment", component: Comment },
-		//{ path: "/manifestations/:id/nice-comments", component: CommentsBigTable }, // OVO INTEGRISATI U MANIFESTACIJE
 		{ path: "/cart", component: OrderTable },
 		{ path: "/buyer-tickets/", component: BuyerTicketsPage },
 		{ path: "/buyer-tickets/:id", component: UserTicketsPage },
 		{ path: "/distrustful-buyers/", component: DistrustfulBuyersPage },
 		{ path: "/change-password", component: ChangePassword },
 		{ path: "/account", component: AccountPage },
-		{ path: "/manifestations/:id/comments", component: CommentsPage }
+		{ path: "/manifestations/:id/all-comments", component: CommentsPage }
     ],
 });
 

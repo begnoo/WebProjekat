@@ -26,30 +26,19 @@ Vue.component("comments-big-table", {
 		</div>
 	</div>
 	`,
+	
+	props: ["comments"],
+	
 	data: function() {
 		return {
-			comments: [],
 		};
 	},
 
 	methods: {
-		getCommentsForManifestation: function() {
-			let manifestationId = this.$route.params.id;
-
-			axios(getRestConfig("/WebProjekat/rest/manifestations/" + manifestationId + "/comments",
-				{
-					"status": "Approved"
-				}
-			)).then(response => {
-				this.comments = response.data;
-			})
-				.catch(error => alert(error));
-		}
-
 
 	},
 
 	mounted: function() {
-		this.getCommentsForManifestation();
+
 	}
 });

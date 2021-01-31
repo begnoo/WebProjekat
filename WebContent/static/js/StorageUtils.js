@@ -7,3 +7,17 @@ Storage.prototype.getObject = function(key) {
 
     return value && JSON.parse(value);
 }
+
+Storage.prototype.isLoggedUserRole = function(roles) {
+    var loggedUser = this.getObject("loggedUser");
+	
+	if(!loggedUser && roles.find(role => role === "") != undefined){
+		return true;
+	}
+	
+	if(!loggedUser){
+		return false;
+	}
+	
+	return roles.find(role => role === loggedUser.user.role) != undefined;
+}

@@ -14,6 +14,9 @@ Vue.component("manifestation-page", {
 				  <li class="nav-item">
 				    <a class="nav-link" id="tickets-tab" data-toggle="tab" href="#tickets" role="tab" aria-controls="tickets" aria-selected="false">Tickets</a>
 				  </li>
+		 		  <li class="nav-item">
+				    <a class="nav-link" id="tickets-tab" data-toggle="tab" href="#comments" role="tab" aria-controls="tickets" aria-selected="false">Comments</a>
+				  </li>
 				</ul>
 				<div class="tab-content" id="myTabContent">
 					<div class="tab-pane fade show active" id="info" role="tabpanel" aria-labelledby="info-tab">
@@ -22,6 +25,9 @@ Vue.component("manifestation-page", {
 					</div>
 					<div class="tab-pane fade" id="tickets" role="tabpanel" aria-labelledby="tickets-tab">
 						<manifestation-tickets v-bind:manifestation="this.manifestation"></manifestation-tickets>
+					</div>
+					<div class="tab-pane fade" id="comments" role="tabpanel" aria-labelledby="tickets-tab">
+						<comments-page></comments-page>
 					</div>
 				</div>
             </div>

@@ -128,7 +128,7 @@ Vue.component("manifestation-tickets", {
 	},
 
 	mounted: function() {
-		this.isBuyer = !!localStorage.getObject("loggedUser").user.buyerTypeId
+		this.isBuyer = localStorage.isLoggedUserRole(["Buyer"]);
 		this.getTicketPriceForUser();
 	},
 });

@@ -1,9 +1,8 @@
 Vue.component('comment-form', {
 	template:
 	`
-		<div class="d-flex justify-content-center min-vh-100 align-items-center">
+		<div class="d-flex justify-content-center"">
             <div class="row">
-			
 				<form>
 					<div class="mb-3">
 	        			<label for="commentText" class="form-label">How was your expirience on this manifestation?</label>

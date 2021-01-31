@@ -8,7 +8,9 @@ Vue.component("home-page", {
 				<search-manifestations-form v-on:search-manifestation-data="searchManifestations"></search-manifestations-form>
                 <manifestation-table v-on:add-manifestation-success="trigger = !trigger" :manifestations="manifestations"></manifestation-table>
 				
-				<button type="button"
+				<button 
+				 v-if="isSeller()"
+				 type="button"
 				 class="btn btn-primary btn-sm float-right"
 				 data-toggle="modal"
 				 data-target="#addManifestationModal">Add Manifestation</button>
@@ -25,7 +27,7 @@ Vue.component("home-page", {
 			<div class="col">
             </div>
         </div>
-		<add-manifestation-modal></add-manifestation-modal>
+		<add-manifestation-modal v-if="isSeller()"></add-manifestation-modal>
     </div>
     `,
     
@@ -52,6 +54,9 @@ Vue.component("home-page", {
 			this.restConfig = postRestConfig("/WebProjekat/rest/manifestations/advance-search", {}, searchData);
 			this.trigger = !this.trigger;
 		},
+		isSeller: function(){
+			return localStorage.isLoggedUserRole(['Seller']);
+		}
 	},
 	
 	created: function(){
