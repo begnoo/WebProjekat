@@ -11,16 +11,15 @@ Vue.component('locations-page',
 				<button type="button"
 				 class="btn btn-primary btn-sm float-right mr-3"
 				 data-toggle="modal"
-				 data-target="#addLocationModal"
-			 	 v-on:click="userToBlock = user">Add Location</button>
+				 data-target="#addLocationModal">Add Location</button>
 		
 				<pagination :trigger="trigger" :restConfig="restConfig" :pageSize="pageSize" :selectedPage="selectedPage" v-on:update-page-data="setLocations"></pagination>
 			</div>
 
 		</div>
 		
-		<edit-location-modal :location="locationToEdit" v-on:update-location-success="updateCurrentLocations"></edit-location-modal>
-		<add-location-modal v-on:add-location-success="trigger = !trigger"></add-location-modal>
+		<edit-location-modal :updateSizeTrigger="firstOpenEdit" :location="locationToEdit" v-on:update-location-success="updateCurrentLocations"></edit-location-modal>
+		<add-location-modal  :updateSizeTrigger="firstOpenAdd" v-on:add-location-success="trigger = !trigger"></add-location-modal>
   	</div>
     `,
 
@@ -41,6 +40,8 @@ Vue.component('locations-page',
 					postalCode: null,
 					place: null,
 				},
+				firstOpenAdd: true,
+				firstOpenEdit: true,
 			}
 		},
 
@@ -71,6 +72,23 @@ Vue.component('locations-page',
 
 		created: function() {
 			this.restConfig = getRestConfig(this.restPath);
+			console.log("ovcica22");
+
+			
+			//triggers necessery for rendering map on model open without resize
+			$(document).on('show.bs.modal','#editLocationModal',  () => {
+				if(this.firstOpenEdit){
+					this.firstOpenEdit = false;
+				}
+			});
+			
+			$(document).on('show.bs.modal','#addLocationModal',  () => {
+				if(this.firstOpenAdd){
+					this.firstOpenAdd = false;
+				}
+			});
+
+			
 		}
 
 	});

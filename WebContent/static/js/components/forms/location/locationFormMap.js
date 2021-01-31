@@ -12,7 +12,7 @@ Vue.component("location-form-map", {
         };
     },
 
-    props: ["coordinates", "zoom", "moovable"],
+    props: ["coordinates", "zoom", "moovable", "updateSizeTrigger"],
     watch: {
         immediate: true,
         coordinates: function (newCoordinates, oldCoordinates) {
@@ -23,6 +23,9 @@ Vue.component("location-form-map", {
                     ol.proj.transform(newCoordinates, "EPSG:4326", "EPSG:3857")
                 );
         },
+		updateSizeTrigger: function(){
+			setTimeout(() => this.map.updateSize(), 300);
+		}
     },
 
     methods: {
@@ -98,6 +101,5 @@ Vue.component("location-form-map", {
 
     mounted() {
         this.initMap();
-		this.map.updateSize();
     },
 });

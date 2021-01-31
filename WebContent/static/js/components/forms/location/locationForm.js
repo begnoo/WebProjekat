@@ -3,8 +3,10 @@ Vue.component("location-form", {
         <form>
             <location-form-map v-on:update-coordinates="updateCoordinatesHandler" 
 				:coordinates="[value.longitude, value.latitude]" 
-				:zoom="0" 
-				:moovable="true"></location-form-map>
+				:zoom="6" 
+				:moovable="true"
+				:updateSizeTrigger="updateSizeTrigger"
+			></location-form-map>
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <div class="mb-3">
@@ -56,7 +58,7 @@ Vue.component("location-form", {
         </form>
     `,
 
-	props:["value"],
+	props:["value", "updateSizeTrigger"],
 	
 	watch: {
         "value": function() {

@@ -3,6 +3,7 @@ Vue.component("add-location-modal", {
     <custom-modal modalName="addLocationModal" title="Create Location">
 		<location-form
 			:value="value"
+			:updateSizeTrigger="updateSizeTrigger"
 		></location-form>
 		<div class="modal-footer">
 			<button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="createLocation">Create Location</button>
@@ -10,6 +11,9 @@ Vue.component("add-location-modal", {
 		</div>
     </custom-modal>
     `,
+
+	props: ["updateSizeTrigger"],
+	
     data: function () {
         return {
 			value:{
