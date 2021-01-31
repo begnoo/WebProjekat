@@ -1,8 +1,12 @@
-Vue.component("add-manifestation-page", {
+Vue.component("add-manifestation-modal", {
     template: `
-    <div class="container">
-        <manifestation-form :value="value" v-on:inputChange="newValue => value = newValue" v-on:submit-value="createManifestation"></manifestation-form>
-    </div>
+    <custom-modal modalName="addManifestationModal" title="Add Manifestation">
+        <manifestation-form :value="value" v-on:inputChange="newValue => value = newValue"></manifestation-form>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="createManifestation">Add Manifestation</button>
+			<button type="button" class="btn btn-secondary" data-dismiss="modal" data-target="#addLocationModal">Cancel</button>
+		</div>
+    </custom-modal>
     `,
     data: function () {
         return {
@@ -37,6 +41,7 @@ Vue.component("add-manifestation-page", {
                 }))
                 .then((response) => {
 					this.value.id = response.data.id;
+					this.$emit("add-manifestation-success");
                     alert("Uspesno dodata manifestacija");
                     console.log(response.data);
                 })

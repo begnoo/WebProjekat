@@ -51,7 +51,6 @@ Vue.component("navbar", {
 				{name : "Cart", path : "/cart"}
 			],
 			sellerOptions: [				
-				{name : "ManifestationForm", path : "/add-manifestation"},
 				{name : "Locations", path : "/locations"},
 
 			],

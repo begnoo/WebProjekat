@@ -5,7 +5,6 @@ const Comment = { template: "<comment-form></comment-form>" };
 const CommentsBigTable = { template: "<comments-big-table></comments-big-table>" };
 const CommentsPage = { template: "<comments-page></comments-page>" };
 const LocationsPage = { template: "<locations-page></locations-page>" };
-const AddManifestationPage = { template: "<add-manifestation-page></add-manifestation-page>" };
 const Users = { template: "<users-page></users-page>" };
 const HomePage = {template: "<home-page></home-page>"};
 const ManifestationPage = {template: "<manifestation-page></manifestation-page>"};
@@ -25,7 +24,6 @@ const router = new VueRouter({
         { path: "/login", component: Login },
         { path: "/register", component: RegisterPage },
         { path: "/locations", component: LocationsPage },
-        { path: "/add-manifestation", component: AddManifestationPage },
         { path: "/users", component: Users },
 		{ path: "/manifestations/:id", component: ManifestationPage },
 		{ path: "/manifestations/:id/comment", component: Comment },

@@ -1,13 +1,17 @@
-Vue.component("edit-manifestation-page", {
+Vue.component("edit-manifestation-modal", {
     template: `
-    <div class="container">
+    <custom-modal modalName="editManifestationModal" title="Edit Manifestation">
         <manifestation-form :trigger="trigger"
 							:value="updatedValue"
+							v-on:update-success="manifestation => this.$emit('update-success', manifestation)"
 							v-on:image-update-done=""
-							v-on:inputChange="newValue => updatedValue = newValue" 
-							v-on:submit-value="updateManifestation">
+							v-on:inputChange="newValue => updatedValue = newValue">
 		</manifestation-form>
-    </div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="updateManifestation">Update Manifestation</button>
+			<button type="button" class="btn btn-secondary" data-dismiss="modal" data-target="#editManifestationModal">Cancel</button>
+        </div>
+    </custom-modal>
     `,
    
 	props: ["value"],

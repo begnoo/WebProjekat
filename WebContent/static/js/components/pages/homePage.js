@@ -6,12 +6,26 @@ Vue.component("home-page", {
             </div>
             <div class="col-10 mt-3">
 				<search-manifestations-form v-on:search-manifestation-data="searchManifestations"></search-manifestations-form>
-                <manifestation-table :manifestations="manifestations"></manifestation-table>
-				<pagination :trigger="trigger" :restConfig="restConfig" :pageSize="pageSize" v-on:update-page-data="setManifestations"></pagination>
+                <manifestation-table v-on:add-manifestation-success="trigger = !trigger" :manifestations="manifestations"></manifestation-table>
+				
+				<button type="button"
+				 class="btn btn-primary btn-sm float-right"
+				 data-toggle="modal"
+				 data-target="#addManifestationModal">Add Manifestation</button>
             </div>
             <div class="col">
             </div>
         </div>
+        <div class="row">
+			<div class="col">
+            </div>
+			<div class="col-10">
+				<pagination :trigger="trigger" :restConfig="restConfig" :pageSize="pageSize" v-on:update-page-data="setManifestations"></pagination>
+            </div>
+			<div class="col">
+            </div>
+        </div>
+		<add-manifestation-modal></add-manifestation-modal>
     </div>
     `,
     
