@@ -52,11 +52,11 @@ Vue.component("navbar", {
 			],
 			sellerOptions: [				
 				{name : "ManifestationForm", path : "/add-manifestation"},
-				{name : "LocationForm", path : "/add-location"},
+				{name : "Locations", path : "/locations"},
 
 			],
 			adminOptions: [
-				{name : "LocationForm", path : "/add-location"},
+				{name : "Locations", path : "/locations"},
 				{name : "Users", path : "/users"},
 				{name : "Distrustful Buyers", path : "/distrustful-buyers"},
 

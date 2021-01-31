@@ -4,7 +4,7 @@ const ChangePassword = { template: "<change-password-form></change-password-form
 const Comment = { template: "<comment-form></comment-form>" };
 const CommentsBigTable = { template: "<comments-big-table></comments-big-table>" };
 const CommentsPage = { template: "<comments-page></comments-page>" };
-const LocationForm = { template: "<location-form></location-form>" };
+const LocationsPage = { template: "<locations-page></locations-page>" };
 const AddManifestationPage = { template: "<add-manifestation-page></add-manifestation-page>" };
 const Users = { template: "<users-page></users-page>" };
 const HomePage = {template: "<home-page></home-page>"};
@@ -24,7 +24,7 @@ const router = new VueRouter({
 		{ path: "/", component: HomePage },
         { path: "/login", component: Login },
         { path: "/register", component: RegisterPage },
-        { path: "/add-location", component: LocationForm },
+        { path: "/locations", component: LocationsPage },
         { path: "/add-manifestation", component: AddManifestationPage },
         { path: "/users", component: Users },
 		{ path: "/manifestations/:id", component: ManifestationPage },

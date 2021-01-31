@@ -51,14 +51,18 @@ Vue.component("location-form-map", {
             vectorLayer = new ol.layer.Vector({
                 source: new ol.source.Vector({
                     features: [this.markerFeature],
+					wrapX: true,
                 }),
+				wrapX: false,
             });
 
             this.map = new ol.Map({
                 target: this.$refs["map-root"],
                 layers: [
                     new ol.layer.Tile({
-                        source: new ol.source.OSM(),
+                        source: new ol.source.OSM({
+							wrapX: false,
+						}),
                     }),
                     vectorLayer,
                 ],
@@ -94,5 +98,6 @@ Vue.component("location-form-map", {
 
     mounted() {
         this.initMap();
+		this.map.updateSize();
     },
 });
