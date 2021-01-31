@@ -29,6 +29,7 @@ public class SellerDependencyLoader implements IDependencyLoader<User> {
 	}
 
 	private void LoadManifestationsForSeller(Seller seller) {
+		seller.getManifestations().clear();
 		for(Manifestation manifestation : manifestations.read()) {
 			if(manifestation.getSellerId().equals(seller.getId())) {
 				seller.getManifestations().add(manifestation);

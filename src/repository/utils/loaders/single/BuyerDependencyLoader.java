@@ -34,6 +34,7 @@ public class BuyerDependencyLoader implements IDependencyLoader<User> {
 
 	private void LoadTicketsForBuyer(Buyer buyer)
 	{
+		buyer.getTickets().clear();
 		for(Ticket ticket : tickets.read()) {
 			if(ticket.getBuyerId().equals(buyer.getId())) {
 				buyer.getTickets().add(ticket);
