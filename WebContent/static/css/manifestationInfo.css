@@ -1,0 +1,20 @@
+.td-info {
+	padding:0 15px 0 15px;	
+}
+
+.td-label {
+	color: #a19c9c;
+	font-weight: normal;
+	font-size: .9em;
+	text-align: left;
+}
+
+.blank-row
+{
+    height: 10px !important;
+    background-color: #FFFFFF;
+}
+
+.tr-address {
+	padding:0 15px 0 15px;	
+}

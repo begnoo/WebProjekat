@@ -7,29 +7,59 @@ Vue.component("manifestation-info", {
             </div>
 			<div class="col align-self-center">
 				<button v-if=" isSeller()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#editManifestationModal">Edit</button>
-				<p>
-					<a v-show="this.manifestation.seats == 0" style="color: red"><b>SOLD OUT</b></a> <br>
-					<span v-if="getEventStatus() == 'EVENT AVAILABLE'">
-						<a style="color: green"><b>EVENT AVAILABLE</b></a> <br>
-					</span>
-					<span v-if="getEventStatus() == 'EVENT ENDED'">
-						<a style="color: red"><b>EVENT ENDED</b></a> <br>
-					</span>
-					<span v-if="getEventStatus() == 'EVENT STARTED'">
-						<a style="color: red"><b>EVENT STARTED</b></a> <br>
-					</span>
-					Event start: {{this.manifestation.eventDate}} <br>
-					Event end: {{this.manifestation.eventEndDate}} <br>
-					Number of seats left: {{this.manifestation.seats}} <br>
-					Regular ticket price: {{this.manifestation.regularTicketPrice}} rsd <br>
-					Seller: {{this.manifestation.seller.name}} {{this.manifestation.seller.surname}}
-				</p>
-				<p>
-					{{this.manifestation.location.address.street}} {{this.manifestation.location.address.houseNumber}} <br>
-					{{this.manifestation.location.address.place}}, {{this.manifestation.location.address.postalCode}}<br>
-				</p>
-				
-				<br/>
+				<table>
+					<tbody>
+						<tr>
+							<td colspan=2>
+								<a v-show="this.manifestation.seats == 0" style="color: red"><b>SOLD OUT</b></a> <br>
+							</td>
+						</tr>
+						<tr>
+							<td colspan=2>
+							<span v-if="getEventStatus() == 'EVENT AVAILABLE'">
+								<a style="color: green"><b>EVENT AVAILABLE</b></a> <br>
+							</span>
+							<span v-if="getEventStatus() == 'EVENT ENDED'">
+								<a style="color: red"><b>EVENT ENDED</b></a> <br>
+							</span>
+							<span v-if="getEventStatus() == 'EVENT STARTED'">
+								<a style="color: red"><b>EVENT STARTED</b></a> <br>
+							</span>
+							</td>
+						</tr>
+						<tr>
+							<td class="td-label">Event start: </td>
+							<td class="td-info text-right">{{this.manifestation.eventDate}}</td>
+						</tr>
+						<tr>
+							<td class="td-label">Event end: </td>
+							<td class="td-info text-right">{{this.manifestation.eventEndDate}}</td>
+						</tr>
+						<tr>
+							<td class="td-label">Seats left: </td>
+							<td class="td-info text-right">{{this.manifestation.seats}}</td>
+						</tr>
+						<tr>
+							<td class="td-label">Regular ticket price: </td>
+							<td class="td-info text-right">{{this.manifestation.regularTicketPrice}} rsd</td>
+						</tr>
+						<tr>
+							<td class="td-label">Seller: </td>
+							<td class="td-info text-right">{{this.manifestation.seller.name}} {{this.manifestation.seller.surname}}</td>
+						</tr>
+						<tr class="blank-row">
+						</tr>
+						<tr class="tr-address">
+							<td class="td-label">Address: </td>
+							<td class="td-info text-right">{{this.manifestation.location.address.street}} {{this.manifestation.location.address.houseNumber}}</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td class="td-info text-right">{{this.manifestation.location.address.place}}, {{this.manifestation.location.address.postalCode}}</td>
+						</tr>
+						
+					</tbody>
+				</table>
 				
 			</div>
         </div>
