@@ -29,6 +29,7 @@ import core.servlets.exceptions.NotFoundException;
 import repository.DbContext;
 import services.PaginationService;
 import servlets.utils.filters.Authorize;
+import servlets.utils.filters.UserSpecific;
 import servlets.utils.filters.UserSpecificEntity;
 import servlets.utils.filters.UserSpecificManifestationsComment;
 
@@ -90,6 +91,24 @@ public class CommentServlet extends AbstractServletBase {
 				.collect(Collectors.toList());
 		
 		return wholeCommentObjectsForManifestation;
+	}
+	
+	@GET
+	@Path("users/{buyerId}/comments")
+	@Authorize(roles = "Buyer")
+	@UserSpecific(allowTopRole = false)
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<WholeCommentObjectResponse> readByBuyerId(@PathParam("buyerId") UUID buyerId, @QueryParam("number") int number, @QueryParam("size") int size)
+	{
+		List<Comment> commentsOfUser = commentService.readByBuyerId(buyerId);
+		
+		List<Comment> paginatedComments = paginationService.readPage(commentsOfUser, new Page(number, size));
+
+		List<WholeCommentObjectResponse> wholeCommentsOfUser = paginatedComments.stream()
+				.map(comment -> generateCommentObjectResponse(comment))
+				.collect(Collectors.toList());
+		
+		return wholeCommentsOfUser;
 	}
 
 	@POST

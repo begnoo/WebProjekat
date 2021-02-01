@@ -37,6 +37,10 @@ public abstract class AbstractFilterBase implements ContainerRequestFilter {
 		DbSet<User> users = (DbSet<User>) dbContext.getSet(User.class);
     	User authorizedUser = users.read(userId);
     	
+    	if(authorizedUser == null) {
+    		return "";
+    	}
+    	
     	return authorizedUser.getRole().toString();
     }
 }
