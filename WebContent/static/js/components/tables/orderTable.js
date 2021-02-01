@@ -92,7 +92,7 @@ Vue.component("order-table", {
 				axios(postRestConfig("../WebProjekat/rest/tickets/", {}, shoppingCartToSend))
 					.then(response => {
 						const updatedBuyer = response.data[0].buyer;
-						this.updateBuyerInLocalStorage(updatedBuyer);
+						this.updateBuyerInLocalStorage(updatedBuyer, response.data);
 					})
 					.catch(error => console.log(error));
 			}
@@ -107,9 +107,11 @@ Vue.component("order-table", {
 			}
 			return Object.keys(this.shoppingCart).length === 0;
 		},
-		updateBuyerInLocalStorage: function(updatedBuyer) {
+		updateBuyerInLocalStorage: function(updatedBuyer, tickets) {
 			let loggedUser = localStorage.getObject("loggedUser");
-			loggedUser.user = updatedBuyer;
+			loggedUser.user.buyerTypeId = updatedBuyer.buyerTypeId;
+			loggedUser.user.points = updatedBuyer.points;
+			loggedUser.user.tickets.push(...tickets);
 			localStorage.setObject("loggedUser", loggedUser);
 		},
 

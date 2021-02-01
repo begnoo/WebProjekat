@@ -30,7 +30,6 @@ Vue.component("user-tickets-page", {
 
 	watch:{
 		"$route.params.id": function(newValue){
-			console.log(newValue)
 			this.refresh();
 			this.trigger = !this.trigger;
 		},
@@ -43,7 +42,6 @@ Vue.component("user-tickets-page", {
 			this.selectedPage = selectedPage;
 		},
 		getBuyerTickets: function(searchData){
-			console.log(searchData);
 			searchData["buyerId"] = this.$route.params.id;
 			this.restConfig = postRestConfig("/WebProjekat/rest/tickets/advance-search", {}, searchData);
 			this.trigger = !this.trigger;

@@ -38,7 +38,7 @@ Vue.component("buyer-tickets-table", {
 			axios(deleteRestConfig("/WebProjekat/rest/tickets/" + ticketId))
 				.then(response => {
 					if (this.updateTicket(response.data)) {
-						this.updateBuyerInLocalStorage(response.data.buyer);
+						this.updateBuyerInLocalStorage(response.data.buyer, ticketId);
 					}
 				})
 				.catch(error => console.log(error));
@@ -52,9 +52,13 @@ Vue.component("buyer-tickets-table", {
 			this.tickets.splice(index, 1, updatedTicket);
 			return true;
 		},
-		updateBuyerInLocalStorage: function(updatedBuyer) {
-			let loggedUser = localStorage.getObject("loggedUser");
-			loggedUser.user = updatedBuyer;
+		updateBuyerInLocalStorage: function(updatedBuyer, ticketId) {
+			let loggedUser = localStorage.getObject("loggedUser", ticketId);
+			loggedUser.user.buyerTypeId = updatedBuyer.buyerTypeId;
+			loggedUser.user.points = loggedUser.points;
+			console.log(ticketId, loggedUser.user.tickets);
+			ticket = loggedUser.user.tickets.find(ticket => ticket.id == ticketId);
+			ticket.status = "Canceled";
 			localStorage.setObject("loggedUser", loggedUser);
 		},
 

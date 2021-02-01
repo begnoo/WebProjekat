@@ -26,7 +26,6 @@ Vue.component("manifestation-image-form", {
 			this.addManifestationImage();
 		},
 		"trigger": function() {
-			console.log("nesto se desilo");
 			this.addManifestationImage();
 		}
 	},

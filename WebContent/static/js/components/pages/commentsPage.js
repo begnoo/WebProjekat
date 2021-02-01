@@ -17,7 +17,7 @@ Vue.component('comments-page',
 				<div v-show="comments.length != 0">
 					<comments-big-table :comments="comments"></comments-big-table>
 				    <pagination :trigger="trigger" :restConfig="restConfig" :pageSize="pageSize" :selectedPage="selectedPage" v-on:update-page-data="setComments"></pagination>
-					<comment-form v-if="isBuyer()"></comment-form>
+					<comment-form v-if="isBuyer() && hasReservedTickets()"></comment-form>
 				</div>
 			</div>
 		</div>
@@ -51,6 +51,11 @@ Vue.component('comments-page',
 			},
 			isBuyer: function(){
 				return localStorage.isLoggedUserRole(["Buyer"]);
+			},
+			hasReservedTickets: function(){
+				const {user} = localStorage.getObject("loggedUser");
+				const foundTicket = user.tickets.find(ticket => ticket.manifestationId == this.manifestationId && ticket.status == "Reserved");
+				return  foundTicket != undefined;
 			}
 		},
 

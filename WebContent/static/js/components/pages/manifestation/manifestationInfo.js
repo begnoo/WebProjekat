@@ -30,7 +30,6 @@ Vue.component("manifestation-info", {
 				</p>
 				
 				<br/>
-		        <p v-on:click="redirectToInfo(manifestation.id)">Comment me</p>
 				
 			</div>
         </div>
