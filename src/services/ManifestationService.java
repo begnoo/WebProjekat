@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import core.domain.enums.CommentStatus;
 import core.domain.models.Comment;
 import core.domain.models.Location;
 import core.domain.models.Manifestation;
@@ -136,6 +137,16 @@ public class ManifestationService extends CrudService<Manifestation> implements 
 		manifestation.setSeats(newNumberOfManifestationSeats);
 		
 		return repository.update(manifestation);
+	}
 
+	@Override
+	public int getRating(UUID manifestationId) {
+		List<Comment> commentsForManifestation = commentService.readByManifestationId(manifestationId);
+		double rating = commentsForManifestation.stream()
+												.filter(comment -> comment.getStatus() == CommentStatus.Approved)
+												.map(comment -> comment.getRating())
+												.collect(Collectors.averagingInt(Integer::intValue));
+		
+		return (int) Math.round(rating);
 	}
 }

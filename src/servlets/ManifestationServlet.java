@@ -23,6 +23,7 @@ import core.domain.models.Manifestation;
 import core.repository.IRepository;
 import core.requests.manifestations.CreateManifestationRequest;
 import core.requests.manifestations.UpdateManifestationRequest;
+import core.responses.manifestations.ManifestationRatingResponse;
 import core.responses.manifestations.WholeManifestationObjectResponse;
 import core.service.IAdvanceSearchService;
 import core.service.IManifestationService;
@@ -86,6 +87,15 @@ public class ManifestationServlet extends AbstractServletBase {
 		}
 		
 		return generateManifestationObjectResponse(manifestation);
+	}
+	
+	@GET
+	@Path("manifestations/{id}/rating")
+	@Produces(MediaType.APPLICATION_JSON)
+	public ManifestationRatingResponse readRating(@PathParam("id") UUID id) {
+		int rating = manifestationService.getRating(id);
+		
+		return new ManifestationRatingResponse(id, rating);
 	}
 
 	@POST

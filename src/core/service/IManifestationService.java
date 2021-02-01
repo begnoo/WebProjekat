@@ -11,4 +11,6 @@ public interface IManifestationService extends ICrudService<Manifestation> {
 	List<Manifestation> readByLocationId(UUID locationId);
 	
 	Manifestation updateNumberOfSeats(Manifestation manifestation, int additionalSeats);
+	
+	int getRating(UUID manifestationId);
 }
