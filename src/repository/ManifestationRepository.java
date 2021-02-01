@@ -4,8 +4,8 @@ import java.util.UUID;
 
 import core.domain.models.Manifestation;
 import core.exceptions.MissingEntityException;
-import core.repository.IDependencyLoader;
-import repository.utils.loaders.single.ManifestationDependencyLoader;
+import core.repository.ILazyLoader;
+import repository.utils.loaders.LazyLoader;
 
 public class ManifestationRepository extends Repository<Manifestation> {
 	public ManifestationRepository(DbContext context)
@@ -45,8 +45,8 @@ public class ManifestationRepository extends Repository<Manifestation> {
 		return deletedManifestation;
 	}
 	
-	private void loadDependencies(Manifestation comment) {
-		IDependencyLoader<Manifestation> dependencyLoader = new ManifestationDependencyLoader(context);
-		dependencyLoader.load(comment);
+	private void loadDependencies(Manifestation manifestation) {
+		ILazyLoader loader = new LazyLoader(context);
+		loader.loadDependencies(manifestation);
 	}
 }

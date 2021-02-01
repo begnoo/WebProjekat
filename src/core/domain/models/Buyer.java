@@ -14,7 +14,7 @@ public class Buyer extends User {
 	@JsonIgnore
 	private List<Ticket> tickets;
 	private int points;
-	private UUID buyerTypeId;
+	private UUID typeId;
 	@JsonIgnore
 	private BuyerType type;
 	
@@ -27,11 +27,11 @@ public class Buyer extends User {
 	
 	public Buyer(String username, String password, String name, String surname,
 			Gender gender, LocalDateTime birthdate, List<Ticket> tickets,
-			int points, UUID buyerTypeId, BuyerType type) {
+			int points, UUID typeId, BuyerType type) {
 		super(username, password, name, surname, gender, birthdate, UserRole.Buyer);
 		this.tickets = tickets;
 		this.points = points;
-		this.buyerTypeId = buyerTypeId;
+		this.typeId = typeId;
 		this.type = type;
 	}
 
@@ -51,12 +51,12 @@ public class Buyer extends User {
 		this.points = points;
 	}
 
-	public UUID getBuyerTypeId() {
-		return buyerTypeId;
+	public UUID getTypeId() {
+		return typeId;
 	}
 
-	public void setBuyerTypeId(UUID buyerTypeId) {
-		this.buyerTypeId = buyerTypeId;
+	public void setTypeId(UUID typeId) {
+		this.typeId = typeId;
 	}
 
 	public BuyerType getType() {

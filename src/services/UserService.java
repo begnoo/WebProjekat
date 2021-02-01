@@ -42,7 +42,7 @@ public class UserService extends CrudService<User> implements IUserService {
 		}
 		
 		if(user.getRole() == UserRole.Buyer) {
-			((Buyer) user).setBuyerTypeId(buyerTypeService.getDefaultBuyerType().getId()); 
+			((Buyer) user).setTypeId(buyerTypeService.getDefaultBuyerType().getId()); 
 		}
 		
 		return repository.create(user);
@@ -150,7 +150,7 @@ public class UserService extends CrudService<User> implements IUserService {
 		buyer.setPoints(newBuyerPoints);
 		
 		BuyerType buyerTypeForNewPoints = buyerTypeService.findAppropriateTypeForPoints(buyer.getPoints());
-		buyer.setBuyerTypeId(buyerTypeForNewPoints.getId());
+		buyer.setTypeId(buyerTypeForNewPoints.getId());
 		
 		return repository.update(buyer);
 

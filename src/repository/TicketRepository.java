@@ -4,8 +4,8 @@ import java.util.UUID;
 
 import core.domain.models.Ticket;
 import core.exceptions.MissingEntityException;
-import core.repository.IDependencyLoader;
-import repository.utils.loaders.single.TicketDependencyLoader;
+import core.repository.ILazyLoader;
+import repository.utils.loaders.LazyLoader;
 
 public class TicketRepository extends Repository<Ticket> {
 	public TicketRepository(DbContext context) {
@@ -44,9 +44,9 @@ public class TicketRepository extends Repository<Ticket> {
 		return ticketForDelition;
 	}
 
-	private void loadDependencies(Ticket comment) {
-		IDependencyLoader<Ticket> dependencyLoader = new TicketDependencyLoader(context);
-		dependencyLoader.load(comment);
+	private void loadDependencies(Ticket ticket) {
+		ILazyLoader loader = new LazyLoader(context);
+		loader.loadDependencies(ticket);
 	}
 
 }

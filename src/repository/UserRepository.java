@@ -1,10 +1,8 @@
 package repository;
 
-import core.domain.enums.UserRole;
 import core.domain.models.User;
-import core.repository.IDependencyLoader;
-import repository.utils.loaders.single.BuyerDependencyLoader;
-import repository.utils.loaders.single.SellerDependencyLoader;
+import core.repository.ILazyLoader;
+import repository.utils.loaders.LazyLoader;
 
 public class UserRepository extends Repository<User> {
 	public UserRepository(DbContext context)
@@ -30,15 +28,7 @@ public class UserRepository extends Repository<User> {
 	}
 	
 	private void loadDependencies(User user) {
-		IDependencyLoader<User> dependencyLoader = null;
-		if(user.getRole() == UserRole.Buyer) {
-			dependencyLoader = new BuyerDependencyLoader(context);
-		} else if (user.getRole() == UserRole.Seller) {
-			dependencyLoader = new SellerDependencyLoader(context);
-		}
-		
-		if(dependencyLoader != null) {
-			dependencyLoader.load(user);
-		}
+		ILazyLoader loader = new LazyLoader(context);
+		loader.loadDependencies(user);
 	}
 }

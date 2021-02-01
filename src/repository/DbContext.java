@@ -1,6 +1,10 @@
 package repository;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 import core.domain.models.BuyerType;
 import core.domain.models.Comment;
@@ -9,12 +13,9 @@ import core.domain.models.Manifestation;
 import core.domain.models.Ticket;
 import core.domain.models.User;
 import core.repository.IDbSet;
+import core.repository.ILazyLoader;
 import repository.utils.deserializators.UsersDeserializator;
-import repository.utils.loaders.list.BuyersDependencyLoader;
-import repository.utils.loaders.list.CommentsDependencyLoader;
-import repository.utils.loaders.list.ManifestationsDependencyLoader;
-import repository.utils.loaders.list.SellersDependencyLoader;
-import repository.utils.loaders.list.TicketsDependencyLoader;
+import repository.utils.loaders.LazyLoader;
 
 
 @SuppressWarnings("unused")
@@ -28,11 +29,11 @@ public class DbContext {
 	
 	public DbContext()
 	{
-		InitializeSets();
-		LoadDependencies();
+		initializeSets();
+		loadDependencies();
 	}
 	
-	private void InitializeSets()
+	private void initializeSets()
 	{
 		this.users = new DbSet<User>(User.class, new UsersDeserializator());
 		this.buyerTypes = new DbSet<BuyerType>(BuyerType.class);
@@ -42,13 +43,37 @@ public class DbContext {
 		this.comments = new DbSet<Comment>(Comment.class);
 	}
 	
-	private void LoadDependencies()
+	private void loadDependencies()
 	{
-			new BuyersDependencyLoader(this).load(users.read());
-			new CommentsDependencyLoader(this).load(comments.read());
-			new ManifestationsDependencyLoader(this).load(manifestations.read());
-			new SellersDependencyLoader(this).load(users.read());
-			new TicketsDependencyLoader(this).load(tickets.read());
+		loadDependenciedForDbSet(users);
+		loadDependenciedForDbSet(comments);
+		loadDependenciedForDbSet(manifestations);
+		loadDependenciedForDbSet(tickets);
+	}
+	
+	private void loadDependenciedForDbSet(IDbSet<?> set) {
+		List<Object> entities = getAllEntitiesFromDbSet(set);
+		ILazyLoader loader = new LazyLoader(this);
+		
+		for(Object entity : entities) {
+			loader.loadDependencies(entity);
+		}
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private List<Object> getAllEntitiesFromDbSet(IDbSet<?> set) {
+		List<Object> entities = new ArrayList<Object>();
+		
+		try {
+			Field entitiesField = set.getClass().getDeclaredField("entities");
+			entitiesField.setAccessible(true);
+			entities = new ArrayList(((HashMap<UUID, Object>) entitiesField.get(set)).values());
+			entitiesField.setAccessible(false);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		return entities;
 	}
 	
 	public IDbSet<?> getSet(Class<?> classType)
@@ -64,10 +89,8 @@ public class DbContext {
 					return dbSet;
 				}
 			}
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException | IllegalAccessException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			System.out.println("Can't get db set for: " + classType.getCanonicalName());
 		}
 		
 		return null;

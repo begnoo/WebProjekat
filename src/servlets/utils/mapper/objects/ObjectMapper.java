@@ -58,10 +58,8 @@ public class ObjectMapper implements IMapper {
 	{
 		List<Field> fields = new ArrayList<Field>();
 		Class<?> currentClass = classType;
-		do
-		{
-			for(Field field : currentClass.getDeclaredFields())
-			{
+		do {
+			for(Field field : currentClass.getDeclaredFields()) {
 				fields.add(field);
 			}
 		

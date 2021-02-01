@@ -12,7 +12,7 @@ import core.domain.models.Ticket;
 public class WholeBuyerObjectResponse extends WholeUserObjectResponseBase {
 	private List<Ticket> tickets;
 	private int points;
-	private UUID buyerTypeId;
+	private UUID typeId;
 	private BuyerType type;
 
 	public WholeBuyerObjectResponse() {
@@ -21,12 +21,12 @@ public class WholeBuyerObjectResponse extends WholeUserObjectResponseBase {
 
 	public WholeBuyerObjectResponse(UUID id, LocalDateTime createdAt, boolean active, String username, String password,
 			String name, String surname, Gender gender, LocalDateTime birthdate, UserRole role, List<Ticket> tickets,
-			int points, UUID buyerTypeId, BuyerType type) {
+			int points, UUID typeId, BuyerType type) {
 		super(id, createdAt, active, username, password, name, surname, gender, birthdate, role);
 
 		this.tickets = tickets;
 		this.points = points;
-		this.buyerTypeId = buyerTypeId;
+		this.typeId = typeId;
 		this.type = type;
 	}
 
@@ -46,12 +46,12 @@ public class WholeBuyerObjectResponse extends WholeUserObjectResponseBase {
 		this.points = points;
 	}
 
-	public UUID getBuyerTypeId() {
-		return buyerTypeId;
+	public UUID getTypeId() {
+		return typeId;
 	}
 
-	public void setBuyerTypeId(UUID buyerTypeId) {
-		this.buyerTypeId = buyerTypeId;
+	public void setTypeId(UUID typeId) {
+		this.typeId = typeId;
 	}
 
 	public BuyerType getType() {

@@ -1,8 +1,8 @@
 package repository;
 
 import core.domain.models.Comment;
-import core.repository.IDependencyLoader;
-import repository.utils.loaders.single.CommentDependencyLoader;
+import core.repository.ILazyLoader;
+import repository.utils.loaders.LazyLoader;
 
 public class CommentRepository extends Repository<Comment> {
 	public CommentRepository(DbContext context) {
@@ -27,7 +27,7 @@ public class CommentRepository extends Repository<Comment> {
 	}
 	
 	private void loadDependencies(Comment comment) {
-		IDependencyLoader<Comment> dependencyLoader = new CommentDependencyLoader(context);
-		dependencyLoader.load(comment);
+		ILazyLoader loader = new LazyLoader(context);
+		loader.loadDependencies(comment);
 	}
 }
