@@ -25,6 +25,7 @@ Vue.component('locations-table',
 							<td>{{ location.address.postalCode}}</td>
 						  <td>
 							<button type="button"
+							 v-if="isAdmin"
 							 class="btn btn-success btn-sm"
 							 data-toggle="modal"
 							 data-target="#editLocationModal"
@@ -42,6 +43,7 @@ Vue.component('locations-table',
 
     data: function() {
         return {
+			isAdmin: false,
         }
     },
     
@@ -49,5 +51,9 @@ Vue.component('locations-table',
     	emitSelectedLocation: function(location){
 			this.$emit("location-selected", location);
 		},
-    }
+    },
+
+	mounted: function(){
+		this.isAdmin = localStorage.isLoggedUserRole(["Administrator"]);
+	}
 });
