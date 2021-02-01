@@ -102,11 +102,11 @@ public class UserService extends CrudService<User> implements IUserService {
 		for(Ticket ticket : buyerTickets) {
 			mediator.deleteTicket(ticket.getId());
 		}
-
 	}
 	
 	private void blockSeller(Seller seller) {
-		for(Manifestation manifestation : seller.getManifestations()) {
+		List<Manifestation> sellersManifestations = mediator.readBySellerId(seller.getId());
+		for(Manifestation manifestation : sellersManifestations) {
 			mediator.deleteManifestation(manifestation.getId());
 		}
 	}

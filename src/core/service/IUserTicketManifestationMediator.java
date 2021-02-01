@@ -27,6 +27,8 @@ public interface IUserTicketManifestationMediator {
 	
 	Manifestation readManifestation(UUID manifestationId);
 	
+	List<Manifestation> readBySellerId(UUID sellerId)
+	;
 	Manifestation deleteManifestation(UUID manifestationId);
 
 }

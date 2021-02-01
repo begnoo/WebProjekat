@@ -44,6 +44,14 @@ public class ManifestationService extends CrudService<Manifestation> implements 
 				.filter(manifestation -> manifestation.getLocationId().equals(locationId))
 				.collect(Collectors.toList());
 	}
+	
+	@Override
+	public List<Manifestation> readBySellerId(UUID sellerId) {
+		return repository.read()
+				.stream()
+				.filter(manifestation -> manifestation.getSellerId().equals(sellerId))
+				.collect(Collectors.toList());
+	}
 
 	@Override
 	public Manifestation create(Manifestation manifestation) {
@@ -149,4 +157,5 @@ public class ManifestationService extends CrudService<Manifestation> implements 
 		
 		return (int) Math.round(rating);
 	}
+
 }

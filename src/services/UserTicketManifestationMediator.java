@@ -81,6 +81,11 @@ public class UserTicketManifestationMediator implements IUserTicketManifestation
 	}
 
 	@Override
+	public List<Manifestation> readBySellerId(UUID sellerId) {
+		return manifestationService.readBySellerId(sellerId);
+	}
+
+	@Override
 	public Manifestation deleteManifestation(UUID manifestationId) {
 		return manifestationService.delete(manifestationId);
 	}
