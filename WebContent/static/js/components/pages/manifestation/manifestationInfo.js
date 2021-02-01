@@ -6,7 +6,7 @@ Vue.component("manifestation-info", {
 				<img :src="this.manifestation.imagePath" width=400 height=400>
             </div>
 			<div class="col align-self-center">
-				<button v-if="isSeller()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#editManifestationModal">Edit</button>
+				<button v-if=" isSeller()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#editManifestationModal">Edit</button>
 				<p>
 					<a v-show="this.manifestation.seats == 0" style="color: red"><b>SOLD OUT</b></a> <br>
 					<span v-if="getEventStatus() == 'EVENT AVAILABLE'">
@@ -67,7 +67,9 @@ Vue.component("manifestation-info", {
 			this.$router.push("../manifestations/" + id + "/comment");
 		}, // removeLater
 		isSeller: function(){
-			return localStorage.isLoggedUserRole(['Seller']);
+			return !isDateStringBeforeNow(this.manifestation.eventDate) && 
+				   localStorage.isLoggedUserRole(['Seller']) &&
+				   localStorage.getObject("loggedUser").user.id == this.manifestation.sellerId;
 		}
 
 	},

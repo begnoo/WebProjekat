@@ -4,7 +4,7 @@ Vue.component('users-page',
     `
 	<div>
 		<search-users-form v-on:search-user-data="getUsersBasedOnSearchData"></search-users-form>
-    	<users-table :users="users"></users-table>
+    	<users-table :users="users" v-on:deleted-user="trigger = !trigger"></users-table>
 	    <pagination :trigger="trigger" :restConfig="restConfig" :pageSize="pageSize" :selectedPage="selectedPage" v-on:update-page-data="setUsers"></pagination>
   	</div>
     `,

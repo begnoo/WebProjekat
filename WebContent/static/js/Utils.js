@@ -31,3 +31,8 @@ function postRestConfig(restPath, params, data){
 function getRestConfig(restPath, params, data){
 	return makeRestConfig(restPath, params, data, "get")
 }
+
+function isDateStringBeforeNow(dateString){
+	const date = moment(dateString, "YYYY-MM-DD hh:mm");
+	return date <= Date.now();
+}

@@ -10,8 +10,9 @@ Vue.component('users-table',
 							<th scope="col">Surname</th>
 							<th scope="col">Username</th>
 							<th scope="col">Gender</th>
+							<th scope="col">Role</th>
 							<th scope="col">Birthdate</th>
-							<th v-if="block" scope=""></th>
+							<th scope=""></th>
 					  </tr>
 				</thead>
 				<tbody>
@@ -24,9 +25,12 @@ Vue.component('users-table',
 							<td>{{ user.surname }}</td>
 							<td>{{ user.username }}</td>
 							<td>{{ user.gender }}</td>
+							<td>{{ user.role }}</td>
 							<td>{{ user.birthdate }}</td>
-						  <td v-if="block" style="text-align: center">
-							<button type="button"
+						  <td style="text-align: center">
+							<button 
+							 v-if="user.role != 'Administrator'"
+							 type="button"
 							 class="btn btn-danger btn-sm"
 							 data-toggle="modal"
 							 data-target="#blockUser"
