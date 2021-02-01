@@ -63,19 +63,13 @@ public class ManifestationServlet extends AbstractServletBase {
 	}
 
 	@GET
-	@Path("manifestations/")
+	@Path("manifestations/suggestions")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Manifestation> readAll(@QueryParam("order-by-date") boolean orderByDate, @QueryParam("number") int number, @QueryParam("size") int size) {
-		List<Manifestation> manifestations = null;
-		if(orderByDate) {
-			manifestations = manifestationService.readOrderedByDescendingDate();
-		} else {
-			manifestations = manifestationService.read();
-		}
+	public List<Manifestation> readSuggestions(@QueryParam("number") int number, @QueryParam("size") int size) {
+		List<Manifestation> manifestations = manifestationService.readSuggestions();
 		
 		return paginationService.readPage(manifestations, new Page(number, size));
 	}
-	
 	
 	@GET
 	@Path("manifestations/{id}")
@@ -143,6 +137,17 @@ public class ManifestationServlet extends AbstractServletBase {
 		Manifestation updatedManifestation = manifestationService.update(manifestationForUpdate);
 		
 		return generateManifestationObjectResponse(updatedManifestation);
+	}
+	
+	@PUT
+	@Path("manifestations/{id}/approve")
+	@Authorize(roles = "Administrator")
+	@Produces(MediaType.APPLICATION_JSON)
+	public WholeManifestationObjectResponse approve(@PathParam("id") UUID id) {
+
+		Manifestation approvedManifestation = manifestationService.approve(id);
+		
+		return generateManifestationObjectResponse(approvedManifestation);
 	}
 	
 	@DELETE

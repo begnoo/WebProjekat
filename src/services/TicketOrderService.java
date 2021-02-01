@@ -45,6 +45,9 @@ public class TicketOrderService implements ITicketOrderService {
 		if (manifestation == null) {
 			throw new MissingEntityException(String.format("Manifestation with id = %s does not exists.", ticketOrder.getManifestationId()));
 		}
+		if(!manifestation.isStatus()) {
+			throw new BadLogicException("You can not buy tickets for pending manifestation.");
+		}
 		
 		if(manifestation.getEventDate().isBefore(LocalDateTime.now())) {
 			throw new BadLogicException("Manifestation has already started.");

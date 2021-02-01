@@ -9,7 +9,7 @@ import repository.DbContext;
 import repository.utils.seeders.Seeder;
 
 @WebListener
-public class AppContextListener implements ServletContextListener{
+public class AppContextListener implements ServletContextListener {
 
 	@Override
 	public void contextDestroyed(ServletContextEvent servletContextEvent) {

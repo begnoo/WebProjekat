@@ -6,11 +6,13 @@ import java.util.UUID;
 import core.domain.models.Manifestation;
 
 public interface IManifestationService extends ICrudService<Manifestation> {
-	List<Manifestation> readOrderedByDescendingDate();
+	List<Manifestation> readSuggestions();
 	
 	List<Manifestation> readByLocationId(UUID locationId);
 	
 	List<Manifestation> readBySellerId(UUID sellerId);
+	
+	Manifestation approve(UUID manifestationId);
 	
 	Manifestation updateNumberOfSeats(Manifestation manifestation, int additionalSeats);
 	

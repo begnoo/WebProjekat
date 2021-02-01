@@ -37,8 +37,7 @@ Vue.component("home-page", {
 			pageSize: 3,
 			selectedPage: 1,
 			restConfig: null,
-			restPath: "/WebProjekat/rest/manifestations",
-			params: { "order-by-date": true },
+			restPath: "/WebProjekat/rest/manifestations/suggestions",
 			trigger: false,
 		};
 	},

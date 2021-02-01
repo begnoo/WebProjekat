@@ -34,6 +34,10 @@ public class CommentService extends CrudService<Comment> implements ICommentServ
 		if(manifestation == null) {
 			throw new MissingEntityException(String.format("Manifestation with id = %s does not exists.", comment.getManifestationId()));
 		}
+		if(!manifestation.isStatus()) {
+			throw new BadLogicException("You can not comment pending manifestation.");
+		}
+		
 		Buyer buyer = (Buyer) userRepository.read(comment.getBuyerId());
 		if(buyer == null) {
 			throw new MissingEntityException(String.format("Buyer with id = %s does not exists.", comment.getBuyerId()));

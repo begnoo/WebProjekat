@@ -30,9 +30,10 @@ public class ManifestationService extends CrudService<Manifestation> implements 
 	}
 
 	@Override
-	public List<Manifestation> readOrderedByDescendingDate() {
+	public List<Manifestation> readSuggestions() {
 		return repository.read()
 				.stream()
+				.filter(manifestation -> manifestation.isStatus())
 				.sorted((manifestation1, manifestation2) -> manifestation2.getEventDate().compareTo(manifestation1.getEventDate()))
 				.collect(Collectors.toList());
 	}
@@ -136,6 +137,22 @@ public class ManifestationService extends CrudService<Manifestation> implements 
 	}
 	
 	@Override
+	public Manifestation approve(UUID manifestationId) {
+		Manifestation manifestation = repository.read(manifestationId);
+		if(manifestation == null) {
+			throw new MissingEntityException(String.format("Manifestation with id = %s does not exists.", manifestationId));
+		}
+		
+		if(manifestation.isStatus() == true) {
+			throw new BadLogicException("Manifestation has already been approved.");
+		}
+		
+		manifestation.setStatus(true);
+		
+		return repository.update(manifestation);
+	}
+
+	@Override
 	public Manifestation updateNumberOfSeats(Manifestation manifestation, int additionalSeats) {
 		int newNumberOfManifestationSeats = manifestation.getSeats() + additionalSeats;
 		if(newNumberOfManifestationSeats < 0) {
@@ -157,5 +174,4 @@ public class ManifestationService extends CrudService<Manifestation> implements 
 		
 		return (int) Math.round(rating);
 	}
-
 }
