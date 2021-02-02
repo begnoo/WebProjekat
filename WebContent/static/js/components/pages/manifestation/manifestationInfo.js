@@ -6,6 +6,7 @@ Vue.component("manifestation-info", {
 				<img :src="this.manifestation.imagePath" width=400 height=400>
             </div>
 			<div class="col align-self-center">
+				<button v-if=" isAdminAndManifestationUnapproved()" v-on:click="approveManifestation" type="button" class="btn btn-primary">Approve</button>
 				<button v-if=" isSeller()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#editManifestationModal">Edit</button>
 				<table>
 					<tbody>
@@ -112,9 +113,22 @@ Vue.component("manifestation-info", {
 				   localStorage.isLoggedUserRole(['Seller']) &&
 				   localStorage.getObject("loggedUser").user.id == this.manifestation.sellerId;
 		},
+		isAdminAndManifestationUnapproved: function(){
+			return !isDateStringBeforeNow(this.manifestation.eventDate) && 
+				   localStorage.isLoggedUserRole(['Administrator']) &&
+				   !this.manifestation.status;
+		},
 		getManifestationRating: function(){
 			axios(getRestConfig(`../WebProjekat/rest/manifestations/${this.manifestation.id}/rating`))
 			.then(response => this.manifestationRating = response.data.rating)
+			.catch(error => console.log(error));
+		},
+		approveManifestation: function(){
+			axios(putRestConfig(`../WebProjekat/rest/manifestations/${this.manifestation.id}/approve`))
+			.then(response => {
+				alert("Uspesno")
+				this.manifestation.status = true;
+			})
 			.catch(error => console.log(error));
 		}
 
