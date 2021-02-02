@@ -27,13 +27,13 @@ public class UserSpecificManifestationsCommentFilter extends AbstractUserSpecifi
     	
 		if(comment == null) {
 			requestContext.abortWith(Response.status(Response.Status.NOT_FOUND)
-                    .entity(String.format("Comment with id %s does not exist.", commentId)).build());
+                    .entity(String.format("{\"errorMessage\": \"Comment with id %s does not exist.\"}", commentId)).build());
 			return;
 		}
 		
 		if(!comment.getManifestation().getSellerId().equals(sellerId)) {
 			requestContext.abortWith(Response.status(Response.Status.FORBIDDEN)
-                    .entity("You don't have permissions for this action.").build());
+                    .entity("{\"errorMessage\": \"You don't have permissions for this action.\"}").build());
 			return;
 		}
 	}

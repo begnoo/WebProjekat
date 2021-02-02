@@ -11,8 +11,6 @@ Vue.component('manifestation-table',
 							<th scope="col">End</th>
 							<th scope="col">Seats left</th>
 							<th scope="col">Price(RSD)</th>
-							<th v-if="isAdmin" scope="col">Seller</th>
-							<th scope="col"></th>
 							<th scope="col"></th>
 					  </tr>
 				</thead>
@@ -23,9 +21,14 @@ Vue.component('manifestation-table',
 							<td>{{ manifestation.eventEndDate}}</td>
 							<td>{{ manifestation.seats}}</td>
 							<td>{{ manifestation.regularTicketPrice}}</td>
-
-							<td v-if="isAdmin">{{ manifestation.sellerId}}</td>
-						  <td>
+							
+							<td>
+								<button type="button"
+									 class="btn btn-primary btn-sm"
+								 	 v-on:click="viewManifestation(manifestation.id)">
+								 	View
+								 </button>
+							
 							<button type="button"
 							 v-if="!isAdmin"
 							 class="btn btn-success btn-sm"
@@ -34,8 +37,7 @@ Vue.component('manifestation-table',
 						 	 v-on:click="emitSelectedManifestation(manifestation)">
 							 	Edit
 							 </button>
-						  </td>	
-						  <td>
+
 							<button type="button"
 							 class="btn btn-danger btn-sm"
 							 data-toggle="modal"
@@ -66,10 +68,15 @@ Vue.component('manifestation-table',
 			deleteManifestation: function(manifestation) {
 	    		axios(deleteRestConfig("/WebProjekat/rest/manifestations/" + manifestation.id))
 					.then(response => {
+						toastr.success(`${manifestation.name} is deleted.`, '')
 						this.$emit("deleted-manifestation", response.data);
 					})
-					.catch(error => console.log(error));
+					.catch(error => toastr.error(error.response.data.errorMessage, ''));
 			},
+			
+			viewManifestation: function(manifestationId) {
+				this.$router.push('/manifestations/' + manifestationId);
+			}
 		},
 
 		mounted: function() {

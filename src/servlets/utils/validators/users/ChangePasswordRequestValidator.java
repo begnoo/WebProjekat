@@ -8,11 +8,6 @@ public class ChangePasswordRequestValidator extends AbstractObjectValidator<Chan
 	{
 		super(validatedObject);
 		
-		ruleFor(validatedObject.getCurrentPassword()).notNull()
-													 .notEmpty()
-													 .lenght(8, 30)
-													 .supplyErrorMessage("Current password must be between 8 and 30 characters long.");
-
 		ruleFor(validatedObject.getNewPassword()).notNull()
 												 .notEmpty()
 												 .lenght(8, 30)

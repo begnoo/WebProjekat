@@ -101,7 +101,7 @@ Vue.component("manifestation-tickets", {
 						(response) =>
 							(this.ticketPricesWithDiscounts = response.data)
 					)
-					.catch((error) => alert(error));
+					.catch((error) => toastr.error(error.response.data.errorMessage, ''));
 			}
 
 		},
@@ -111,7 +111,6 @@ Vue.component("manifestation-tickets", {
 			if(!executeValidation(this.validators)) {
 				return;
 			}
-			
 			
 			if(this.isBuyer){
 				if (!localStorage.getObject("shoppingCart")) {
@@ -132,7 +131,7 @@ Vue.component("manifestation-tickets", {
 				}
 				shoppingCart[this.manifestation.id].order[this.ticketType] += this.ticketAmount;
 				localStorage.setObject("shoppingCart", shoppingCart);
-				alert("Uspeno");
+				toastr.success(`You have successfully added ${this.ticketAmount} ${this.ticketType} tickets for ${this.manifestation.name}.`, '');
 			}
 		},
 		hasEventStarted: function(){

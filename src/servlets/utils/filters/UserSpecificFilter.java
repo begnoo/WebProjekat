@@ -26,13 +26,13 @@ public class UserSpecificFilter extends AbstractUserSpecificBase {
     	UUID targetedUserId = getTargetedUserId(requestContext);
 		if(targetedUserId == null) {
 			requestContext.abortWith(Response.status(Response.Status.NOT_FOUND)
-                    .entity(String.format("User with id %s does not exist.", targetedUserId)).build());
+                    .entity(String.format("{\"errorMessage\": \"User with id %s does not exist.\"}", targetedUserId)).build());
 			return;
 		}
 		
 		if(!targetedUserId.equals(userId)) {
 			requestContext.abortWith(Response.status(Response.Status.FORBIDDEN)
-                    .entity("You don't have permissions for this action.").build());
+                    .entity("{\"errorMessage\": \"You don't have permissions for this action.\"}").build());
 			return;
 		}
     }

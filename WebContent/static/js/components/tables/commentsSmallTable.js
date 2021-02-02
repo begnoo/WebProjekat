@@ -117,12 +117,12 @@ Vue.component('comments-small-table',
 		changeStatusTo(commentId, status){
 			 axios(putRestConfig('/WebProjekat/rest/comments/' + commentId + '/status', {status: status}, {}))
 	            .then(response => {
-	            	alert("Uspesno");
+	            	toastr.error(`You have successfully changed status of comment ot ${status}.`, '')
 	            	this.selectedComment.status = status;
 	            })
 	            .catch(function(error)
 				{
-					alert(error.response.data.errorMessage);  	
+					toastr.error(error.response.data.errorMessage, '');
 				});
 		}
     },

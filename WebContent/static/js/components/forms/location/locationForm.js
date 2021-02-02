@@ -93,9 +93,7 @@ Vue.component("location-form", {
 					this.updateFieldsFromResponseData(response.data);
 				})
 				.catch(function(error) {
-					alert(
-						"Could not find a location based on given coordinates"
-					);
+					toastr.error('Could not find a location based on given coordinates.', '');
 				});
 		},
 		
@@ -150,7 +148,7 @@ Vue.component("location-form", {
 					}
 				})
 				.catch(function(error) {
-					alert("Could not find coordinates based on given info");
+					toastr.error('Could not find coordinates based on given info.', '');
 				});
 		},
 	},

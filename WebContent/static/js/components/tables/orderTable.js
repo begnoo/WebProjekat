@@ -91,22 +91,23 @@ Vue.component("order-table", {
 
 				axios(postRestConfig("../WebProjekat/rest/tickets/", {}, shoppingCartToSend))
 					.then(response => {
+						toastr.success(`We have received your order.`, '');
 						const updatedBuyer = response.data[0].buyer;
 						this.updateBuyerInLocalStorage(updatedBuyer, response.data);
 					})
-					.catch(error => console.log(error));
+					.catch(error => toastr.error(error.response.data.errorMessage, ''));
 			}
 			this.shoppingCart = {};
 			localStorage.setObject("shoppingCart", this.shoppingCart);
-			alert("Uspesno");
-
 		},
+		
 		isShoppingCartEmpty: function() {
 			if (this.shoppingCart == null) {
 				return true;
 			}
 			return Object.keys(this.shoppingCart).length === 0;
 		},
+		
 		updateBuyerInLocalStorage: function(updatedBuyer, tickets) {
 			let loggedUser = localStorage.getObject("loggedUser");
 			loggedUser.user.typeId = updatedBuyer.typeId;

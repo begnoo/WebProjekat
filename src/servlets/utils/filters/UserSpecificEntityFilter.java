@@ -43,7 +43,7 @@ public class UserSpecificEntityFilter extends AbstractUserSpecificBase {
 		
 		if(entity == null) {
 			requestContext.abortWith(Response.status(Response.Status.NOT_FOUND)
-                    .entity(String.format("Entity with id %s does not exist.", entityId)).build());
+                    .entity(String.format("{\"errorMessage\": \"Entity with id %s does not exist.\"}", entityId)).build());
 			return;
 		}
 		
@@ -52,7 +52,7 @@ public class UserSpecificEntityFilter extends AbstractUserSpecificBase {
 			UUID userIdFromEntity = (UUID) getterForUserIdFromEntity.invoke(entity);
 			if(!userIdFromEntity.equals(userId)) {
 				requestContext.abortWith(Response.status(Response.Status.FORBIDDEN)
-	                    .entity("You don't have permissions for this action.").build());
+	                    .entity("{\"errorMessage\": \"You don't have permissions for this action.\"}").build());
 				return;
 			}
 		} catch (Exception e) {

@@ -62,11 +62,11 @@ Vue.component('registration-form', {
 					'birthdate': this.userInfo.birthdate + " 00:00"
 
 				})).then(response => {
+					toastr.success(`You have successfully created a new account.`, '');
 					this.$emit("create-user-success");
-					alert("Uspesno");
 				})
 				.catch(function(error) {
-					alert(error.response.data.errorMessages);
+					toastr.error(error.response.data.errorMessage, '');
 				});
 		}
 	}

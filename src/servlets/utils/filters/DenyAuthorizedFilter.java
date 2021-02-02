@@ -22,7 +22,7 @@ public class DenyAuthorizedFilter extends AbstractFilterBase {
 		if(userId != null)
 		{
 			requestContext.abortWith(Response.status(Response.Status.FORBIDDEN)
-                    .entity("You don't have permissions for this action").build());
+                    .entity("{\"errorMessage\": \"You don't have permissions for this action.\"}").build());
 			return;
 		}
     }

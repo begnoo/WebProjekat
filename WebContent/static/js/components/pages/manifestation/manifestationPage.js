@@ -46,7 +46,7 @@ Vue.component("manifestation-page", {
 		getManifestation: function(id) {
 			axios(getRestConfig("/WebProjekat/rest/manifestations/" + id))
 				.then(response => this.manifestation = response.data)
-				.catch(error => console.log(error));
+				.catch(error => toastr.error(error.response.data.errorMessage, ''));
 		},
 		hasEventEnded: function(){
 			const eventEndDate = moment(this.manifestation.eventEndDate, "YYYY-MM-DD hh:mm");

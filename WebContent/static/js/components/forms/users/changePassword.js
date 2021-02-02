@@ -64,10 +64,10 @@ Vue.component('change-password-form', {
                 'currentPassword': this.currentPassword,
                 'newPassword': this.newPassword                
             }))
-            .then(response => alert("Uspesno") )
+            .then(response => toastr.success(`You have successfully changed your password.`, ''))
             .catch(function(error)
 			{
-				alert(error.response.data.errorMessage);  	
+				toastr.error(error.response.data.errorMessage, '');
 			});
         }
     }

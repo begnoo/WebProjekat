@@ -61,7 +61,7 @@ Vue.component("location-combo-box", {
 					}
                 })
                 .catch((error) => {
-                    console.log(error);
+  	              	toastr.error(`Can't load locations because you are not logged in.`, '');
                 });
         },
         getLocationString: function ({ address }) {

@@ -46,14 +46,24 @@ Vue.component("add-manifestation-modal", {
                         .id,
                 }))
                 .then((response) => {
-                    alert("Uspesno dodata manifestacija");
+                    toastr.error(`You have successfully added a new manifestation.`, '');
 					this.value.id = response.data.id;
 					this.$emit("add-manifestation-success", response.data);
 					this.updateSeller(response.data);
                 })
                 .catch(function (error) {
-                    alert(error.response.data.errorMessage);
-                });
+					if(error.response.data.errorMessages) {
+						toastr.options.preventDuplicates = false;
+						for(let errorMessage of error.response.data.errorMessages) {
+		                    toastr.error(errorMessage, '');
+						}
+	                	toastr.options.preventDuplicates = true;
+					}
+					
+					if(error.response.data.errorMessage) {
+	                    toastr.error(error.response.data.errorMessage, '');
+					}
+				});
         },
         
 		updateSeller: function(manifestation){

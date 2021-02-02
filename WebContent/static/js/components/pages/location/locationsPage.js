@@ -66,8 +66,6 @@ Vue.component('locations-page',
 				this.locationToEdit.postalCode = emittedLocation.address.postalCode;
 				this.locationToEdit.houseNumber = emittedLocation.address.houseNumber;
 			},
-
-
 		},
 
 		created: function() {
@@ -85,8 +83,6 @@ Vue.component('locations-page',
 					this.firstOpenAdd = false;
 				}
 			});
-
-			
 		}
 
 	});

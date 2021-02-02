@@ -39,6 +39,4 @@ Vue.component('user-info-form', {
             this.$emit('input', this.value);
         }
     }
-
-    
 });

@@ -20,7 +20,7 @@ Vue.component("buyer-tickets-table", {
 				      <td>{{ticket.price}}</td>
 				      <td>{{ticket.status}}</td>
 					  <td v-if="ticket.status == 'Reserved'" style="text-align: center">
-						<button class="btn btn-danger btn-sm" v-on:click="cancelTicket(ticket.id)">Cancel</button>
+						<button class="btn btn-danger btn-sm" v-on:click="cancelTicket(ticket)">Cancel</button>
 					  </td>	
 					  <td v-else></td>
 				    </tr>
@@ -34,20 +34,21 @@ Vue.component("buyer-tickets-table", {
 	props: ["tickets"],
 
 	methods: {
-		cancelTicket: function(ticketId) {
-			axios(deleteRestConfig("/WebProjekat/rest/tickets/" + ticketId))
+		cancelTicket: function(ticket) {
+			axios(deleteRestConfig("/WebProjekat/rest/tickets/" + ticket.id))
 				.then(response => {
 					if (this.updateTicket(response.data)) {
-						this.updateBuyerInLocalStorage(response.data.buyer, ticketId);
+						toastr.success(`You have successfully canceled ticket for ${ticket.manifestation.name}.`, '')
+						this.updateBuyerInLocalStorage(response.data.buyer, ticket.id);
 					}
 				})
-				.catch(error => console.log(error));
+				.catch(error => toastr.error(error.response.data.errorMessage, ''));
 		},
 		updateTicket: function(updatedTicket) {
 			if (updatedTicket.length == 0) {
-				alert("Too late.");
 				return false;
 			}
+			
 			const index = this.tickets.findIndex((ticket) => ticket.id === updatedTicket.id);
 			this.tickets.splice(index, 1, updatedTicket);
 			return true;
@@ -56,7 +57,6 @@ Vue.component("buyer-tickets-table", {
 			let loggedUser = localStorage.getObject("loggedUser", ticketId);
 			loggedUser.user.typeId = updatedBuyer.typeId;
 			loggedUser.user.points = loggedUser.points;
-			console.log(ticketId, loggedUser.user.tickets);
 			ticket = loggedUser.user.tickets.find(ticket => ticket.id == ticketId);
 			ticket.status = "Canceled";
 			localStorage.setObject("loggedUser", loggedUser);

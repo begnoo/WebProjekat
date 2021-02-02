@@ -57,11 +57,11 @@ Vue.component("add-location-modal", {
 					}
 				}))
 				.then((response) => {
+					toastr.success('You have successfully added a new location.', '');
 					this.$emit("add-location-success");
-					alert("Uspesno");
 				})
 				.catch(function(error) {
-					alert(error.response.data.errorMessage);
+					toastr.error(error.response.data.errorMessage, '');
 				});
 		},
     },
