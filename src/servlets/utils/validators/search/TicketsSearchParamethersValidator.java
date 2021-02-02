@@ -8,8 +8,6 @@ public class TicketsSearchParamethersValidator extends AbstractObjectValidator<T
 	{
 		super(validatedObject);
 		
-		ruleFor(validatedObject.getBuyerId()).notNull()
-											 .supplyErrorMessage("Buyer id can not be empty.");
 		
 		ruleFor(validatedObject.getManifestationName()).notNull()
 													   .supplyErrorMessage("Manifestation name can not be null.");

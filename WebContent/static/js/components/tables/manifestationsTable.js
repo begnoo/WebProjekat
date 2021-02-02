@@ -14,6 +14,7 @@ Vue.component('manifestation-table',
 							<th scope="col">Status</th>
 							<th scope="col"></th>
 							<th scope="col"></th>
+							<th scope="col"></th>
 					  </tr>
 				</thead>
 				<tbody>
@@ -27,9 +28,18 @@ Vue.component('manifestation-table',
 							<td>{{ manifestation.regularTicketPrice}}</td>
 							<td v-if="manifestation.status">Active</td>
 							<td v-else >Pending</td>
+							<td v-if="manifestation.status">
+								<button type="button"
+								 class="btn btn-secondary btn-sm"
+								 data-toggle="modal"
+								 data-target="#editLocationModal"
+							 	 v-on:click="goToManifestationTicketsPage(manifestation)">
+								 	Tickets
+								 </button>
+						  	</td>
 							<td v-if="isAdmin && !manifestation.status">
 								<button type="button"
-								 class="btn btn-primary btn-sm"
+								 class="btn btn-success btn-sm"
 								 data-toggle="modal"
 								 data-target="#editLocationModal"
 							 	 v-on:click="approveManifestation(manifestation)">
@@ -72,12 +82,15 @@ Vue.component('manifestation-table',
 					.catch(error => console.log(error));
 			},
 			approveManifestation: function(manifestation){
-			axios(putRestConfig(`../WebProjekat/rest/manifestations/${manifestation.id}/approve`))
+				axios(putRestConfig(`../WebProjekat/rest/manifestations/${manifestation.id}/approve`))
 				.then(response => {
 					alert("Uspesno")
 					manifestation.status = true;
 				})
 				.catch(error => console.log(error));
+			},
+			goToManifestationTicketsPage: function(manifestation){
+				this.$router.push("/manifestation-tickets/" + manifestation.id);
 			}
 		},
 

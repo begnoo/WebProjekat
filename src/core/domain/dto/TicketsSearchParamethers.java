@@ -20,6 +20,8 @@ public class TicketsSearchParamethers {
 	@JsonSerialize(using = JsonDateSerializer.class)
 	@JsonDeserialize(using = JsonDateDeserializer.class)
 	private LocalDateTime dateTo;
+	
+	private UUID manifestationId;
 
 	private String type;
 	private String status;
@@ -32,7 +34,7 @@ public class TicketsSearchParamethers {
 	}
 
 	public TicketsSearchParamethers(UUID buyerId, String manifestationName, int priceFrom, int priceTo,
-			LocalDateTime dateFrom, LocalDateTime dateTo, String type, String status, String sortBy, String orderBy) {
+			LocalDateTime dateFrom, LocalDateTime dateTo, String type, String status, String sortBy, String orderBy, UUID manifestationId) {
 		super();
 		this.buyerId = buyerId;
 		this.manifestationName = manifestationName;
@@ -44,6 +46,7 @@ public class TicketsSearchParamethers {
 		this.status = status;
 		this.sortBy = sortBy;
 		this.orderBy = orderBy;
+		this.manifestationId = manifestationId;
 	}
 
 	public UUID getBuyerId() {
@@ -124,6 +127,14 @@ public class TicketsSearchParamethers {
 
 	public void setOrderBy(String orderBy) {
 		this.orderBy = orderBy;
+	}
+
+	public UUID getManifestationId() {
+		return manifestationId;
+	}
+
+	public void setManifestationId(UUID manifestationId) {
+		this.manifestationId = manifestationId;
 	}
 
 }
