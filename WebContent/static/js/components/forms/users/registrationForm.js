@@ -27,15 +27,27 @@ Vue.component('registration-form', {
 				surname: null,
 				gender: null,
 				birthdate: null
+			},
+			validators: {
+				'registrationUsername': [validateLength('registrationUsername', 3, 30)],
+				'registrationPassword': [validateLength('registrationPassword', 8, 30)],
+				'registrationName': [validateLength('registrationName', 2, 30)],
+				'registrationSurname': [validateLength('registrationSurname', 2, 30)],
+				'registrationBirthdate': [validateRequired('registrationBirthdate'), validateUserAge('registrationBirthdate')],
+				'registrationGender': [validateRequired('registrationGender')],
 			}
 		}
 	},
-
+	
 	methods:
 	{
 
 		createUser: function(event) {
 			event.preventDefault();
+			
+			if(!executeValidation(this.validators)) {
+				return;
+			}
 
 			let path = '/WebProjekat/rest/users/';
 			path += this.userType;

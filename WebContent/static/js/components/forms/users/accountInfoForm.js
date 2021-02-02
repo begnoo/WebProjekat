@@ -5,7 +5,7 @@ Vue.component('account-info-form', {
 		    <div class="form-row">
 		        <div class="form-group col-md-6">
 			        <label for="registrationUsername">Username</label>
-			        <input v-model="value.username" type="text" class="form-control" id="registrationUsername" placeholder="Username">
+			        <input v-model="value.username" type="text" class="form-control" id="registrationUsername" placeholder="Username">			        
 		        </div>
 		        <div class="form-group col-md-6">
 			        <label for="registrationPassword">Password</label>
