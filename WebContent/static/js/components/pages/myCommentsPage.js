@@ -7,11 +7,9 @@ Vue.component("my-comments-page", {
 	                <comments-big-table :comments="comments"></comments-big-table>
 	            </div>
 	        </div>
-	        <div class="row">
-				<div class="col-10">
-					<pagination :trigger="trigger" :restConfig="restConfig" :pageSize="pageSize" v-on:update-page-data="setComments"></pagination>
-	            </div>
-	        </div>
+			<div class="col-10">
+				<pagination :trigger="trigger" :restConfig="restConfig" :pageSize="pageSize" v-on:update-page-data="setComments"></pagination>
+            </div>
 		</div>
         <div v-show="comments.length == 0" class="mt-5">
             <h3 style="text-align:center">You haven't made any comments yet.</h3>
