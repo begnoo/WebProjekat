@@ -109,7 +109,7 @@ Vue.component("order-table", {
 		},
 		updateBuyerInLocalStorage: function(updatedBuyer, tickets) {
 			let loggedUser = localStorage.getObject("loggedUser");
-			loggedUser.user.buyerTypeId = updatedBuyer.buyerTypeId;
+			loggedUser.user.typeId = updatedBuyer.typeId;
 			loggedUser.user.points = updatedBuyer.points;
 			loggedUser.user.tickets.push(...tickets);
 			localStorage.setObject("loggedUser", loggedUser);

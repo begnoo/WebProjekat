@@ -88,9 +88,9 @@ Vue.component("manifestation-tickets", {
 			const regularTicketPrice = this.manifestation.regularTicketPrice;
 			const loggedUser = window.localStorage.getObject("loggedUser");
 			if (loggedUser) {
-				const buyerTypeId = this.isBuyer ? loggedUser.user.buyerTypeId : null;
+				const buyerTypeId = this.isBuyer ? loggedUser.user.typeId : null;
 				axios(getRestConfig("../WebProjekat/rest/tickets/prices", {
-					buyerTypeId: buyerTypeId,
+					typeId: buyerTypeId,
 					price: regularTicketPrice,
 				}))
 					.then(

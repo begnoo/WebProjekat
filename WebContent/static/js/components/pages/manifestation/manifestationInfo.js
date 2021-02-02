@@ -28,6 +28,11 @@ Vue.component("manifestation-info", {
 							</td>
 						</tr>
 						<tr>
+							<td class="td-label">Rating: </td>
+							<td v-if="manifestationRating == 0" class="td-info text-right">Not yet graded</td>
+							<td v-else class="td-info text-right"><rating-span :rating="manifestationRating"></rating-span></td>
+						</tr>
+						<tr>
 							<td class="td-label">Event start: </td>
 							<td class="td-info text-right">{{this.manifestation.eventDate}}</td>
 						</tr>
@@ -74,6 +79,12 @@ Vue.component("manifestation-info", {
     </div>
     `,
 	props: ['manifestation'],
+	
+	data: function(){
+		return {
+			manifestationRating: null,
+		};
+	},
 
 	methods: {
 		getEventStatus: function() {
@@ -100,9 +111,18 @@ Vue.component("manifestation-info", {
 			return !isDateStringBeforeNow(this.manifestation.eventDate) && 
 				   localStorage.isLoggedUserRole(['Seller']) &&
 				   localStorage.getObject("loggedUser").user.id == this.manifestation.sellerId;
+		},
+		getManifestationRating: function(){
+			axios(getRestConfig(`../WebProjekat/rest/manifestations/${this.manifestation.id}/rating`))
+			.then(response => this.manifestationRating = response.data.rating)
+			.catch(error => console.log(error));
 		}
 
 	},
+	
+	mounted: function(){
+		this.getManifestationRating();
+	}
 
 
 });
