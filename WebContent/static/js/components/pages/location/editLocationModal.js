@@ -4,9 +4,10 @@ Vue.component("edit-location-modal", {
 		<location-form
 			:value="updatedValue"
 			:updateSizeTrigger="updateSizeTrigger"
+			:idPrefix="idPrefix"
 		></location-form>
 		<div class="modal-footer">
-			<button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="updateLocation">Update Location</button>
+			<button type="button" class="btn btn-primary" v-on:click="updateLocation">Update Location</button>
 			<button type="button" class="btn btn-secondary" data-dismiss="modal" data-target="#editLocationModal">Cancel</button>
 		</div>
 	</custom-modal>
@@ -17,12 +18,26 @@ Vue.component("edit-location-modal", {
 	data: function(){
 		return {
 			updatedValue: {},
+			idPrefix: 'edit',
+			validators: {
+				'editLocationLatitude': [validateFloatType('editLocationLatitude')],
+				'editLocationLongitude': [validateFloatType('editLocationLongitude')],
+				'editLocationStreet': [validateLength('editLocationStreet', 1, 50)],
+				'editLocationHouseNumber': [validateLength('editLocationHouseNumber', 1, 15)],
+				'editLocationPlace': [validateLength('editLocationPlace', 1, 50)],
+				'editLocationPostalCode': [validateLength('editLocationPostalCode', 1, 15)]
+			}
 		}
 	},
 
     methods: {
         updateLocation: function (event) {
             event.preventDefault();
+
+			if(!executeValidation(this.validators)) {
+				return;
+			}
+
 			const data = {
 					id: this.updatedValue.id,
                     longitude: this.updatedValue.longitude,

@@ -4,8 +4,8 @@ function validateLength(inputFieldId, minLength, maxLength) {
 		const inputedTextLength = inputedText.length;
 		if(inputedTextLength < minLength || inputedTextLength > maxLength) {
 			$(`#${inputFieldId}`).addClass('is-invalid');
-			
-			const label = $(`label[for=${inputFieldId}]`).text();
+
+			const label = getLabel(inputFieldId);
 			const errorMessage = `${label} must be between ${minLength} and ${maxLength} characters long.`;
 			addErrorMessage(inputFieldId, errorMessage);
 			
@@ -24,7 +24,7 @@ function validateRequired(inputFieldId) {
 		if(!inputedText) {
 			$(`#${inputFieldId}`).addClass('is-invalid');
 			
-			const label = $(`label[for=${inputFieldId}]`).text();
+			const label = getLabel(inputFieldId);
 			const errorMessage = `${label} must be provided.`;
 			addErrorMessage(inputFieldId, errorMessage);
 			
@@ -35,6 +35,29 @@ function validateRequired(inputFieldId) {
 			return true;
 		}	
 	}
+}
+
+function validateFloatType(inputFieldId) {
+	return function() {
+		const inputedText = $(`#${inputFieldId}`).val();
+		if(!isFloat(inputedText)) {
+			$(`#${inputFieldId}`).addClass('is-invalid');
+			
+			const label = getLabel(inputFieldId);
+			const errorMessage = `${label} must be a number.`;
+			addErrorMessage(inputFieldId, errorMessage);
+			
+			return false;
+		} else {
+			$(`#${inputFieldId}`).addClass('is-valid');
+
+			return true;
+		}	
+	}
+}
+
+function isFloat(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
 function validateUserAge(inputFieldId) {
@@ -57,6 +80,12 @@ function validateUserAge(inputFieldId) {
 			return true;
 		}	
 	}
+}
+
+function getLabel(inputFieldId) {
+	const label = $(`label[for=${inputFieldId}]`).text().trim();
+	
+	return label.endsWith(':') ? label.substr(0, label.length - 1) : label;
 }
 
 function addErrorMessage(inputFieldId, message) {

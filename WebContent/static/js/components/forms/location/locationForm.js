@@ -10,42 +10,42 @@ Vue.component("location-form", {
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <div class="mb-3">
-                        <label for="textField" class="form-label">Latitude: </label>
-                        <input type="text" class="form-control" id="textField" v-model="value.latitude">
+                        <label :for="getId('LocationLatitude')" class="form-label">Latitude: </label>
+                        <input type="text" class="form-control" :id="getId('LocationLatitude')" v-model="value.latitude">
                     </div>
                 </div>
                 <div class="form-group col-md-6">
                     <div class="mb-3">
-                        <label for="textField" class="form-label">Longitude: </label>
-                        <input type="text" class="form-control" id="textField" v-model="value.longitude">
+                        <label :for="getId('LocationLongitude')" class="form-label">Longitude: </label>
+                        <input type="text" class="form-control" :id="getId('LocationLongitude')" v-model="value.longitude">
                     </div>
                 </div>
             </div>
             <div class="form-row">
               <div class="form-group col-md-8">
                 <div class="mb-3">
-                    <label for="textField" class="form-label">Street: </label>
-                    <input type="text" class="form-control" id="textField" v-model="value.street">
+                    <label :for="getId('LocationStreet')" class="form-label">Street: </label>
+                    <input type="text" class="form-control" :id="getId('LocationStreet')" v-model="value.street">
                 </div>
               </div>
               <div class="form-group col-md-4">
                 <div class="mb-3">
-                    <label for="textField" class="form-label">House Number: </label>
-                    <input type="text" class="form-control" id="textField" v-model="value.houseNumber">
+                    <label :for="getId('LocationHouseNumber')" class="form-label">House Number: </label>
+                    <input type="text" class="form-control" :id="getId('LocationHouseNumber')" v-model="value.houseNumber">
                 </div>
             </div>
             </div>
             <div class="form-row">
             <div class="form-group col-md-8">
                 <div class="mb-3">
-                    <label for="textField" class="form-label">Place: </label>
-                    <input type="text" class="form-control" id="textField" v-model="value.place">
+                    <label :for="getId('LocationPlace')" class="form-label">Place: </label>
+                    <input type="text" class="form-control" :id="getId('LocationPlace')" v-model="value.place">
                 </div>
             </div>
             <div class="form-group col-md-4">
                 <div class="mb-3">
-                    <label for="textField" class="form-label">Postal Code: </label>
-                    <input type="text" class="form-control" id="textField" v-model="value.postalCode">
+                    <label :for="getId('LocationPostalCode')" class="form-label">Postal Code: </label>
+                    <input type="text" class="form-control" :id="getId('LocationPostalCode')" v-model="value.postalCode">
                 </div>
             </div>
             </div>
@@ -58,7 +58,7 @@ Vue.component("location-form", {
         </form>
     `,
 
-	props:["value", "updateSizeTrigger"],
+	props:["value", "updateSizeTrigger", "idPrefix"],
 	
 	watch: {
         "value": function() {
@@ -71,6 +71,10 @@ Vue.component("location-form", {
 	},
 	
 	methods: {
+		getId: function(id) {
+			return this.idPrefix + id;	
+		},
+		
 		updateCoordinatesHandler: function(coordinates) {
 			this.value.longitude = coordinates[0];
 			this.value.latitude = coordinates[1];
