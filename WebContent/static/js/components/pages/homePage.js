@@ -6,7 +6,7 @@ Vue.component("home-page", {
             </div>
             <div class="col-10 mt-3">
 				<search-manifestations-form v-on:search-manifestation-data="searchManifestations"></search-manifestations-form>
-                <manifestation-table :manifestations="manifestations"></manifestation-table>
+                <manifestation-card-list :manifestations="manifestations"></manifestation-card-list>
 				
 				<button 
 				 v-if="isSeller()"

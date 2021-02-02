@@ -8,6 +8,7 @@ const LocationsPage = { template: "<locations-page></locations-page>" };
 const Users = { template: "<users-page></users-page>" };
 const HomePage = {template: "<home-page></home-page>"};
 const ManifestationPage = {template: "<manifestation-page></manifestation-page>"};
+const ManifestationsPage = {template: "<manifestations-page></manifestations-page>"};
 const AccountPage = {template: "<account-page></account-page>"};
 const OrderTable = {template: "<order-table></order-table>"};
 const BuyerTicketsPage = {template: "<buyer-tickets-page></buyer-tickets-page>"};
@@ -33,8 +34,8 @@ const router = new VueRouter({
 		{ path: "/distrustful-buyers/", component: DistrustfulBuyersPage },
 		{ path: "/change-password", component: ChangePassword },
 		{ path: "/account", component: AccountPage },
-		{ path: "/manifestations/:id/all-comments", component: CommentsPage },
-		{ path: "/my-comments", component: MyCommentsPage }
+		{ path: "/my-comments", component: MyCommentsPage },
+		{ path: "/manifestations", component: ManifestationsPage },
 
     ],
 });
@@ -53,7 +54,6 @@ const routeAllowedRoles = {
 	"/distrustful-buyers": ["Administrator"],
 	"/change-password": ["Administrator", "Buyer", "Seller"],
 	"/account": ["Administrator", "Buyer", "Seller"],
-	"/all-comments": ["Administrator"],
 	"/my-comments": ["Buyer"],
 }
 

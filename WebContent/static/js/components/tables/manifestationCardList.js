@@ -1,5 +1,5 @@
 
-Vue.component("manifestation-table", {
+Vue.component("manifestation-card-list", {
     template: `
 	<div>
 		<div v-for="manifestation in manifestations" :key="manifestation.id">
