@@ -17,8 +17,6 @@ const MyCommentsPage = {template: "<my-comments-page></my-comments-page>"};
 
 
 
-
-
 const router = new VueRouter({
     mode: "hash",
     routes: [
@@ -40,6 +38,38 @@ const router = new VueRouter({
 
     ],
 });
+
+const routeAllowedRoles = {
+	"": ["Administrator", "Buyer", "Seller", ""],
+	"/login": [""],
+	"/register": [""],
+	"/users": ["Administrator"],
+	"/locations": ["Administrator", "Seller"],
+	"/manifestations": ["Administrator", "Buyer", "Seller", ""],
+	"/manifestations/:id": ["Administrator", "Buyer", "Seller", ""],
+	"/cart": ["Buyer"],
+	"/buyer-tickets": ["Buyer"],
+	"/buyer-tickets/:id": ["Administrator"],
+	"/distrustful-buyers": ["Administrator"],
+	"/change-password": ["Administrator", "Buyer", "Seller"],
+	"/account": ["Administrator", "Buyer", "Seller"],
+	"/all-comments": ["Administrator"],
+	"/my-comments": ["Buyer"],
+}
+
+const isUserAllowed = function(to, from, next){
+	if(to.matched.length == 0){
+		next(from);
+	}
+	else if(localStorage.isLoggedUserRole(routeAllowedRoles[to.matched[0].path])){
+		next();
+	}
+	else{
+		next(from);
+	}
+}
+
+router.beforeEach(isUserAllowed);
 
 var app = new Vue({
     router,
