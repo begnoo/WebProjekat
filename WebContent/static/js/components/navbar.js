@@ -48,7 +48,9 @@ Vue.component("navbar", {
 			defaultOptions: [],
 			buyerOptions: [
 				{name: "Tickets", path: "/buyer-tickets"},
-				{name : "Cart", path : "/cart"}
+				{name : "Cart", path : "/cart"},
+				{name: "My Comments", path: "/my-comments"},
+
 			],
 			sellerOptions: [				
 				{name : "Locations", path : "/locations"},
