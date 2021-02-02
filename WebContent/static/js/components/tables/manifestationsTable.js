@@ -26,16 +26,25 @@ Vue.component('manifestation-table',
 							<td>{{ manifestation.seats}}</td>
 							<td>{{ manifestation.regularTicketPrice}}</td>
 							<td v-if="manifestation.status">Active</td>
-							<td v-else >Pending</td>							
-						  <td>
-							<button type="button"
-							 class="btn btn-danger btn-sm"
-							 data-toggle="modal"
-							 data-target="#editLocationModal"
-						 	 v-on:click="deleteManifestation(manifestation)">
-							 	Delete
-							 </button>
-						  </td>	
+							<td v-else >Pending</td>
+							<td v-if="isAdmin && !manifestation.status">
+								<button type="button"
+								 class="btn btn-primary btn-sm"
+								 data-toggle="modal"
+								 data-target="#editLocationModal"
+							 	 v-on:click="approveManifestation(manifestation)">
+								 	Approve
+								 </button>
+						  	</td>					
+							  <td>
+								<button type="button"
+								 class="btn btn-danger btn-sm"
+								 data-toggle="modal"
+								 data-target="#editLocationModal"
+							 	 v-on:click="deleteManifestation(manifestation)">
+								 	Delete
+								 </button>
+							  </td>	
 					  </tr>
 				</tbody>
 	      </table>
@@ -62,6 +71,14 @@ Vue.component('manifestation-table',
 					})
 					.catch(error => console.log(error));
 			},
+			approveManifestation: function(manifestation){
+			axios(putRestConfig(`../WebProjekat/rest/manifestations/${manifestation.id}/approve`))
+				.then(response => {
+					alert("Uspesno")
+					manifestation.status = true;
+				})
+				.catch(error => console.log(error));
+			}
 		},
 
 		mounted: function() {
