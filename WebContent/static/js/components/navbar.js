@@ -52,18 +52,20 @@ Vue.component("navbar", {
 				{name: "My Comments", path: "/my-comments"},
 
 			],
-			sellerOptions: [				
+			sellerOptions: [
+				{name : "My Manifestations", path : "/manifestations"},
 				{name : "Locations", path : "/locations"},
 
 			],
 			adminOptions: [
+				{name : "Manifestations", path : "/manifestations"},
 				{name : "Locations", path : "/locations"},
 				{name : "Users", path : "/users"},
 				{name : "Distrustful Buyers", path : "/distrustful-buyers"},
 
 			],
 			userOptions:[
-				{name: "Account", path:"account"},
+				{name: "Account", path:"/account"},
 			],
 		}
 	},
