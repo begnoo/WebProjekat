@@ -67,7 +67,18 @@ Vue.component("search-manifestations-form", {
 						</select>
 				    </div>
 			 	</div>
-		
+			
+				<div v-if="isSellerOrAdmin()"class="form-row mt-3">
+				    <label for="selectRole" class="col-sm-2 col-form-label">Status:</label>
+				    <div class="col-10">
+						<select v-model="statusSetting" class="form-control" id="selectStatus">
+							<option value="All">All</option>
+							<option value="true">Active</option>
+							<option value="false">Pending</option>
+						</select>
+				    </div>
+			 	</div>
+			
 				<div class="form-row mt-3 mb-3">
 				    <label for="selectSort" class="col-sm-2 col-form-label">Sort by:</label>
 				    <div class="col-5">
@@ -76,7 +87,7 @@ Vue.component("search-manifestations-form", {
 							<option value="name">Name</option>
 							<option value="eventDate">Date</option>
 							<option value="regularTicketPrice">Price</option>
-							<option value="regularTicketPrice">Location</option>
+							<option value="location">Location</option>
 						</select>
 				    </div>
 				    <div class="col-5">
@@ -92,6 +103,7 @@ Vue.component("search-manifestations-form", {
 	</div>
     `,
 
+	props: ["sellerId"],
 
 	data: function() {
 		return {
@@ -108,6 +120,8 @@ Vue.component("search-manifestations-form", {
 			sortBy: "",
 			orderBy: "Ascending",
 			showForm: false,
+			statusSetting: "true",
+			status: true,
 		}
 	},
 
@@ -125,6 +139,9 @@ Vue.component("search-manifestations-form", {
 				dateTo: this.getDate(this.dateTo, this.timeTo),
 				sortBy: this.sortBy,
 				orderBy: this.orderBy,
+				statusSetting: this.statusSetting,
+				status: this.statusSetting == "true",
+				sellerId: this.sellerId,
 			});
 		},
 		showHideForm: function(){
@@ -138,6 +155,9 @@ Vue.component("search-manifestations-form", {
 				return date + " 00:00";
 			}
 			return date + " " + time;
+		},
+		isSellerOrAdmin: function(){
+			return localStorage.isLoggedUserRole(["Seller", "Administrator"]);
 		}
 	},
 

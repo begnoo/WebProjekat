@@ -1,6 +1,7 @@
 package core.domain.dto;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -25,13 +26,17 @@ public class ManifestationsSearchParamethers {
 
 	private String sortBy;
 	private String orderBy;
-	
+	private UUID sellerId;
+	private String statusSetting;
+	private boolean status;
+
 	public ManifestationsSearchParamethers() {
 		super();
 	}
 
 	public ManifestationsSearchParamethers(String name, LocalDateTime dateFrom, LocalDateTime dateTo, String city,
-			int priceFrom, int priceTo, String type, boolean onlyNotSolved, String sortBy, String orderBy) {
+			int priceFrom, int priceTo, String type, boolean onlyNotSolved, String sortBy, String orderBy,
+			UUID sellerId, String statusSetting, boolean status) {
 		super();
 		this.name = name;
 		this.dateFrom = dateFrom;
@@ -43,6 +48,9 @@ public class ManifestationsSearchParamethers {
 		this.onlyNotSolved = onlyNotSolved;
 		this.sortBy = sortBy;
 		this.orderBy = orderBy;
+		this.sellerId = sellerId;
+		this.statusSetting = statusSetting;
+		this.status = status;
 	}
 
 	public String getName() {
@@ -123,6 +131,30 @@ public class ManifestationsSearchParamethers {
 
 	public void setOrderBy(String orderBy) {
 		this.orderBy = orderBy;
+	}
+
+	public UUID getSellerId() {
+		return sellerId;
+	}
+
+	public void setSellerId(UUID sellerId) {
+		this.sellerId = sellerId;
+	}
+
+	public String getStatusSetting() {
+		return statusSetting;
+	}
+
+	public void setStatusSetting(String statusSetting) {
+		this.statusSetting = statusSetting;
+	}
+
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
 	}
 
 }

@@ -1,6 +1,7 @@
 package services;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import core.domain.dto.ManifestationsSearchParamethers;
 import core.domain.models.Manifestation;
@@ -26,8 +27,9 @@ public class ManifestationSearchService implements IAdvanceSearchService<Manifes
 				.filter(manifestation -> manifestation.getRegularTicketPrice() >= searchParamethers.getPriceFrom())
 				.filter(manifestation -> manifestation.getRegularTicketPrice() <= searchParamethers.getPriceTo())
 				.filter(manifestation -> searchParamethers.getType().isBlank() || manifestation.getType().toString().equals(searchParamethers.getType()))
-				.filter(manifestation -> !searchParamethers.isOnlyNotSolved() || manifestation.getSeats() != 0);
-		
+				.filter(manifestation -> !searchParamethers.isOnlyNotSolved() || manifestation.getSeats() != 0)
+				.filter(manifestation -> searchParamethers.getStatusSetting().equals("All") || searchParamethers.isStatus() == manifestation.isStatus())
+				.filter(manifestation -> searchParamethers.getSellerId() == null || manifestation.getSellerId().equals(searchParamethers.getSellerId()));
 		if(!searchParamethers.getSortBy().isBlank())
 		{
 			stream = stream.sortByAttribute(searchParamethers.getSortBy(), SortingOrder.valueOf(searchParamethers.getOrderBy()));

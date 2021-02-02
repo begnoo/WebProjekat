@@ -15,9 +15,9 @@ Vue.component('comments-page',
 			</div>
 			<div v-else>
 				<div v-show="comments.length != 0">
+					<comment-form v-if="isBuyer() && hasReservedTickets()"></comment-form>
 					<comments-big-table :comments="comments"></comments-big-table>
 				    <pagination :trigger="trigger" :restConfig="restConfig" :pageSize="pageSize" :selectedPage="selectedPage" v-on:update-page-data="setComments"></pagination>
-					<comment-form v-if="isBuyer() && hasReservedTickets()"></comment-form>
 				</div>
 			</div>
 		</div>

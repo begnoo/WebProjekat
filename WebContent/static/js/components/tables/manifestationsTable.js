@@ -16,7 +16,9 @@ Vue.component('manifestation-table',
 				</thead>
 				<tbody>
 					  <tr v-for="manifestation in manifestations">
-							<td>{{ manifestation.name}}</td>
+							<td>
+								<router-link :to="'/manifestations/' + manifestation.id" class="nav-link">{{ manifestation.name}}</router-link>
+							</td>
 							<td>{{ manifestation.eventDate}}</td>
 							<td>{{ manifestation.eventEndDate}}</td>
 							<td>{{ manifestation.seats}}</td>
