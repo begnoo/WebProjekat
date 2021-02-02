@@ -11,30 +11,22 @@ Vue.component('manifestation-table',
 							<th scope="col">End</th>
 							<th scope="col">Seats left</th>
 							<th scope="col">Price(RSD)</th>
-							<th v-if="isAdmin" scope="col">Seller</th>
+							<th scope="col">Status</th>
 							<th scope="col"></th>
 							<th scope="col"></th>
 					  </tr>
 				</thead>
 				<tbody>
 					  <tr v-for="manifestation in manifestations">
-							<td>{{ manifestation.name}}</td>
+							<td>
+								<router-link :to="'/manifestations/' + manifestation.id" class="nav-link">{{ manifestation.name}}</router-link>
+							</td>
 							<td>{{ manifestation.eventDate}}</td>
 							<td>{{ manifestation.eventEndDate}}</td>
 							<td>{{ manifestation.seats}}</td>
 							<td>{{ manifestation.regularTicketPrice}}</td>
-
-							<td v-if="isAdmin">{{ manifestation.sellerId}}</td>
-						  <td>
-							<button type="button"
-							 v-if="!isAdmin"
-							 class="btn btn-success btn-sm"
-							 data-toggle="modal"
-							 data-target="#editLocationModal"
-						 	 v-on:click="emitSelectedManifestation(manifestation)">
-							 	Edit
-							 </button>
-						  </td>	
+							<td v-if="manifestation.status">Active</td>
+							<td v-else >Pending</td>							
 						  <td>
 							<button type="button"
 							 class="btn btn-danger btn-sm"

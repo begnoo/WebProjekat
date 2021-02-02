@@ -46,7 +46,7 @@ const routeAllowedRoles = {
 	"/register": [""],
 	"/users": ["Administrator"],
 	"/locations": ["Administrator", "Seller"],
-	"/manifestations": ["Administrator", "Buyer", "Seller", ""],
+	"/manifestations": ["Administrator", "Seller"],
 	"/manifestations/:id": ["Administrator", "Buyer", "Seller", ""],
 	"/cart": ["Buyer"],
 	"/buyer-tickets": ["Buyer"],
