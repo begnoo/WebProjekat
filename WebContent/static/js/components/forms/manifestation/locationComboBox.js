@@ -80,14 +80,12 @@ Vue.component("location-combo-box", {
         },
         selectLocation: function (location) {
             this.selectedLocation = location;
-            this.inputValue = "";
             this.locationSelected = true;
             this.$emit("location-value-change", this.selectedLocation);
         },
         resetLocation: function () {
             this.selectedLocation = {};
             this.locationSelected = false;
-            //this.$nextTick(() => this.$refs.locationInput.focus());
             this.$emit("location-value-change", this.selectedLocation);
         },
     },

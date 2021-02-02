@@ -22,18 +22,7 @@ Vue.component("add-manifestation-modal", {
 	            locationId: null,
 				id: "",
 			},
-			idPrefix: 'add',
-			validators: {
-				'addManifestationName': [validateLength('addManifestationName', 3, 150)],
-				'addManifestationSeats': [validateMinNumber('addManifestationSeats', 1)],
-				'addManifestationPrice': [validateMinNumber('addManifestationPrice', 0)],
-				'addManifestationStartDate': [validateRequired('addManifestationStartDate')],
-				'addManifestationStartTime': [validateRequired('addManifestationStartTime')],
-				'addManifestationEndDate': [validateRequired('addManifestationEndDate')],
-				'addManifestationEndTime': [validateRequired('addManifestationEndTime')],
-				'addManifestationType': [validateRequired('addManifestationType')],
-				'addManifestationLocation': [validateRequired('addManifestationLocation')]
-			}
+			idPrefix: 'add'
         };
     },
 
@@ -41,7 +30,7 @@ Vue.component("add-manifestation-modal", {
         createManifestation: function (event) {
             event.preventDefault();
             
-            if(!executeValidation(this.validators)) {
+            if(!executeValidation(this.getValidators())) {
 				return;
 			}
             
@@ -66,10 +55,25 @@ Vue.component("add-manifestation-modal", {
                     alert(error.response.data.errorMessage);
                 });
         },
+        
 		updateSeller: function(manifestation){
 			let loggedUser = localStorage.getObject("loggedUser");
 			loggedUser.user.manifestations.push(manifestation);
 			localStorage.setObject("loggedUser", loggedUser);
+		},
+		
+		getValidators: function() {
+			return {
+				'addManifestationName': [validateLength('addManifestationName', 3, 150)],
+				'addManifestationSeats': [validateMinNumber('addManifestationSeats', 1)],
+				'addManifestationPrice': [validateMinNumber('addManifestationPrice', 0)],
+				'addManifestationStartDate': [validateRequired('addManifestationStartDate')],
+				'addManifestationStartTime': [validateRequired('addManifestationStartTime')],
+				'addManifestationEndDate': [validateRequired('addManifestationEndDate')],
+				'addManifestationEndTime': [validateRequired('addManifestationEndTime')],
+				'addManifestationType': [validateRequired('addManifestationType')],
+				'addManifestationLocation': [validateLocation('addManifestationLocation', this.value.locationId)]
+			};
 		}
-    },
+    }
 });

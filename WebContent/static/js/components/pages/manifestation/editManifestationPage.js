@@ -21,18 +21,7 @@ Vue.component("edit-manifestation-modal", {
 		return {
 			updatedValue: {},
 			trigger: false,
-			idPrefix: 'edit',
-			validators: {
-				'editManifestationName': [validateLength('editManifestationName', 3, 150)],
-				'editManifestationSeats': [validateMinNumber('editManifestationSeats', 1)],
-				'editManifestationPrice': [validateMinNumber('editManifestationPrice', 0)],
-				'editManifestationStartDate': [validateRequired('editManifestationStartDate')],
-				'editManifestationStartTime': [validateRequired('editManifestationStartTime')],
-				'editManifestationEndDate': [validateRequired('editManifestationEndDate')],
-				'editManifestationEndTime': [validateRequired('editManifestationEndTime')],
-				'editManifestationType': [validateRequired('editManifestationType')],
-				'editManifestationLocation': [validateRequired('editManifestationLocation')]
-			}
+			idPrefix: 'edit'
 		}
 	},
 
@@ -40,7 +29,7 @@ Vue.component("edit-manifestation-modal", {
         updateManifestation: function (event) {
             event.preventDefault();
 
-			if(!executeValidation(this.validators)) {
+			if(!executeValidation(this.getValidators())) {
 				return;
 			}
 			
@@ -64,7 +53,21 @@ Vue.component("edit-manifestation-modal", {
                 .catch(function (error) {
                     alert(error.response.data.errorMessage);
                 });
-        }
+        },
+
+		getValidators: function() {
+			return {
+				'editManifestationName': [validateLength('editManifestationName', 3, 150)],
+				'editManifestationSeats': [validateMinNumber('editManifestationSeats', 1)],
+				'editManifestationPrice': [validateMinNumber('editManifestationPrice', 0)],
+				'editManifestationStartDate': [validateRequired('editManifestationStartDate')],
+				'editManifestationStartTime': [validateRequired('editManifestationStartTime')],
+				'editManifestationEndDate': [validateRequired('editManifestationEndDate')],
+				'editManifestationEndTime': [validateRequired('editManifestationEndTime')],
+				'editManifestationType': [validateRequired('editManifestationType')],
+				'editManifestationLocation': [validateLocation('editManifestationLocation', this.value.locationId)]
+			};
+		}
     },
 	created: function() {
 		this.updatedValue = {...this.value};

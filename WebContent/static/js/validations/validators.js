@@ -102,6 +102,24 @@ function validateUserAge(inputFieldId) {
 	}
 }
 
+function validateLocation(inputFieldId, locationId) {
+	return function() {
+		if(!locationId) {
+			$(`#${inputFieldId}`).addClass('is-invalid');
+			
+			const label = getLabel(inputFieldId);
+			const errorMessage = `${label} must be provided.`;
+			addErrorMessage(inputFieldId, errorMessage);
+			
+			return false;
+		} else {
+			$(`#${inputFieldId}`).addClass('is-valid');
+
+			return true;
+		}
+	}
+}
+	
 function getLabel(inputFieldId) {
 	const label = $(`label[for=${inputFieldId}]`).text().trim();
 	
