@@ -3,12 +3,13 @@ Vue.component("edit-manifestation-modal", {
     <custom-modal modalName="editManifestationModal" title="Edit Manifestation">
         <manifestation-form :trigger="trigger"
 							:value="updatedValue"
+							:idPrefix='idPrefix'
 							v-on:update-success="manifestation => this.$emit('update-success', manifestation)"
 							v-on:image-update-done=""
 							v-on:inputChange="newValue => updatedValue = newValue">
 		</manifestation-form>
 		<div class="modal-footer">
-			<button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="updateManifestation">Update Manifestation</button>
+			<button type="button" class="btn btn-primary" v-on:click="updateManifestation">Update Manifestation</button>
 			<button type="button" class="btn btn-secondary" data-dismiss="modal" data-target="#editManifestationModal">Cancel</button>
         </div>
     </custom-modal>
@@ -20,12 +21,29 @@ Vue.component("edit-manifestation-modal", {
 		return {
 			updatedValue: {},
 			trigger: false,
+			idPrefix: 'edit',
+			validators: {
+				'editManifestationName': [validateLength('editManifestationName', 3, 150)],
+				'editManifestationSeats': [validateMinNumber('editManifestationSeats', 1)],
+				'editManifestationPrice': [validateMinNumber('editManifestationPrice', 0)],
+				'editManifestationStartDate': [validateRequired('editManifestationStartDate')],
+				'editManifestationStartTime': [validateRequired('editManifestationStartTime')],
+				'editManifestationEndDate': [validateRequired('editManifestationEndDate')],
+				'editManifestationEndTime': [validateRequired('editManifestationEndTime')],
+				'editManifestationType': [validateRequired('editManifestationType')],
+				'editManifestationLocation': [validateRequired('editManifestationLocation')]
+			}
 		}
 	},
 
     methods: {
         updateManifestation: function (event) {
             event.preventDefault();
+
+			if(!executeValidation(this.validators)) {
+				return;
+			}
+			
 			const data = {
 					id: this.updatedValue.id,
                     name: this.updatedValue.name,
@@ -48,7 +66,7 @@ Vue.component("edit-manifestation-modal", {
                 });
         }
     },
-	created: function(){
+	created: function() {
 		this.updatedValue = {...this.value};
 		let splitDateTime = this.value.eventDate.split(" ");
 		this.updatedValue.eventDate = splitDateTime[0];

@@ -60,11 +60,11 @@ function validateMinNumber(inputFieldId, minNumber) {
 	return function() {
 		const inputedText = $(`#${inputFieldId}`).val();
 		
-		if(parseInt(inputedText) < minNumber) {
+		if(!inputedText || parseInt(inputedText) < minNumber) {
 			$(`#${inputFieldId}`).addClass('is-invalid');
 			
 			const label = getLabel(inputFieldId);
-			const errorMessage = `${label} must be bigger than ${minNumber}.`;
+			const errorMessage = `${label} must be equal or greater than ${minNumber}.`;
 			addErrorMessage(inputFieldId, errorMessage);
 			
 			return false;

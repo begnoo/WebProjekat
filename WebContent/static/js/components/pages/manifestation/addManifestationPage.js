@@ -1,10 +1,10 @@
 Vue.component("add-manifestation-modal", {
     template: `
     <custom-modal modalName="addManifestationModal" title="Add Manifestation">
-        <manifestation-form :value="value" v-on:inputChange="newValue => value = newValue"></manifestation-form>
+        <manifestation-form :value="value" :idPrefix='idPrefix' v-on:inputChange="newValue => value = newValue"></manifestation-form>
 		<div class="modal-footer">
-			<button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="createManifestation">Add Manifestation</button>
-			<button type="button" class="btn btn-secondary" data-dismiss="modal" data-target="#addLocationModal">Cancel</button>
+			<button type="button" class="btn btn-primary" v-on:click="createManifestation">Add Manifestation</button>
+			<button type="button" class="btn btn-secondary" data-dismiss="modal" data-target="#addManifestationModal">Cancel</button>
 		</div>
     </custom-modal>
     `,
@@ -22,12 +22,29 @@ Vue.component("add-manifestation-modal", {
 	            locationId: null,
 				id: "",
 			},
+			idPrefix: 'add',
+			validators: {
+				'addManifestationName': [validateLength('addManifestationName', 3, 150)],
+				'addManifestationSeats': [validateMinNumber('addManifestationSeats', 1)],
+				'addManifestationPrice': [validateMinNumber('addManifestationPrice', 0)],
+				'addManifestationStartDate': [validateRequired('addManifestationStartDate')],
+				'addManifestationStartTime': [validateRequired('addManifestationStartTime')],
+				'addManifestationEndDate': [validateRequired('addManifestationEndDate')],
+				'addManifestationEndTime': [validateRequired('addManifestationEndTime')],
+				'addManifestationType': [validateRequired('addManifestationType')],
+				'addManifestationLocation': [validateRequired('addManifestationLocation')]
+			}
         };
     },
 
     methods: {
         createManifestation: function (event) {
             event.preventDefault();
+            
+            if(!executeValidation(this.validators)) {
+				return;
+			}
+            
             axios(postRestConfig("/WebProjekat/rest/manifestations", {}, {
                     name: this.value.name,
                     type: this.value.type,

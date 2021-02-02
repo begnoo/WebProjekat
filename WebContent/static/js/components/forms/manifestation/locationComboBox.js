@@ -1,30 +1,33 @@
 Vue.component("location-combo-box", {
     template: `
-    <div class="dropdown">
-        <input v-if="Object.keys(selectedLocation).length === 0" 
-                ref="locationInput" 
-                class="form-control" 
-                id="locationInput" 
-                v-model="locationFilter" 
-                v-on:change="filterLocations"
-                autocomplete="off">
-        
-        <div v-else v-on:click="resetLocation" class="dropdown-selected">
-            <input :value="getLocationString(selectedLocation)" class="form-control" disabled>
-        </div>
-        <div v-show="locationFilter && !locationSelected" class="dropdown-list">
-            <div class="dropdown-item"
-                v-on:click="selectLocation(location)"
-                v-for="location in locationsToShow" 
-                :key="location.id" 
-                :id="location.id"
-                >{{getLocationString(location)}}
-            </div>
-        </div>
+    <div>
+	    <label :for="getId('ManifestationLocation')">Location:</label>
+	    <div class="dropdown">
+	        <input v-if="Object.keys(selectedLocation).length === 0" 
+	                :id="getId('ManifestationLocation')"
+	                ref="locationInput" 
+	                class="form-control" 
+	                v-model="locationFilter" 
+	                v-on:change="filterLocations"
+	                autocomplete="off">
+	        
+	        <div v-else v-on:click="resetLocation" class="dropdown-selected">
+	            <input :value="getLocationString(selectedLocation)" class="form-control" disabled>
+	        </div>
+	        <div v-show="locationFilter && !locationSelected" class="dropdown-list">
+	            <div class="dropdown-item"
+	                v-on:click="selectLocation(location)"
+	                v-for="location in locationsToShow" 
+	                :key="location.id" 
+	                :id="location.id"
+	                >{{getLocationString(location)}}
+	            </div>
+	        </div>
+	    </div>
     </div>
     `,
 
-	props: ["initialLocationId"],
+	props: ["initialLocationId", "idPrefix"],
 	
     data: function () {
         return {
@@ -43,6 +46,10 @@ Vue.component("location-combo-box", {
     },
 
     methods: {
+    	getId: function(id) {
+			return this.idPrefix + id;
+		},
+		
         getLocations: function () {
             axios(getRestConfig("/WebProjekat/rest/locations"))
                 .then((response) => {
