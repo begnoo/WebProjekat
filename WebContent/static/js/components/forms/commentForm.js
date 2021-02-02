@@ -5,7 +5,7 @@ Vue.component('comment-form', {
             <div class="row">
 				<form>
 					<div class="mb-3">
-	        			<label for="commentText" class="form-label">How was your expirience on this manifestation?</label>
+	        			<label class="form-label">How was your expirience on this manifestation?</label>
 	        			<span v-on:click="changeRating(1)" style="font-size:130%;color:gold;">&starf;</span>
 						<span v-if="rating<2" v-on:click="changeRating(2)" style="font-size:130%;color:gold;">&star;</span>
 						<span v-if="rating>=2" v-on:click="changeRating(2)" style="font-size:130%;color:gold;">&starf;</span>
@@ -16,7 +16,8 @@ Vue.component('comment-form', {
 						<span v-if="rating<5" v-on:click="changeRating(5)" style="font-size:130%;color:gold;">&star;</span>
 						<span v-if="rating>=5" v-on:click="changeRating(5)" style="font-size:130%;color:gold;">&starf;</span>
 
-						<textarea v-model="commentText" id="commentText" name="commentText" class="form-control" rows="5" cols="100">
+	        			<label for="postCommentText" class="form-label" hidden>Comment</label>
+						<textarea v-model="commentText" id="postCommentText" name="commentText" class="form-control" rows="5" cols="100">
 						</textarea>
 					</div>
 										
@@ -31,7 +32,10 @@ Vue.component('comment-form', {
 	data: function() {
 		return {
 			rating: 1,
-			commentText: ""
+			commentText: "",
+			validators: {
+            	'postCommentText': [validateLength('postCommentText', 10, 1000)]
+            }
 		}
 	},
 	
@@ -45,6 +49,11 @@ Vue.component('comment-form', {
 		sendComment: function(event)
 		{
 			event.preventDefault();
+			
+			if(!executeValidation(this.validators)) {
+				return;
+			}
+			
 			let loggedUser = localStorage.getObject('loggedUser');
 			if(!loggedUser)
 			{

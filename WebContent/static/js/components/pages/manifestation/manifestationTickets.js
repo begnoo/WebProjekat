@@ -20,7 +20,7 @@ Vue.component("manifestation-tickets", {
 					</div>
 					<div class="form-group">
 						<label for="ticketAmountField" class="form-label">Amount: </label>
-						<input type="number" min="1" v-model="ticketAmount" class="form-control" name="ticketAmountField">
+						<input type="number" v-model="ticketAmount" class="form-control" id="ticketAmountField" name="ticketAmountField">
 					</div>
 					<div class="form-group">
 						<label for="ticketsPrice" class="form-label">Price of tickets: </label>
@@ -74,6 +74,10 @@ Vue.component("manifestation-tickets", {
 				Vip: 0,
 				FanPit: 0,
 			},
+			validators: {
+            	'ticketAmountField': [validateMinNumber('ticketAmountField', 1)]
+            }
+			
 		};
 	},
 
@@ -103,6 +107,12 @@ Vue.component("manifestation-tickets", {
 		},
 		addToCart: function(event) {
 			event.preventDefault();
+			
+			if(!executeValidation(this.validators)) {
+				return;
+			}
+			
+			
 			if(this.isBuyer){
 				if (!localStorage.getObject("shoppingCart")) {
 				const shoppingCart = {};

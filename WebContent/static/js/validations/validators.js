@@ -56,6 +56,26 @@ function validateFloatType(inputFieldId) {
 	}
 }
 
+function validateMinNumber(inputFieldId, minNumber) {
+	return function() {
+		const inputedText = $(`#${inputFieldId}`).val();
+		
+		if(parseInt(inputedText) < minNumber) {
+			$(`#${inputFieldId}`).addClass('is-invalid');
+			
+			const label = getLabel(inputFieldId);
+			const errorMessage = `${label} must be bigger than ${minNumber}.`;
+			addErrorMessage(inputFieldId, errorMessage);
+			
+			return false;
+		} else {
+			$(`#${inputFieldId}`).addClass('is-valid');
+
+			return true;
+		}	
+	}
+}
+
 function isFloat(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
 }
