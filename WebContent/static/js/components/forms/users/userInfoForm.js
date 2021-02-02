@@ -10,14 +10,14 @@ Vue.component('user-info-form', {
 	            <div class="form-group col-md-6">
 	                <label for="registrationSurname">Second name</label>
 	                <input v-model="value.surname" type="text" class="form-control" id="registrationSurname" placeholder="Second name">
-	            </div>
+				</div>
 	        </div>
 	        
             <div class="form-row">
                 <div class="form-group col">
 	                <label for="registrationBirthdate">Birthdate</label>
 	                <input v-model="value.birthdate" type="date" class="form-control" id="registrationBirthdate" placeholder="Birthdate">
-                </div>
+				</div>
             </div>
             
             <div class="form-row">
