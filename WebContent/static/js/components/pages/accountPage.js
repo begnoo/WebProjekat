@@ -40,14 +40,24 @@ Vue.component('account-page', {
 					points: null
 				},
 				userRole: null,
+				validators: {
+					'registrationName': [validateLength('registrationName', 2, 30)],
+					'registrationSurname': [validateLength('registrationSurname', 2, 30)],
+					'registrationBirthdate': [validateRequired('registrationBirthdate'), validateUserAge('registrationBirthdate')],
+					'registrationGender': [validateRequired('registrationGender')]
+				}
 			}
-    	
+
     },
     
     methods:
 	{
     	updateUser: function(event) {
             event.preventDefault();
+            
+			if(!executeValidation(this.validators)) {
+				return;
+			}
             
 			let loggedUser = localStorage.getObject('loggedUser');
 			let userId = loggedUser.user.id;	

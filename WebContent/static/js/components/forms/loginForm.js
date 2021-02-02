@@ -5,12 +5,12 @@ Vue.component('login-form', {
 		<div class="row">
 			<form>
 			<div class="mb-3">
-				<label for="textField" class="form-label">Username</label>
-				<input type="text" class="form-control" id="textField" v-model="username">
+				<label for="loginUsername" class="form-label">Username</label>
+				<input type="text" class="form-control" id="loginUsername" v-model="username">
 			</div>
 			<div class="mb-3">
-				<label for="inputPassword" class="form-label">Password</label>
-				<input type="password" class="form-control" id="inputPassword" v-model="password">
+				<label for="loginPassword" class="form-label">Password</label>
+				<input type="password" class="form-control" id="loginPassword" v-model="password">
             </div>
             <div class="d-flex d-flex justify-content-between">
             <button v-on:click="login" class="btn btn-primary">Login</button>
@@ -25,6 +25,10 @@ Vue.component('login-form', {
         return {
             username: null,
             password: null,
+			validators: {
+				'loginUsername': [validateRequired('loginUsername')],
+				'loginPassword': [validateRequired('loginPassword')]
+			}
         }
     },
 
@@ -33,7 +37,12 @@ Vue.component('login-form', {
         login: function(event)
         {
             event.preventDefault();
-            axios.post('/WebProjekat/rest/authorization', 
+        
+			if(!executeValidation(this.validators)) {
+				return;
+			}
+			
+		    axios.post('/WebProjekat/rest/authorization', 
             {
                 'username': this.username,
                 'password': this.password

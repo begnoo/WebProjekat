@@ -35,13 +35,22 @@ Vue.component('change-password-form', {
         return {
             currentPassword: null,
             newPassword: null,
-            repeatedNewPassword: null
+            repeatedNewPassword: null,
+            validators: {
+            	'currentPassword': [validateRequired('currentPassword')],
+            	'newPassword': [validateLength('newPassword', 8, 30)],
+            	'repeatedNewPassword': [validateLength('repeatedNewPassword', 8, 30)]
+            }
         }
     },
 
     methods: {
         changePassword: function(event) {
             event.preventDefault();
+
+			if(!executeValidation(this.validators)) {
+				return;
+			}
 
 			if(this.newPassword !== this.repeatedNewPassword) {
 				alert("Passwords are not same.");
