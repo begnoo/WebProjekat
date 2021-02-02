@@ -57,7 +57,7 @@ Vue.component('comment-form', {
 			let loggedUser = localStorage.getObject('loggedUser');
 			if(!loggedUser)
 			{
-				alert("You must be logged in in order to comment this manifestation.");
+				toastr.error(`You must be logged in in order to comment this manifestation.`, '');
 				return;
 			}
 			let userId = loggedUser.user.id;	
@@ -71,11 +71,11 @@ Vue.component('comment-form', {
                 'manifestationId': manifestationId
             })
     
-            ).then(response => alert("Uspesno") )
+            ).then(response => toastr.success(`You have successfully posted a new comment.`, ''))
              .catch(function(error)
-              {
-                alert(error.response.data.errorMessage);  	
-              });
+             {
+				toastr.error(error.response.data.errorMessage, '');  	
+             });
 		}
 	}
 });

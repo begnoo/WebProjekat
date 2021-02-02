@@ -49,8 +49,7 @@ Vue.component('login-form', {
             }).then(response => this.onLoginSuccess(response))
               .catch(function(error)
               {
-  	              	alert(error.response.data.errorMessage);
-              	
+  	              	toastr.error(error.response.data.errorMessage, '');
               });
         },
 

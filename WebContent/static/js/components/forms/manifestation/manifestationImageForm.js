@@ -57,12 +57,11 @@ Vue.component("manifestation-image-form", {
 					manifestationId: this.manifestationId,
 				}))
 				.then((response) => {
-					alert("Uspesno dodata slika");
 					this.$emit("update-success", response.data);
 					this.loading = false;
 				})
 				.catch(function(error) {
-					alert(error.response.data.errorMessage);
+					toastr.error(error.response.data.errorMessage, '');
 					this.loading = false;
 				});
 			}

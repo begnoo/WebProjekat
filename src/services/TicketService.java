@@ -120,7 +120,7 @@ public class TicketService extends CrudService<Ticket> implements ITicketService
 		}
 
 		if(!checkIfNowIsSevenDaysBeforeEventDate(ticket.getManifestationDate())) {
-			throw new BadLogicException("You can not cancel you ticket anymore.");
+			throw new BadLogicException("You can not cancel your ticket anymore.");
 		}
 			
 		returnSeatsAndTakeUserPoints(ticket, -4);

@@ -21,7 +21,7 @@ public class AuthorizeFilter extends AbstractFilterBase {
 		if(userId == null)
 		{
 			requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED)
-                    .entity("You are not authorized.").build());
+                    .entity("{\"errorMessage\": \"You are not authorized.\"}").build());
 			return;
 		}
 		
@@ -32,7 +32,7 @@ public class AuthorizeFilter extends AbstractFilterBase {
 		if(!roles.isEmpty() && !isOneOf(roles, userRole))
 		{
 			requestContext.abortWith(Response.status(Response.Status.FORBIDDEN)
-                    .entity("You don't have permissions for this action.").build());
+                    .entity("{\"errorMessage\": \"You don't have permissions for this action.\"}").build());
 			return;
 		}
     }

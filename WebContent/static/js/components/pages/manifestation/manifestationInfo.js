@@ -121,15 +121,15 @@ Vue.component("manifestation-info", {
 		getManifestationRating: function(){
 			axios(getRestConfig(`../WebProjekat/rest/manifestations/${this.manifestation.id}/rating`))
 			.then(response => this.manifestationRating = response.data.rating)
-			.catch(error => console.log(error));
+			.catch(error => toastr.error(error.response.data.errorMessage, ''));
 		},
 		approveManifestation: function(){
 			axios(putRestConfig(`../WebProjekat/rest/manifestations/${this.manifestation.id}/approve`))
 			.then(response => {
-				alert("Uspesno")
+				toastr.success(`Manifestation is successfully approved.`, '');
 				this.manifestation.status = true;
 			})
-			.catch(error => console.log(error));
+			.catch(error => toastr.error(error.response.data.errorMessage, ''));
 		}
 
 	},

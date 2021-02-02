@@ -46,12 +46,22 @@ Vue.component("edit-manifestation-modal", {
 			console.log(data);
             axios(putRestConfig("/WebProjekat/rest/manifestations", {}, data))
                 .then((response) => {
-                    alert("Uspesno azurirana manifestacija");
+                    toastr.error(`You have successfully updated a manifestation.`, '');
 					this.trigger = !this.trigger;
 					this.$emit("update-success", response.data);
                 })
                 .catch(function (error) {
-                    alert(error.response.data.errorMessage);
+                    if(error.response.data.errorMessages) {
+						toastr.options.preventDuplicates = false;
+						for(let errorMessage of error.response.data.errorMessages) {
+		                    toastr.error(errorMessage, '');
+						}
+	                	toastr.options.preventDuplicates = true;
+					}
+					
+					if(error.response.data.errorMessage) {
+	                    toastr.error(error.response.data.errorMessage, '');
+					}
                 });
         },
 

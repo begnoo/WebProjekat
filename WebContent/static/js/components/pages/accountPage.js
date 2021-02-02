@@ -70,12 +70,13 @@ Vue.component('account-page', {
                 'gender': this.userInfo.gender,
                 'birthdate': this.userInfo.birthdate + " 00:00"
             })).then(response => {
+				toastr.success(`You have successfully updated your account.`, '');
             	loggedUser.user = response.data;
             	localStorage.setObject('loggedUser', loggedUser);
             })
              .catch(function(error)
               {
-                alert(error.response.data.errorMessages);  	
+                toastr.error(error.response.data.errorMessage, ''); 	
               });
         }
 	},

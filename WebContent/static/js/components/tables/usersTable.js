@@ -77,9 +77,10 @@ Vue.component('users-table',
 		blockUser: function(user) {
     		axios(deleteRestConfig("/WebProjekat/rest/users/" + user.id))
 				.then(response => {
+					toastr.success(`${user.username} is successfully blocked.`, '');
 					this.$emit("deleted-user", response.data);
 				})
-				.catch(error => console.log(error));
+				.catch(error => toastr.error(error.response.data.errorMessage, ''));
 		},
     }
 });

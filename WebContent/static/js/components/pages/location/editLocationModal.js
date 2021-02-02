@@ -51,12 +51,12 @@ Vue.component("edit-location-modal", {
                 };
             axios(putRestConfig("/WebProjekat/rest/locations", {}, data))
                 .then((response) => {
-                    alert("Uspesno azurirana lokacija");
+                    toastr.success('You have successfully updated a location.', '');
 					this.trigger = !this.trigger;
 					this.$emit("update-location-success", response.data);
                 })
                 .catch(function (error) {
-                    alert(error.response.data.errorMessage);
+                    toastr.error(error.response.data.errorMessage, '');
                 });
         }
     },
