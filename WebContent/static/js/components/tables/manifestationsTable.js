@@ -11,6 +11,7 @@ Vue.component("manifestation-table", {
 							<th scope="col">Price(RSD)</th>
 							<th scope="col"></th>
 							<th scope="col"></th>
+							<th scope="col"></th>
 					  </tr>
 				</thead>
 				<tbody>
@@ -25,37 +26,22 @@ Vue.component("manifestation-table", {
 							<td v-if="manifestation.status">Active</td>
 							<td v-else >Pending</td>
 							<td v-if="manifestation.status">
-								<button type="button"
-								 class="btn btn-secondary btn-sm"
-								 data-toggle="modal"
-								 data-target="#editLocationModal"
-							 	 v-on:click="goToManifestationTicketsPage(manifestation)">
-								 	Tickets
-								 </button>
-						  	</td>
-							<td v-if="isAdmin && !manifestation.status">
-								<button type="button"
-								 class="btn btn-success btn-sm"
-								 data-toggle="modal"
-								 data-target="#editLocationModal"
-							 	 v-on:click="approveManifestation(manifestation)">
-								 	Approve
-								 </button>
-						  	</td>					
+				
 							<td>
 							<button type="button"
 									class="btn btn-primary btn-sm"
 									v-on:click="viewManifestation(manifestation.id)">
 								View
 							</button>
-
-							<button type="button"
-							 v-if="!isAdmin"
-							 class="btn btn-success btn-sm"
+							
+							<button 
+							 v-if="manifestation.status"
+							 type="button"
+							 class="btn btn-secondary btn-sm"
 							 data-toggle="modal"
 							 data-target="#editLocationModal"
-						 	 v-on:click="emitSelectedManifestation(manifestation)">
-							 	Edit
+						 	 v-on:click="goToManifestationTicketsPage(manifestation)">
+							 	Tickets
 							 </button>
 
 							<button type="button"

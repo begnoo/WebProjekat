@@ -97,6 +97,7 @@ Vue.component("search-tickets-form", {
 	</div>
     `,
 
+	props : ["manifestationId"],
 
 	data: function() {
 		return {
@@ -128,6 +129,7 @@ Vue.component("search-tickets-form", {
 				status: this.status,
 				sortBy: this.sortBy,
 				orderBy: this.orderBy,
+				manifestationId: this.manifestationId,
 			});
 		},
 		showHideForm: function(){

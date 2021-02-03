@@ -59,6 +59,9 @@ Vue.component('manifestations-page',
 			if (localStorage.isLoggedUserRole(["Seller"])) {
 				this.sellerId = localStorage.getObject("loggedUser").user.id;
 			}
+			if(this.$route.params["id"]){
+				this.sellerId = this.$route.params["id"];
+			}
 			this.searchManifestations({
 				name: "",
 				type: "",

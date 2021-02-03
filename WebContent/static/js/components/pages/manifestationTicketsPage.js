@@ -1,7 +1,7 @@
 Vue.component("manifestation-tickets-page", {
     template: `
     <div class="container">
-		<search-tickets-form v-on:search-tickets-data="getBuyerTickets"></search-tickets-form>
+		<search-tickets-form :manifestationId="manifestationId" v-on:search-tickets-data="getBuyerTickets"></search-tickets-form>
         <div v-if="tickets" class="row mx-auto">
             <div v-show="tickets && tickets.length != 0" class="col mt-3">
                 <buyer-tickets-table :tickets="tickets"></buyer-tickets-table>
@@ -34,12 +34,12 @@ Vue.component("manifestation-tickets-page", {
     methods: {
 		
 		setTickets: function({emittedData, selectedPage}){
-								console.log(emittedData);
-
+			console.log(emittedData);
 			this.tickets = emittedData;
 			this.selectedPage = selectedPage;
 		},
 		getBuyerTickets: function(searchData){
+			console.log(searchData);
 			this.restConfig = postRestConfig(this.restPath, {}, searchData);
 			this.trigger = !this.trigger;
 		}
@@ -48,12 +48,12 @@ Vue.component("manifestation-tickets-page", {
 
 	created: function(){
 		this.manifestationId = this.$route.params["id"];	
-		this.restConfig = postRestConfig(this.restPath, {}, 
+		this.getBuyerTickets(
 		{
 			manifestationName: "",
 			type: "",
-			priceFrom: null,
-			priceTo: null,
+			priceFrom: 0,
+			priceTo: Math.pow(2,31) - 1,
 			dateTo: null,
 			dateFrom: null,
 			status: "",
@@ -61,8 +61,8 @@ Vue.component("manifestation-tickets-page", {
 			orderBy: "Ascending",
 			buyerId: null,
 			manifestationId: this.manifestationId,
-		});
-		this.trigger = !this.trigger;
+		}
+		);
 	},
 	
 });

@@ -25,7 +25,7 @@ Vue.component('users-table',
 							<td>{{ user.surname }}</td>
 							<td>
 								<router-link v-if="user.role == 'Buyer'" :to="'/buyer-tickets/' + user.id" href="#" class="nav-link">{{ user.username }}</router-link>
-								<router-link v-if="user.role == 'Seller'" to="/users" href="#" class="nav-link">{{ user.username }}</router-link>
+								<router-link v-if="user.role == 'Seller'" :to="'/seller-manifestations/' + user.id" href="#" class="nav-link">{{ user.username }}</router-link>
 								<span v-if="user.role == 'Administrator'" class="nav-link">{{ user.username }}</span>
 							</td>
 							<td>{{ user.gender }}</td>

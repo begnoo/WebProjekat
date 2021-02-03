@@ -39,6 +39,8 @@ const router = new VueRouter({
 		{ path: "/my-comments", component: MyCommentsPage },
 		{ path: "/manifestations", component: ManifestationsPage },
 		{ path: "/manifestation-tickets/:id", component: ManifestationTicketsPage },
+		{ path: "/seller-manifestations/:id", component: ManifestationsPage },
+
     ],
 });
 
@@ -58,6 +60,7 @@ const routeAllowedRoles = {
 	"/account": ["Administrator", "Buyer", "Seller"],
 	"/my-comments": ["Buyer"],
 	"/manifestation-tickets/:id": ["Administrator", "Seller"],
+	"/seller-manifestations/:id": ["Administrator"],
 }
 
 const isUserAllowed = function(to, from, next){
