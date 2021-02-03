@@ -1,7 +1,6 @@
 package services;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import core.domain.dto.ManifestationsSearchParamethers;
 import core.domain.models.Manifestation;

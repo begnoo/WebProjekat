@@ -21,6 +21,8 @@ import core.service.IBuyerTypeService;
 import core.service.ICommentService;
 import core.service.IUserService;
 import core.service.IUserTicketManifestationMediator;
+import services.utils.HashUtils;
+import services.utils.RandomUtils;
 
 public class UserService extends CrudService<User> implements IUserService {
 
@@ -45,6 +47,11 @@ public class UserService extends CrudService<User> implements IUserService {
 			((Buyer) user).setTypeId(buyerTypeService.getDefaultBuyerType().getId()); 
 		}
 		
+		String salt = RandomUtils.getRandomString(10);
+		user.setSalt(salt);
+		String saltedAndHashedPassword = HashUtils.getSaltedAndHashedPassword(user.getPassword(), salt);
+		user.setPassword(saltedAndHashedPassword);
+		
 		return repository.create(user);
 	}
 	
@@ -62,11 +69,15 @@ public class UserService extends CrudService<User> implements IUserService {
 			throw new MissingEntityException(String.format("User with id = %s does not exists.", userId));
 		}
 		
-		if(!user.getPassword().equals(currentPassword)) {
+		if(!user.getPassword().equals(HashUtils.getSaltedAndHashedPassword(currentPassword, user.getSalt()))) {
 			throw new BadLogicException("Given password does not match current password.");
 		}
 		
-		user.setPassword(newPassword);
+		String salt = RandomUtils.getRandomString(10);
+		user.setSalt(salt);
+		String saltedAndHashedPassword = HashUtils.getSaltedAndHashedPassword(newPassword, salt);
+		user.setPassword(saltedAndHashedPassword);
+
 		return update(user);
 	}
 
@@ -153,7 +164,6 @@ public class UserService extends CrudService<User> implements IUserService {
 		buyer.setTypeId(buyerTypeForNewPoints.getId());
 		
 		return repository.update(buyer);
-
 	}
 	
 	private int calculateNewPoints(int currentPoints, int additionalPoints) {

@@ -20,9 +20,9 @@ public class Seller extends User {
 		this.setRole(UserRole.Seller);
 	}
 	
-	public Seller(String username, String password, String name, String surname,
+	public Seller(String username, String password, String salt, String name, String surname,
 			Gender gender, LocalDateTime birthdate, List<Manifestation> manifestations) {
-		super(username, password, name, surname, gender, birthdate, UserRole.Seller);
+		super(username, password, salt, name, surname, gender, birthdate, UserRole.Seller);
 		this.manifestations = manifestations;
 	}
 

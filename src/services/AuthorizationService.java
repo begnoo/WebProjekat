@@ -9,6 +9,7 @@ import core.domain.models.User;
 import core.repository.IRepository;
 import core.service.IAuthorizationService;
 import core.service.IJwtService;
+import services.utils.HashUtils;
 
 public class AuthorizationService implements IAuthorizationService {
     private IRepository<User> userRepository;
@@ -25,7 +26,7 @@ public class AuthorizationService implements IAuthorizationService {
         List<User> users = userRepository.read()
             .stream()
             .filter(user -> user.getUsername().equals(credidentals.getUsername()))
-            .filter(user -> user.getPassword().equals(credidentals.getPassword()))
+            .filter(user -> user.getPassword().equals(HashUtils.getSaltedAndHashedPassword(credidentals.getPassword(), user.getSalt())))
             .collect(Collectors.toList());
         
         AuthorizedUser authorizedUser = null;

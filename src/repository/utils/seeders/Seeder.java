@@ -62,24 +62,24 @@ public class Seeder {
 		// Administrators
 		UserRepository userRepository = new UserRepository(context);
 
-		Administrator admin1 = new Administrator("admin", "admin", "Mirko", "Mirkovic", Gender.Male,
+		Administrator admin1 = new Administrator("admin", "673ad054dc93970e2bd9e779c34a55df45fc0a323a3535f2788cba758a82c34c", "iipgjsvlhr", "Mirko", "Mirkovic", Gender.Male,
 				LocalDateTime.now());
-		Administrator admin2 = new Administrator("djumbir", "cajodistog", "Djakic", "Markovic", Gender.Male,
+		Administrator admin2 = new Administrator("djumbir", "ea8d2ec0a4ccb37282bafc7684213a036fefba00a751f306d77496467da1cf72", "ikyqpkzorg", "Djakic", "Markovic", Gender.Male,
 				LocalDateTime.now());
 
 		userRepository.create(admin1);
 		userRepository.create(admin2);
 
 		// Buyers
-		Buyer buyer1 = new Buyer("paneze", "panic", "Milos", "Panic", Gender.Male, LocalDateTime.now().minusYears(21),
+		Buyer buyer1 = new Buyer("paneze", "3c403feaa682d4187c0d305e1b4fc41bfeb86375898e1f5820875c60774d4c87", "npnhgcjtqd", "Milos", "Panic", Gender.Male, LocalDateTime.now().minusYears(21),
 				new ArrayList<Ticket>(), 100, defaultType.getId(), defaultType);
-		Buyer buyer2 = new Buyer("majoneze", "huawei_ruter", "Dalibor", "Malic", Gender.Male, LocalDateTime.now().minusYears(50),
+		Buyer buyer2 = new Buyer("majoneze", "f769c72cccca176947dd0a95da60912e2b1665d1a1be12f2632b23ffde463643", "yyjzmhgnsc", "Dalibor", "Malic", Gender.Male, LocalDateTime.now().minusYears(50),
 				new ArrayList<Ticket>(), 1000, bronzeType.getId(), bronzeType);
-		Buyer buyer3 = new Buyer("sljuxa", "markocar123", "Marko", "Suljak", Gender.Male, LocalDateTime.now().minusYears(13),
+		Buyer buyer3 = new Buyer("sljuxa", "380bcdb605215810a942bc3276469b3efd03def53f93570d8f4850983a6bdb03", "mhvahaapiy", "Marko", "Suljak", Gender.Male, LocalDateTime.now().minusYears(13),
 				new ArrayList<Ticket>(), 1800, silverType.getId(), silverType);
-		Buyer buyer4 = new Buyer("nadxa", "harry_styles", "Nadezda", "Seratlic", Gender.Female, LocalDateTime.now().minusYears(90),
+		Buyer buyer4 = new Buyer("nadxa", "e5f449ea84b08e6cdd236a83d0b37fba2255cd4dc32548bfa8576d72dc904d7f", "qjabyspexs", "Nadezda", "Seratlic", Gender.Female, LocalDateTime.now().minusYears(90),
 				new ArrayList<Ticket>(), 2800, goldType.getId(), goldType);
-		Buyer buyer5 = new Buyer("zocalez", "patos", "Zoran", "Jankov", Gender.Male, LocalDateTime.now().minusYears(21),
+		Buyer buyer5 = new Buyer("zocalez", "ec49cebd3de09ae74e737eff274ed658ba6438ef78a99e42e1225cf2b3599737", "eqzafpzyqj", "Zoran", "Jankov", Gender.Male, LocalDateTime.now().minusYears(21),
 				new ArrayList<Ticket>(), 500, defaultType.getId(), defaultType);
 
 		userRepository.create(buyer1);
@@ -89,11 +89,11 @@ public class Seeder {
 		userRepository.create(buyer5);
 
 		// Sellers
-		Seller seller1 = new Seller("skc", "skc123", "Simfonije", "Gvozdimirovic", Gender.Male, LocalDateTime.now().minusYears(21),
+		Seller seller1 = new Seller("skc", "e741ee26d2cd55ef0dcb1351b85c9e9b44269c2bdd1b4a833b63e94270803b7e", "gttslyzgkm", "Simfonije", "Gvozdimirovic", Gender.Male, LocalDateTime.now().minusYears(21),
 				new ArrayList<Manifestation>());
-		Seller seller2 = new Seller("spens", "spens021", "Kavkaz", "Majovic", Gender.Male, LocalDateTime.now().minusYears(31),
+		Seller seller2 = new Seller("spens", "8dad5cbe06d9a9776e60832132a19ed3851c834faa7a31c25f2ab391c7d4f10d", "mmtarvnpdo", "Kavkaz", "Majovic", Gender.Male, LocalDateTime.now().minusYears(31),
 				new ArrayList<Manifestation>());
-		Seller seller3 = new Seller("jeftin_exit", "exit021", "Glorija", "Petrov", Gender.Female, LocalDateTime.now().minusYears(23),
+		Seller seller3 = new Seller("jeftin_exit", "8bd709c3a1ef5dc35ef5373061603c0a438a1d16415773145e8d6b61d8c39da8", "olsomuenjh", "Glorija", "Petrov", Gender.Female, LocalDateTime.now().minusYears(23),
 				new ArrayList<Manifestation>());
 
 		// Manifestations

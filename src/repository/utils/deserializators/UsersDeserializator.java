@@ -59,6 +59,7 @@ public class UsersDeserializator implements IEntitiesDeserializator<User>{
 				user.setSurname((String) entityMap.get("surname"));
 				user.setUsername((String) entityMap.get("username"));
 				user.setPassword((String) entityMap.get("password"));
+				user.setSalt((String) entityMap.get("salt"));
 				
 				if(role.equals("Buyer")) {
 					Buyer buyer = (Buyer) user;

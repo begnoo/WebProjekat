@@ -17,8 +17,8 @@ public class WholeSellerObjectResponse extends WholeUserObjectResponseBase {
 	}
 	
 	public WholeSellerObjectResponse(UUID id, LocalDateTime createdAt, boolean active, String username, String password,
-			String name, String surname, Gender gender, LocalDateTime birthdate, UserRole role, List<Manifestation> manifestations) {
-		super(id, createdAt, active, username, password, name, surname, gender, birthdate, role);
+			String salt, String name, String surname, Gender gender, LocalDateTime birthdate, UserRole role, List<Manifestation> manifestations) {
+		super(id, createdAt, active, username, password, salt, name, surname, gender, birthdate, role);
 
 		this.manifestations = manifestations;
 	}

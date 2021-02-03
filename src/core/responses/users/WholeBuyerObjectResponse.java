@@ -20,9 +20,9 @@ public class WholeBuyerObjectResponse extends WholeUserObjectResponseBase {
 	}
 
 	public WholeBuyerObjectResponse(UUID id, LocalDateTime createdAt, boolean active, String username, String password,
-			String name, String surname, Gender gender, LocalDateTime birthdate, UserRole role, List<Ticket> tickets,
+			String salt, String name, String surname, Gender gender, LocalDateTime birthdate, UserRole role, List<Ticket> tickets,
 			int points, UUID typeId, BuyerType type) {
-		super(id, createdAt, active, username, password, name, surname, gender, birthdate, role);
+		super(id, createdAt, active, username, password, salt, name, surname, gender, birthdate, role);
 
 		this.tickets = tickets;
 		this.points = points;

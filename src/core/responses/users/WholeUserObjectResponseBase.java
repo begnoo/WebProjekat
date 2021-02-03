@@ -19,6 +19,7 @@ public class WholeUserObjectResponseBase {
 	private boolean active;
 	private String Username;
 	private String Password;
+	private String Salt;
 	private String Name;
 	private String Surname;
 	private Gender gender;
@@ -32,13 +33,15 @@ public class WholeUserObjectResponseBase {
 	}
 
 	public WholeUserObjectResponseBase(UUID id, LocalDateTime createdAt, boolean active, String username,
-			String password, String name, String surname, Gender gender, LocalDateTime birthdate, UserRole role) {
+			String password, String salt, String name, String surname, Gender gender, LocalDateTime birthdate,
+			UserRole role) {
 		super();
 		this.id = id;
 		this.createdAt = createdAt;
 		this.active = active;
 		Username = username;
 		Password = password;
+		Salt = salt;
 		Name = name;
 		Surname = surname;
 		this.gender = gender;
@@ -88,6 +91,14 @@ public class WholeUserObjectResponseBase {
 
 	public String getName() {
 		return Name;
+	}
+
+	public String getSalt() {
+		return Salt;
+	}
+
+	public void setSalt(String salt) {
+		Salt = salt;
 	}
 
 	public void setName(String name) {

@@ -12,8 +12,8 @@ public class Administrator extends User {
 		this.setRole(UserRole.Administrator);
 	}
 	
-	public Administrator(String username, String password, String name, String surname,
+	public Administrator(String username, String password, String salt, String name, String surname,
 			Gender gender, LocalDateTime birthdate) {
-		super(username, password, name, surname, gender, birthdate, UserRole.Administrator);
+		super(username, password, salt, name, surname, gender, birthdate, UserRole.Administrator);
 	}
 }

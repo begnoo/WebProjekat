@@ -25,10 +25,10 @@ public class Buyer extends User {
 		this.setRole(UserRole.Buyer);
 	}
 	
-	public Buyer(String username, String password, String name, String surname,
+	public Buyer(String username, String password, String salt, String name, String surname,
 			Gender gender, LocalDateTime birthdate, List<Ticket> tickets,
 			int points, UUID typeId, BuyerType type) {
-		super(username, password, name, surname, gender, birthdate, UserRole.Buyer);
+		super(username, password, salt, name, surname, gender, birthdate, UserRole.Buyer);
 		this.tickets = tickets;
 		this.points = points;
 		this.typeId = typeId;
