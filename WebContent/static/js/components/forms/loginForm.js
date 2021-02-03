@@ -54,6 +54,7 @@ Vue.component('login-form', {
         },
 
 		onLoginSuccess: function(response){
+			this.clear();
 			window.localStorage.setObject('loggedUser', response.data)
 			store.state.userLoggedIn = true;
 			this.$router.replace("/")
@@ -62,6 +63,16 @@ Vue.component('login-form', {
         redirectToRegister: function(event)
         {
             this.$router.push('/register');
-        }
+        },
+
+		clear: function() {
+			this.clearForm();
+			clearLastValidation(this.validators);	
+		},
+		
+		clearForm: function() {
+			this.username = null;
+			this.password = null;
+		}
     }
 });

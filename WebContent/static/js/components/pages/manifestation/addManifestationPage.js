@@ -46,6 +46,8 @@ Vue.component("add-manifestation-modal", {
                         .id,
                 }))
                 .then((response) => {
+					this.clear();
+					$('#addManifestationModal').modal('toggle');
                     toastr.success(`You have successfully added a new manifestation.`, '');
 					this.value.id = response.data.id;
 					this.$emit("add-manifestation-success", response.data);
@@ -84,6 +86,24 @@ Vue.component("add-manifestation-modal", {
 				'addManifestationType': [validateRequired('addManifestationType')],
 				'addManifestationLocation': [validateLocation('addManifestationLocation', this.value.locationId)]
 			};
+		},
+		
+		clear: function() {
+			this.clearForm();
+			clearLastValidation(this.getValidators());	
+		},
+		
+		clearForm: function() {
+			this.value.name = null;
+            this.value.type = null;
+            this.value.seats = null;
+            this.value.eventDate = null;
+            this.value.eventTime = null;
+            this.value.eventEndDate = null;
+            this.value.eventEndTime = null;
+            this.value.regularTicketPrice = null;
+            this.value.locationId = null;
+			this.value.id = null;
 		}
     }
 });

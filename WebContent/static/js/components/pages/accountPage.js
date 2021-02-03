@@ -21,7 +21,6 @@ Vue.component('account-page', {
 			        </div>
     			</div>
     			
-    			
 		  		<button v-on:click="updateUser" type="submit" class="btn btn-primary">Update</button>
 				<button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#changePasswordModal">Change Password</button>
 		    	<custom-modal modalName="changePasswordModal" title="Change Password">
@@ -75,6 +74,7 @@ Vue.component('account-page', {
                 'gender': this.userInfo.gender,
                 'birthdate': this.userInfo.birthdate + " 00:00"
             })).then(response => {
+				this.clear();
 				toastr.success(`You have successfully updated your account.`, '');
             	loggedUser.user = response.data;
             	localStorage.setObject('loggedUser', loggedUser);
@@ -84,6 +84,11 @@ Vue.component('account-page', {
                 toastr.error(error.response.data.errorMessage, ''); 	
               });
         },
+
+		clear: function() {
+			clearLastValidation(this.validators);	
+		},
+		
 		closeModal: function(){
 			$('#changePasswordModal').modal('toggle'); 
 		}

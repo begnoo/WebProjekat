@@ -71,11 +71,24 @@ Vue.component('comment-form', {
                 'manifestationId': manifestationId
             })
     
-            ).then(response => toastr.success(`You have successfully posted a new comment.`, ''))
+            ).then(response => {
+				this.clear();
+				toastr.success(`You have successfully posted a new comment.`, '');
+			 })
              .catch(function(error)
              {
 				toastr.error(error.response.data.errorMessage, '');  	
              });
+		},
+		
+		clear: function() {
+			this.clearForm();
+			clearLastValidation(this.validators);	
+		},
+		
+		clearForm: function() {
+			this.rating = 1;
+			this.commentText = "";
 		}
 	}
 });

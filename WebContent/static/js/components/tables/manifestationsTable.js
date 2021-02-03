@@ -90,10 +90,10 @@ Vue.component("manifestation-table", {
                 )
             )
                 .then((response) => {
-                    alert("Uspesno");
+                    toastr.success(`${manifestation.name} is successfully approved.`, "")
                     manifestation.status = true;
                 })
-                .catch((error) => console.log(error));
+                .catch((error) => toastr.error(error.response.data.errorMessage, ""));
         },
         goToManifestationTicketsPage: function (manifestation) {
             this.$router.push("/manifestation-tickets/" + manifestation.id);

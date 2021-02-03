@@ -63,12 +63,29 @@ Vue.component('registration-form', {
 
 				})).then(response => {
 					toastr.success(`You have successfully created a new account.`, '');
+					this.clear();
 					this.$emit("create-user-success");
 				})
 				.catch(function(error) {
 					toastr.error(error.response.data.errorMessage, '');
 				});
+		},
+		
+		clear: function() {
+			this.clearForm();
+			clearLastValidation(this.validators);	
+		},
+		
+		clearForm: function() {
+			this.accountInfo.username = null;
+			this.accountInfo.password = null;
+			
+			this.userInfo.name = null;
+			this.userInfo.surname = null;
+			this.userInfo.gender = null;
+			this.userInfo.birthdate = null;
 		}
+	
 	}
 });
 

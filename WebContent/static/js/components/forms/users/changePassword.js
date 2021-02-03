@@ -51,7 +51,7 @@ Vue.component('change-password-form', {
 			}
 
 			if(this.newPassword !== this.repeatedNewPassword) {
-				alert("Passwords are not same.");
+				toastr.error(`Passwords are not same.`, '');
 				return;
 			}
 			let loggedUser = localStorage.getObject('loggedUser');
@@ -64,12 +64,24 @@ Vue.component('change-password-form', {
             }))
             .then(response => {
 				this.$emit("change-password-success")
+				this.clear();
 				toastr.success(`You have successfully changed your password.`, '')
 			})
             .catch(function(error)
 			{
 				toastr.error(error.response.data.errorMessage, '');
 			});
-        }
+        },
+
+		clear: function() {
+			this.clearForm();
+			clearLastValidation(this.validators);	
+		},
+		
+		clearForm: function() {
+            this.currentPassword = null;
+            this.newPassword = null;
+            this.repeatedNewPassword = null;
+		}
     }
 });

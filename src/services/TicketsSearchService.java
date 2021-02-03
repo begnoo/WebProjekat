@@ -21,7 +21,7 @@ public class TicketsSearchService implements IAdvanceSearchService<Ticket, Ticke
 	@Override
 	public List<Ticket> search(TicketsSearchParamethers searchParamethers) {
 		IDbSetStream<Ticket> stream = repository.getStream()
-				.filter(ticket -> ticket.getBuyerId() == null || ticket.getBuyerId().equals(searchParamethers.getBuyerId()))
+				.filter(ticket -> searchParamethers.getBuyerId() == null || ticket.getBuyerId().equals(searchParamethers.getBuyerId()))
 				.filter(ticket -> ticket.getManifestation().getName().toLowerCase().contains(searchParamethers.getManifestationName().toLowerCase()))
 				.filter(ticket -> searchParamethers.getDateFrom() == null || ticket.getManifestation().getEventDate().compareTo(searchParamethers.getDateFrom()) >= 0)
 				.filter(ticket -> searchParamethers.getDateTo() == null || ticket.getManifestation().getEventDate().compareTo(searchParamethers.getDateTo()) <= 0)

@@ -46,7 +46,8 @@ Vue.component("edit-manifestation-modal", {
 			console.log(data);
             axios(putRestConfig("/WebProjekat/rest/manifestations", {}, data))
                 .then((response) => {
-                    toastr.error(`You have successfully updated a manifestation.`, '');
+					this.clear();
+                    toastr.success(`You have successfully updated a manifestation.`, '');
 					this.trigger = !this.trigger;
 					this.$emit("update-success", response.data);
                 })
@@ -77,6 +78,10 @@ Vue.component("edit-manifestation-modal", {
 				'editManifestationType': [validateRequired('editManifestationType')],
 				'editManifestationLocation': [validateLocation('editManifestationLocation', this.value.locationId)]
 			};
+		},
+		
+		clear: function() {
+			clearLastValidation(this.getValidators());	
 		}
     },
 	created: function() {

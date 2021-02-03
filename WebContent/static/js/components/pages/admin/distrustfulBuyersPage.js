@@ -4,8 +4,8 @@ Vue.component('distrustful-buyers-page',
     `
 	<div>
 		<div v-show="users.length != 0">
-		    	<users-table block="true" v-on:deleted-user="trigger = !trigger" :users="users"></users-table>
-	    		<pagination :trigger="trigger" :restConfig="restConfig" :pageSize="pageSize" :selectedPage="selectedPage" v-on:update-page-data="setUsers"></pagination>
+	    	<users-table block="true" v-on:deleted-user="trigger = !trigger" :users="users"></users-table>
+    		<pagination :trigger="trigger" :restConfig="restConfig" :pageSize="pageSize" :selectedPage="selectedPage" v-on:update-page-data="setUsers"></pagination>
 		</div>
 		<div class="container" v-show="users.length == 0">
 			<div class="row mt-5 justify-content-center">

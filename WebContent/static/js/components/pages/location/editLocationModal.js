@@ -51,14 +51,19 @@ Vue.component("edit-location-modal", {
                 };
             axios(putRestConfig("/WebProjekat/rest/locations", {}, data))
                 .then((response) => {
-                    toastr.success('You have successfully updated a location.', '');
+                    this.clear();
+					toastr.success('You have successfully updated a location.', '');
 					this.trigger = !this.trigger;
 					this.$emit("update-location-success", response.data);
                 })
                 .catch(function (error) {
                     toastr.error(error.response.data.errorMessage, '');
                 });
-        }
+        },
+
+		clear: function() {
+			clearLastValidation(this.validators);	
+		}
     },
 	created: function(){
 		this.updatedValue = this.location;

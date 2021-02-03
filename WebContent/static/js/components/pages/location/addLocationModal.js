@@ -57,6 +57,8 @@ Vue.component("add-location-modal", {
 					}
 				}))
 				.then((response) => {
+					this.clear();
+					$('#addLocationModal').modal('toggle');
 					toastr.success('You have successfully added a new location.', '');
 					this.$emit("add-location-success");
 				})
@@ -64,5 +66,19 @@ Vue.component("add-location-modal", {
 					toastr.error(error.response.data.errorMessage, '');
 				});
 		},
+		
+		clear: function() {
+			this.clearForm();
+			clearLastValidation(this.validators);	
+		},
+		
+		clearForm: function() {
+			this.value.longitude = null;
+			this.value.latitude = null;
+			this.value.street = null;
+			this.value.houseNumber = null;
+			this.value.postalCode = null;
+			this.value.place = null;
+		}
     },
 });
