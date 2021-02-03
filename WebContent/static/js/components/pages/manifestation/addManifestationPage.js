@@ -46,7 +46,7 @@ Vue.component("add-manifestation-modal", {
                         .id,
                 }))
                 .then((response) => {
-                    toastr.error(`You have successfully added a new manifestation.`, '');
+                    toastr.success(`You have successfully added a new manifestation.`, '');
 					this.value.id = response.data.id;
 					this.$emit("add-manifestation-success", response.data);
 					this.updateSeller(response.data);

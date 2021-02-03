@@ -1,10 +1,9 @@
 Vue.component('change-password-form', {
     template:
     `
-        <div class="container">
         	<form>
 				<div class="form-row justify-content-center">
-					<div class="form-group col-md-4">
+					<div class="form-group col-md-6">
 				    	<label for="currentPassword">Current Password</label>
 				    	<input v-model="currentPassword" type="password" class="form-control" id="currentPassword" placeholder="Current password">
 				    </div>
@@ -12,12 +11,12 @@ Vue.component('change-password-form', {
 			  
 
 				<div class="form-row justify-content-center">
-					<div class="form-group col-md-2">
+					<div class="form-group col-md-3">
 						<label for="newPassword">New password</label>
 						<input v-model="newPassword" type="password" class="form-control" id="newPassword" placeholder="New password">
 					</div>
 					
-					<div class="form-group col-md-2">
+					<div class="form-group col-md-3">
 						<label for="repeatedNewPassword">Repeat password</label>
 						<input v-model="repeatedNewPassword" type="password" class="form-control" id="repeatedNewPassword" placeholder="Repeat password">
 					</div>
@@ -28,7 +27,6 @@ Vue.component('change-password-form', {
 				</div>
 				
 			</form>
-        </div>
     `,
 
     data: function() {
@@ -64,7 +62,10 @@ Vue.component('change-password-form', {
                 'currentPassword': this.currentPassword,
                 'newPassword': this.newPassword                
             }))
-            .then(response => toastr.success(`You have successfully changed your password.`, ''))
+            .then(response => {
+				this.$emit("change-password-success")
+				toastr.success(`You have successfully changed your password.`, '')
+			})
             .catch(function(error)
 			{
 				toastr.error(error.response.data.errorMessage, '');

@@ -23,6 +23,11 @@ Vue.component('account-page', {
     			
     			
 		  		<button v-on:click="updateUser" type="submit" class="btn btn-primary">Update</button>
+				<button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#changePasswordModal">Change Password</button>
+		    	<custom-modal modalName="changePasswordModal" title="Change Password">
+					<change-password-form v-on:change-password-success="closeModal">
+					</change-password-form>
+				</custom-modal>
     		</form>
         </div>
     `,
@@ -78,7 +83,10 @@ Vue.component('account-page', {
               {
                 toastr.error(error.response.data.errorMessage, ''); 	
               });
-        }
+        },
+		closeModal: function(){
+			$('#changePasswordModal').modal('toggle'); 
+		}
 	},
 	
 	mounted: function()

@@ -24,14 +24,12 @@ Vue.component("manifestation-table", {
 							<td>{{ manifestation.seats}}</td>
 							<td>{{ manifestation.regularTicketPrice}}</td>
 							<td v-if="manifestation.status">Active</td>
-							<td v-else >Pending</td>
-							<td v-if="manifestation.status">
-				
+							<td v-else>Pending</td>
 							<td>
 							<button type="button"
 									class="btn btn-primary btn-sm"
 									v-on:click="viewManifestation(manifestation.id)">
-								View
+									View
 							</button>
 							
 							<button 
