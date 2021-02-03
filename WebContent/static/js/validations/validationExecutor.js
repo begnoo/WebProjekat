@@ -15,9 +15,9 @@ function clearLastValidation(validators) {
 function validate(validators) {
 	let formValidationIsSuccessful = true;
 
-	for(let listOfValidators of Object.values(validators)) {
+	for(let [fieldId, listOfValidators] of Object.entries(validators)) {
 		for(let validator of listOfValidators) {
-			const validationResult = validator();
+			const validationResult = validator(fieldId);
 			formValidationIsSuccessful &= validationResult;
 			
 			if(!validationResult) {

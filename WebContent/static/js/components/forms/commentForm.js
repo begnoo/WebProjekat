@@ -34,7 +34,7 @@ Vue.component('comment-form', {
 			rating: 1,
 			commentText: "",
 			validators: {
-            	'postCommentText': [validateLength('postCommentText', 10, 1000)]
+            	'postCommentText': [validateLength(10, 1000)]
             }
 		}
 	},

@@ -27,12 +27,12 @@ Vue.component("add-location-modal", {
 			},
 			idPrefix: 'add',
 			validators: {
-				'addLocationLatitude': [validateFloatType('addLocationLatitude')],
-				'addLocationLongitude': [validateFloatType('addLocationLongitude')],
-				'addLocationStreet': [validateLength('addLocationStreet', 1, 50)],
-				'addLocationHouseNumber': [validateLength('addLocationHouseNumber', 1, 15)],
-				'addLocationPlace': [validateLength('addLocationPlace', 1, 50)],
-				'addLocationPostalCode': [validateLength('addLocationPostalCode', 1, 15)]
+				'addLocationLatitude': [validateFloatType()],
+				'addLocationLongitude': [validateFloatType()],
+				'addLocationStreet': [validateLength(1, 50)],
+				'addLocationHouseNumber': [validateLength(1, 15)],
+				'addLocationPlace': [validateLength(1, 50)],
+				'addLocationPostalCode': [validateLength(1, 15)]
 			}
         };
     },

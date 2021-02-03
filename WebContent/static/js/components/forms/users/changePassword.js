@@ -35,9 +35,9 @@ Vue.component('change-password-form', {
             newPassword: null,
             repeatedNewPassword: null,
             validators: {
-            	'currentPassword': [validateRequired('currentPassword')],
-            	'newPassword': [validateLength('newPassword', 8, 30)],
-            	'repeatedNewPassword': [validateLength('repeatedNewPassword', 8, 30)]
+            	'currentPassword': [validateRequired()],
+            	'newPassword': [validateLength(8, 30)],
+            	'repeatedNewPassword': [validateLength(8, 30)]
             }
         }
     },

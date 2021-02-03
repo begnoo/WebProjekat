@@ -68,15 +68,15 @@ Vue.component("edit-manifestation-modal", {
 
 		getValidators: function() {
 			return {
-				'editManifestationName': [validateLength('editManifestationName', 3, 150)],
-				'editManifestationSeats': [validateMinNumber('editManifestationSeats', 1)],
-				'editManifestationPrice': [validateMinNumber('editManifestationPrice', 0)],
-				'editManifestationStartDate': [validateRequired('editManifestationStartDate')],
-				'editManifestationStartTime': [validateRequired('editManifestationStartTime')],
-				'editManifestationEndDate': [validateRequired('editManifestationEndDate')],
-				'editManifestationEndTime': [validateRequired('editManifestationEndTime')],
-				'editManifestationType': [validateRequired('editManifestationType')],
-				'editManifestationLocation': [validateLocation('editManifestationLocation', this.value.locationId)]
+				'editManifestationName': [validateLength(3, 150)],
+				'editManifestationSeats': [validateMinNumber(1)],
+				'editManifestationPrice': [validateMinNumber(0)],
+				'editManifestationStartDate': [validateRequired()],
+				'editManifestationStartTime': [validateRequired()],
+				'editManifestationEndDate': [validateRequired()],
+				'editManifestationEndTime': [validateRequired()],
+				'editManifestationType': [validateRequired()],
+				'editManifestationLocation': [validateLocation(this.value.locationId)]
 			};
 		},
 		

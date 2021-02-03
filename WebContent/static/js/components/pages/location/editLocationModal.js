@@ -20,12 +20,12 @@ Vue.component("edit-location-modal", {
 			updatedValue: {},
 			idPrefix: 'edit',
 			validators: {
-				'editLocationLatitude': [validateFloatType('editLocationLatitude')],
-				'editLocationLongitude': [validateFloatType('editLocationLongitude')],
-				'editLocationStreet': [validateLength('editLocationStreet', 1, 50)],
-				'editLocationHouseNumber': [validateLength('editLocationHouseNumber', 1, 15)],
-				'editLocationPlace': [validateLength('editLocationPlace', 1, 50)],
-				'editLocationPostalCode': [validateLength('editLocationPostalCode', 1, 15)]
+				'editLocationLatitude': [validateFloatType()],
+				'editLocationLongitude': [validateFloatType()],
+				'editLocationStreet': [validateLength(1, 50)],
+				'editLocationHouseNumber': [validateLength(1, 15)],
+				'editLocationPlace': [validateLength(1, 50)],
+				'editLocationPostalCode': [validateLength(1, 15)]
 			}
 		}
 	},

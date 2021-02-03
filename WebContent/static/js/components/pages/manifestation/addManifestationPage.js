@@ -76,15 +76,15 @@ Vue.component("add-manifestation-modal", {
 		
 		getValidators: function() {
 			return {
-				'addManifestationName': [validateLength('addManifestationName', 3, 150)],
-				'addManifestationSeats': [validateMinNumber('addManifestationSeats', 1)],
-				'addManifestationPrice': [validateMinNumber('addManifestationPrice', 0)],
-				'addManifestationStartDate': [validateRequired('addManifestationStartDate')],
-				'addManifestationStartTime': [validateRequired('addManifestationStartTime')],
-				'addManifestationEndDate': [validateRequired('addManifestationEndDate')],
-				'addManifestationEndTime': [validateRequired('addManifestationEndTime')],
-				'addManifestationType': [validateRequired('addManifestationType')],
-				'addManifestationLocation': [validateLocation('addManifestationLocation', this.value.locationId)]
+				'addManifestationName': [validateLength(3, 150)],
+				'addManifestationSeats': [validateMinNumber(1)],
+				'addManifestationPrice': [validateMinNumber(0)],
+				'addManifestationStartDate': [validateRequired()],
+				'addManifestationStartTime': [validateRequired()],
+				'addManifestationEndDate': [validateRequired()],
+				'addManifestationEndTime': [validateRequired()],
+				'addManifestationType': [validateRequired()],
+				'addManifestationLocation': [validateLocation(this.value.locationId)]
 			};
 		},
 		

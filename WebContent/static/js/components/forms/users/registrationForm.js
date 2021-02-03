@@ -29,12 +29,12 @@ Vue.component('registration-form', {
 				birthdate: null
 			},
 			validators: {
-				'registrationUsername': [validateLength('registrationUsername', 3, 30)],
-				'registrationPassword': [validateLength('registrationPassword', 8, 30)],
-				'registrationName': [validateLength('registrationName', 2, 30)],
-				'registrationSurname': [validateLength('registrationSurname', 2, 30)],
-				'registrationBirthdate': [validateRequired('registrationBirthdate'), validateUserAge('registrationBirthdate')],
-				'registrationGender': [validateRequired('registrationGender')],
+				'registrationUsername': [validateLength(3, 30)],
+				'registrationPassword': [validateLength(8, 30)],
+				'registrationName': [validateLength(2, 30)],
+				'registrationSurname': [validateLength(2, 30)],
+				'registrationBirthdate': [validateRequired(), validateUserAge()],
+				'registrationGender': [validateRequired()],
 			}
 		}
 	},

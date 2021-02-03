@@ -1,5 +1,5 @@
-function validateLength(inputFieldId, minLength, maxLength) {
-	return function() {
+function validateLength(minLength, maxLength) {
+	return function(inputFieldId) {
 		const inputedText = $(`#${inputFieldId}`).val();
 		const inputedTextLength = inputedText.length;
 		if(inputedTextLength < minLength || inputedTextLength > maxLength) {
@@ -18,8 +18,8 @@ function validateLength(inputFieldId, minLength, maxLength) {
 	}
 }
 
-function validateRequired(inputFieldId) {
-	return function() {
+function validateRequired() {
+	return function(inputFieldId) {
 		const inputedText = $(`#${inputFieldId}`).val();
 		if(!inputedText) {
 			$(`#${inputFieldId}`).addClass('is-invalid');
@@ -37,8 +37,8 @@ function validateRequired(inputFieldId) {
 	}
 }
 
-function validateFloatType(inputFieldId) {
-	return function() {
+function validateFloatType() {
+	return function(inputFieldId) {
 		const inputedText = $(`#${inputFieldId}`).val();
 		if(!isFloat(inputedText)) {
 			$(`#${inputFieldId}`).addClass('is-invalid');
@@ -56,8 +56,8 @@ function validateFloatType(inputFieldId) {
 	}
 }
 
-function validateMinNumber(inputFieldId, minNumber) {
-	return function() {
+function validateMinNumber(minNumber) {
+	return function(inputFieldId) {
 		const inputedText = $(`#${inputFieldId}`).val();
 		
 		if(!inputedText || parseInt(inputedText) < minNumber) {
@@ -80,8 +80,8 @@ function isFloat(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
-function validateUserAge(inputFieldId) {
-	return function() {
+function validateUserAge() {
+	return function(inputFieldId) {
 		const userBirthdateText = $(`#${inputFieldId}`).val();
 		const userBirthdate = new Date(userBirthdateText);
 		let birthdateThreshold = new Date(Date.now());
@@ -102,8 +102,8 @@ function validateUserAge(inputFieldId) {
 	}
 }
 
-function validateLocation(inputFieldId, locationId) {
-	return function() {
+function validateLocation(locationId) {
+	return function(inputFieldId) {
 		if(!locationId) {
 			$(`#${inputFieldId}`).addClass('is-invalid');
 			

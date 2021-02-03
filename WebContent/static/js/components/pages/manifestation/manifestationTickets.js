@@ -75,7 +75,7 @@ Vue.component("manifestation-tickets", {
 				FanPit: 0,
 			},
 			validators: {
-            	'ticketAmountField': [validateMinNumber('ticketAmountField', 1)]
+            	'ticketAmountField': [validateMinNumber(1)]
             }
 			
 		};

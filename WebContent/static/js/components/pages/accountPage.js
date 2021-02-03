@@ -45,10 +45,10 @@ Vue.component('account-page', {
 				},
 				userRole: null,
 				validators: {
-					'registrationName': [validateLength('registrationName', 2, 30)],
-					'registrationSurname': [validateLength('registrationSurname', 2, 30)],
-					'registrationBirthdate': [validateRequired('registrationBirthdate'), validateUserAge('registrationBirthdate')],
-					'registrationGender': [validateRequired('registrationGender')]
+					'registrationName': [validateLength(2, 30)],
+					'registrationSurname': [validateLength(2, 30)],
+					'registrationBirthdate': [validateRequired(), validateUserAge()],
+					'registrationGender': [validateRequired()]
 				}
 			}
 

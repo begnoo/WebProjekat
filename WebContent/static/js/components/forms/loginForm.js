@@ -26,8 +26,8 @@ Vue.component('login-form', {
             username: null,
             password: null,
 			validators: {
-				'loginUsername': [validateRequired('loginUsername')],
-				'loginPassword': [validateRequired('loginPassword')]
+				'loginUsername': [validateRequired()],
+				'loginPassword': [validateRequired()]
 			}
         }
     },
