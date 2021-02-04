@@ -69,11 +69,11 @@ Vue.component('comments-small-table',
 									</button>
 									
 									<template v-if="userRole=='Seller' && comment.status=='Pending'">
-										<button type="button" class="btn btn-success btn-sm" v-on:click="changeStatusTo(comment.id, 'Approved')">
+										<button type="button" class="btn btn-success btn-sm" v-on:click="openChangeStatusToModal(comment.id, 'Approved')">
 											&#10003
 										</button>
 										
-										<button type="button" class="btn btn-danger btn-sm" v-on:click="changeStatusTo(comment.id, 'Refused')">
+										<button type="button" class="btn btn-danger btn-sm" v-on:click="openChangeStatusToModal(comment.id, 'Refused')">
 											&#10799
 										</button>
 									</template>
@@ -82,6 +82,14 @@ Vue.component('comments-small-table',
 					</tbody>
 		      </table>	      
 	    	</div>
+			<confirmation-modal
+				:type="statusToChange == 'Approved' ? 'success': 'danger'"
+				modalName="confirmationChangeStatusModal" 
+				title="Confirm Add" 
+				:callback="changeStatusTo"
+				:callbackData="[commentIdToChange, statusToChange]">
+				Are you sure you want to change the status of this comment to {{statusToChange}}?
+			</confirmation-modal>
 	    </div>
     `,
 
@@ -96,7 +104,9 @@ Vue.component('comments-small-table',
             		name: ""
         	},
             userRole: null
-            }
+            },
+			statusToChange: null,
+			commentIdToChange: null,
         }
     },
     
@@ -114,10 +124,21 @@ Vue.component('comments-small-table',
 			return text;
 		},
 		
-		changeStatusTo(commentId, status){
+		openChangeStatusToModal: function(commentId, status){
+			this.commentIdToChange = commentId;
+			this.statusToChange = status;
+			$("#confirmationChangeStatusModal").attr("style", "z-index: 1055; background: rgba(0, 0, 0, 0.3);");
+			$("#confirmationChangeStatusModal").modal("toggle");
+		},
+		
+		changeStatusTo: function(data){
+			commentId = data[0];
+			status = data[1];
+			console.log(commentId);
 			 axios(putRestConfig('/WebProjekat/rest/comments/' + commentId + '/status', {status: status}, {}))
 	            .then(response => {
-	            	toastr.error(`You have successfully changed status of comment ot ${status}.`, '')
+	            	toastr.success(`You have successfully changed status of comment to ${status}.`, '');
+					$("#confirmationChangeStatusModal").modal("toggle");
 	            	this.selectedComment.status = status;
 	            })
 	            .catch(function(error)

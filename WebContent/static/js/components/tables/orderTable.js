@@ -51,7 +51,7 @@ Vue.component("order-table", {
 			:callback="buyTickets"
 			:callbackData="shoppingCart">
 			Are you sure you want to buy this ticket order?
-		</confirmation-modal>+
+		</confirmation-modal>
 		<confirmation-modal
 			type="danger"
 			modalName="deleteTicketsModal" 

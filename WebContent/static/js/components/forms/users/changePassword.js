@@ -25,15 +25,6 @@ Vue.component('change-password-form', {
 				<div class="form-row justify-content-center">
 			  		<button v-on:click="validateChangePassword" type="submit" class="btn btn-primary">Change</button>
 				</div>
-					<confirmation-modal
-						v-on:closed="clearLastValidationWrapper"
-						type="primary"
-						modalName="confirmationChangePassword" 
-						title="Confirm Add" 
-						:callback="changePassword"
-						:callbackData="newPassword">
-						Are you sure you want to change your password?
-					</confirmation-modal>
 			</form>
     `,
 
@@ -51,17 +42,13 @@ Vue.component('change-password-form', {
     },
 
     methods: {
-		openChangePasswordConfirmationModall: function(){
-			$("#confirmationChangePassword").attr("style", "z-index: 1055; background: rgba(0, 0, 0, 0.3);");
-			$("#confirmationChangePassword").modal("toggle");
-		},
 		validateChangePassword: function(event){
 			event.preventDefault();
 
 			if(!executeValidation(this.validators)) {
 				return;
 			}
-			this.openChangePasswordConfirmationModall();
+			this.$emit("change-password-submit", this.changePassword, this.clearLastValidationWrapper);
 			
 		},
         changePassword: function() {

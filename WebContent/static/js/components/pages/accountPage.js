@@ -25,8 +25,21 @@ Vue.component('account-page', {
 		
 				<button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#changePasswordModal">Change Password</button>
 		    	<custom-modal modalName="changePasswordModal" title="Change Password">
-					<change-password-form v-on:change-password-success="closeModal">
+					<change-password-form 
+						v-on:change-password-submit="openChangePasswordConfirmationModal"
+						v-on:change-password-success="closeModal">
 					</change-password-form>
+					<template v-slot:inner-modal>
+						<confirmation-modal
+							v-on:closed="clearLastValidationWrapper"
+							type="primary"
+							modalName="confirmationChangePasswordModal" 
+							title="Confirm Password Change" 
+							:callback="changePassword"
+							callbackData="">
+							Are you sure you want change your password?
+						</confirmation-modal>
+					</template>
 				</custom-modal>
     		</form>
 
@@ -60,14 +73,22 @@ Vue.component('account-page', {
 					'registrationSurname': [validateLength(2, 30)],
 					'registrationBirthdate': [validateRequired(), validateUserAge()],
 					'registrationGender': [validateRequired()]
-				}
+				},
+				clearLastValidationWrapper: function(){},
+				changePassword: function(){},
 			}
 
     },
     
     methods:
 	{
-		openUpdateModall: function(){
+		openChangePasswordConfirmationModal: function(changePasswordCallback, clearCallback){
+			this.changePassword = changePasswordCallback;
+			this.clearLastValidationWrapper = clearCallback;
+			$("#confirmationChangePasswordModal").attr("style", "z-index: 1055; background: rgba(0, 0, 0, 0.3);");
+			$("#confirmationChangePasswordModal").modal("toggle");
+		},
+		openUpdateModal: function(){
 			$("#confirmationUpdateAccount").attr("style", "z-index: 1055; background: rgba(0, 0, 0, 0.3);");
 			$("#confirmationUpdateAccount").modal("toggle");
 		},
@@ -77,7 +98,7 @@ Vue.component('account-page', {
 			if(!executeValidation(this.validators)) {
 				return;
 			}
-			this.openUpdateModall();
+			this.openUpdateModal();
 		},
     	updateUser: function() {
 
@@ -109,7 +130,8 @@ Vue.component('account-page', {
 		},
 		
 		closeModal: function(){
-			$('#changePasswordModal').modal('toggle'); 
+			$('#confirmationChangePasswordModal').modal('toggle'); 
+			$('#changePasswordModal').modal('toggle');
 		}
 	},
 	

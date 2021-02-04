@@ -10,7 +10,8 @@ Vue.component('registration-form', {
 				v-bind:value="userInfo"
 				@input="(newUserInfo) => {userInfo = newUserInfo}"
 			></user-info-form>
-	  		<button v-on:click="createUser" type="submit" class="btn btn-primary">Register</button>
+	  		<button v-if="userType == 'buyer'"v-on:click="validateAndCreateUser" type="submit" class="btn btn-primary">Register</button>
+		  	<button v-if="userType == 'seller'"v-on:click="validateSeller" type="submit" class="btn btn-primary">Register</button>
 		</form>
     `,
 
@@ -41,13 +42,25 @@ Vue.component('registration-form', {
 	
 	methods:
 	{
-
-		createUser: function(event) {
+		validateAndCreateUser : function(event){
 			event.preventDefault();
 			
 			if(!executeValidation(this.validators)) {
 				return;
 			}
+			
+			this.createUser()
+		},
+		validateSeller: function(event){
+			event.preventDefault();
+			
+			if(!executeValidation(this.validators)) {
+				return;
+			}
+			this.$emit('seller-submit', this.createUser, this.clearLastValidationWrapper)
+		},
+
+		createUser: function() {
 
 			let path = '/WebProjekat/rest/users/';
 			path += this.userType;
@@ -84,6 +97,9 @@ Vue.component('registration-form', {
 			this.userInfo.surname = null;
 			this.userInfo.gender = null;
 			this.userInfo.birthdate = null;
+		},
+		clearLastValidationWrapper: function(){
+			clearLastValidation(this.validators);	
 		}
 	
 	}
