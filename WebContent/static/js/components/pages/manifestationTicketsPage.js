@@ -1,9 +1,9 @@
 Vue.component("manifestation-tickets-page", {
     template: `
     <div class="container">
+			<search-tickets-form :manifestationId="manifestationId" v-on:search-tickets-data="getBuyerTickets"></search-tickets-form>
             <div v-show="tickets && tickets.length != 0" class="row mx-auto">
 				<div class="col mt-3">
-					<search-tickets-form :manifestationId="manifestationId" v-on:search-tickets-data="getBuyerTickets"></search-tickets-form>
 	                <tickets-table :tickets="tickets"></tickets-table>
 					<pagination :trigger="trigger" :restConfig="restConfig" :pageSize="pageSize" v-on:update-page-data="setTickets"></pagination>
 				</div>

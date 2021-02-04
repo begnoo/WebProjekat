@@ -7,17 +7,21 @@ Vue.component("manifestation-card-list", {
 				<div class="card-body">
 					<div class="container">
 					  <div class="row">
-					    <div class="col-sm-3 align-self-center">
+					    <div class="col-sm-2 align-self-center">
 					    	<img class="img-thumbnail img-fluid" width=150 height=150 :src="manifestation.imagePath">
 					    </div>
-					    <div class="col-sm-3 align-self-center">
+					    <div class="col-sm-2 align-self-center">
 							{{getDateString(manifestation)[0]}} <br>
 							{{getDateString(manifestation)[1]}}
 					    </div>
-					    <div class="col-sm-4 align-self-center">
+					    <div class="col-sm-3 align-self-center">
 					      	<b>{{manifestation.name}}</b> <br>
 							{{manifestation.type}} <br>
 							Regular ticket price: {{manifestation.regularTicketPrice}} rsd
+					    </div>
+	 					<div class="col-sm-3 align-self-center">
+					      	{{manifestation.location.address.street}} {{manifestation.location.address.houseNumber}}<br>
+							{{manifestation.location.address.place}}, {{manifestation.location.address.postalCode}}<br>
 					    </div>
 						<div class="col-sm-1 text-center align-self-center">
 					      <button v-on:click="redirectToInfo(manifestation.id)" type="button" class="btn btn-primary">Tickets</button>

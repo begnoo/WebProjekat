@@ -2,8 +2,8 @@ Vue.component("user-tickets-page", {
     template: `
     <div class="container">
 		<div class="row">
+			<search-tickets-form v-on:search-tickets-data="getBuyerTickets"></search-tickets-form>
 			<div v-show="tickets && tickets.length != 0" class="col mt-3">
-				<search-tickets-form v-on:search-tickets-data="getBuyerTickets"></search-tickets-form>
                 <tickets-table :tickets="tickets"></tickets-table>
 				<pagination :trigger="trigger" :restConfig="restConfig" :pageSize="pageSize" v-on:update-page-data="setTickets"></pagination>
             </div>

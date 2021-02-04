@@ -2,6 +2,7 @@ package servlets;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
@@ -25,6 +26,7 @@ import core.requests.manifestations.CreateManifestationRequest;
 import core.requests.manifestations.UpdateManifestationRequest;
 import core.responses.manifestations.ManifestationRatingResponse;
 import core.responses.manifestations.WholeManifestationObjectResponse;
+import core.responses.tickets.WholeTicketObjectResponse;
 import core.service.IAdvanceSearchService;
 import core.service.IManifestationService;
 import core.service.IPaginationService;
@@ -65,10 +67,16 @@ public class ManifestationServlet extends AbstractServletBase {
 	@GET
 	@Path("manifestations/suggestions")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Manifestation> readSuggestions(@QueryParam("number") int number, @QueryParam("size") int size) {
+	public List<WholeManifestationObjectResponse> readSuggestions(@QueryParam("number") int number, @QueryParam("size") int size) {
 		List<Manifestation> manifestations = manifestationService.readSuggestions();
+		List<Manifestation> paginatedManifestation = paginationService.readPage(manifestations, new Page(number, size));
 		
-		return paginationService.readPage(manifestations, new Page(number, size));
+		List<WholeManifestationObjectResponse> wholeTicketObjectsForManifestation = paginatedManifestation.stream()
+				.map(ticket -> generateManifestationObjectResponse(ticket))
+				.collect(Collectors.toList());
+
+		
+		return wholeTicketObjectsForManifestation;
 	}
 	
 	@GET
@@ -95,12 +103,17 @@ public class ManifestationServlet extends AbstractServletBase {
 	@POST
 	@Path("manifestations/advance-search")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Manifestation> advanceSearch(ManifestationsSearchParamethers searchParamethers, @QueryParam("number") int number, @QueryParam("size") int size) {
+	public List<WholeManifestationObjectResponse> advanceSearch(ManifestationsSearchParamethers searchParamethers, @QueryParam("number") int number, @QueryParam("size") int size) {
 		super.validateRequest(searchParamethers);
 		
 		List<Manifestation> manifestations = searchService.search(searchParamethers);
+		List<Manifestation> paginatedManifestation = paginationService.readPage(manifestations, new Page(number, size));
 		
-		return paginationService.readPage(manifestations, new Page(number, size));
+		List<WholeManifestationObjectResponse> wholeTicketObjectsForManifestation = paginatedManifestation.stream()
+				.map(ticket -> generateManifestationObjectResponse(ticket))
+				.collect(Collectors.toList());
+		
+		return wholeTicketObjectsForManifestation;
 	}
 	
 	@POST

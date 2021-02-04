@@ -6,6 +6,7 @@ Vue.component("tickets-table", {
 				<table class="table">
 				  <thead class="thead-dark">
 				    <tr>
+					  <th scope="col">Id</th>
 				      <th scope="col">Manifestation</th>
 				      <th scope="col">Type</th>
 				      <th scope="col">Price(RSD)</th>
@@ -15,6 +16,7 @@ Vue.component("tickets-table", {
 				  </thead>
 				  <tbody>
 				    <tr v-for="ticket in tickets" :key="ticket.id">
+					  <td>{{ticket.uniqueId}}</td>
 				      <th><router-link :to="'/manifestations/' + ticket.manifestation.id">{{ticket.manifestation.name}}</router-link></th>
 				      <td>{{ticket.type}}</td>
 				      <td>{{ticket.price}}</td>

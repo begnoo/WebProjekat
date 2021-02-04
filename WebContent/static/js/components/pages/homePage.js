@@ -2,9 +2,8 @@ Vue.component("home-page", {
 	template: `
     <div class="container">
         <div class="row">
+
             <div class="col">
-            </div>
-            <div class="col-10 mt-3">
 				<search-manifestations-form v-on:search-manifestation-data="searchManifestations"></search-manifestations-form>
                 <manifestation-card-list :manifestations="manifestations"></manifestation-card-list>
 				
@@ -15,8 +14,7 @@ Vue.component("home-page", {
 				 data-toggle="modal"
 				 data-target="#addManifestationModal">Add Manifestation</button>
             </div>
-            <div class="col">
-            </div>
+
         </div>
         <div class="row">
 			<div class="col">
@@ -34,7 +32,7 @@ Vue.component("home-page", {
 	data: function() {
 		return {
 			manifestations: [],
-			pageSize: 3,
+			pageSize: 4,
 			selectedPage: 1,
 			restConfig: null,
 			restPath: "/WebProjekat/rest/manifestations/suggestions",

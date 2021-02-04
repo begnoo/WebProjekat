@@ -4,7 +4,7 @@ Vue.component('locations-page',
 			`
 	<div class="container">
 		<div class="row mt-3">
-			<locations-table :locations="locations" v-on:location-selected="updateLocation"></locations-table>
+			<locations-table :locations="locations" v-on:deleted-location="trigger = !trigger" v-on:location-selected="updateLocation"></locations-table>
 		</div>
 		<div class="row mt-3">
 			<div class="col">

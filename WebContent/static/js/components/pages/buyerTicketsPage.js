@@ -1,18 +1,18 @@
 Vue.component("buyer-tickets-page", {
     template: `
     <div class="container">
-		<search-tickets-form v-on:search-tickets-data="getBuyerTickets"></search-tickets-form>
         <div v-if="tickets" class="row mx-auto">
+			<search-tickets-form v-on:search-tickets-data="getBuyerTickets"></search-tickets-form>
             <div v-show="tickets && tickets.length != 0" class="col mt-3">
                 <buyer-tickets-table :tickets="tickets"></buyer-tickets-table>
 				<pagination :trigger="trigger" :restConfig="restConfig" :pageSize="pageSize" v-on:update-page-data="setTickets"></pagination>
-            </div>
-			<div v-show="selectFilter &&  tickets.length === 0" class="row">
-				<div class="col mt-5">
+            </div>		
+		</div>		
+		<div v-show="tickets.length === 0" class="row justify-content-center">
+				<div class="col mt-5" style="text-align: center">
 					<h3>No such tickets.</h3>
 				</div>
-			</div>		
-		</div>		
+		</div>
     </div>
     `,
 
@@ -25,7 +25,6 @@ Vue.component("buyer-tickets-page", {
 			restConfig: null,
 			pageSize: 5,
 			selectedPage : 1,
-			selectFilter: false,
 			trigger: false,
         }
     },
