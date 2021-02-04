@@ -3,12 +3,13 @@ Vue.component('users-page',
     template:
     `
 	<div class="container">
-		<div class="row mt-3">
+		<div class="row">
 			<div class="col">
 				<search-users-form v-on:search-user-data="getUsersBasedOnSearchData"></search-users-form>
 				<users-table :users="users" v-on:deleted-user="trigger = !trigger"></users-table>
 			</div>
 		</div>
+		
 		<div class="row mt-3">
 			<div class="col">
 				<button type="button"

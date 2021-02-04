@@ -3,19 +3,27 @@ Vue.component('manifestations-page',
 		template:
 			`
 	<div class="container">
-		<div class="row mt-3">
-			<search-manifestations-form :sellerId="sellerId" v-on:search-manifestation-data="searchManifestations"></search-manifestations-form>
-			<manifestation-table :manifestations="manifestations" 
-			v-on:deleted-manifestation="trigger = !trigger"
-			v-on:manifestation-selected="setSelectedManifestation"></manifestation-table>
-		</div>
-		<div class="row mt-3">
-			<div class="col">		
-				<pagination :trigger="trigger" :restConfig="restConfig" :pageSize="pageSize" :selectedPage="selectedPage" v-on:update-page-data="setManifestations"></pagination>
-			</div>
-
-		</div>
 		
+		<search-manifestations-form :sellerId="sellerId" v-on:search-manifestation-data="searchManifestations"></search-manifestations-form>
+
+		<div v-show="manifestations.length != 0">
+			<div class="row">
+				<manifestation-table :manifestations="manifestations" 
+				v-on:deleted-manifestation="trigger = !trigger"
+				v-on:manifestation-selected="setSelectedManifestation"></manifestation-table>
+			</div>
+			<div class="row mt-3">
+				<div class="col">		
+					<pagination :trigger="trigger" :restConfig="restConfig" :pageSize="pageSize" :selectedPage="selectedPage" v-on:update-page-data="setManifestations"></pagination>
+				</div>
+			</div>
+		</div>
+		<div v-show="manifestations.length == 0">
+			<div class="col">
+				<h3 style="text-align: center">No such manifestations.</h3>
+			</div>
+		</div>
+
   	</div>
     `,
 

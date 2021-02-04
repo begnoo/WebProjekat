@@ -49,7 +49,8 @@ Vue.component("manifestation-card-list", {
 	
 	props: ["manifestations"],
 	
-	data:{
+	data: function(){
+		return {};
 	},
 
     methods: {

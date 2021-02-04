@@ -9,7 +9,7 @@ Vue.component("buyer-tickets-page", {
             </div>		
 		</div>		
 		<div v-show="tickets.length === 0" class="row justify-content-center">
-				<div class="col mt-5" style="text-align: center">
+				<div class="col mt-3" style="text-align: center">
 					<h3>No such tickets.</h3>
 				</div>
 		</div>

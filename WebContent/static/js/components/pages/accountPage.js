@@ -2,56 +2,64 @@ Vue.component('account-page', {
     template:
     `
         <div class="container">
-    		<form>
-    			<user-info-form
-    				v-bind:value="userInfo"
-    				@input="(newUserInfo) => {userInfo = newUserInfo}"
-    			></user-info-form>
-    			
-    			<div v-if="userRole==='Buyer'">
-	    			<div class="form-row">
-			            <div class="form-group col-md-6">
-			                <label for="buyerTypeName">Buyer type</label>
-			                <input v-model="buyerInfo.buyerTypeName" type="text" class="form-control" id="buyerTypeName" style="background-color: white;" disabled>
-			            </div>
-			            <div class="form-group col-md-6">
-			                <label for="buyerPoints">Points</label>
-			                <input v-model="buyerInfo.points" type="text" class="form-control" id="buyerPoints" style="background-color: white;" disabled>
-			            </div>
-			        </div>
-    			</div>
-    			
-		  		<button v-on:click="validateLocation" type="submit" class="btn btn-primary">Update</button>
-		
-				<button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#changePasswordModal">Change Password</button>
-		    	<custom-modal modalName="changePasswordModal" title="Change Password">
-					<change-password-form 
-						v-on:change-password-submit="openChangePasswordConfirmationModal"
-						v-on:change-password-success="closeModal">
-					</change-password-form>
-					<template v-slot:inner-modal>
-						<confirmation-modal
-							v-on:closed="clearLastValidationWrapper"
-							type="primary"
-							modalName="confirmationChangePasswordModal" 
-							title="Confirm Password Change" 
-							:callback="changePassword"
-							callbackData="">
-							Are you sure you want change your password?
-						</confirmation-modal>
-					</template>
-				</custom-modal>
-    		</form>
-
-			<confirmation-modal
-				v-on:closed="clear"
-				type="primary"
-				modalName="confirmationUpdateAccount" 
-				title="Confirm Update" 
-				:callback="updateUser"
-				:callbackData="userInfo">
-				Are you sure you want to update your account info?
-			</confirmation-modal>
+			<div class="row justify-content-center align-items-center" style="min-height: 90vh;">
+				<div class="col-5">
+					<div class="card">
+						<div class="card-body">
+				    		<form>
+				    			<user-info-form
+				    				v-bind:value="userInfo"
+				    				@input="(newUserInfo) => {userInfo = newUserInfo}"
+				    			></user-info-form>
+				    			
+				    			<div v-if="userRole==='Buyer'">
+					    			<div class="form-row">
+							            <div class="form-group col-md-6">
+							                <label for="buyerTypeName">Buyer type</label>
+							                <input v-model="buyerInfo.buyerTypeName" type="text" class="form-control" id="buyerTypeName" style="background-color: white;" disabled>
+							            </div>
+							            <div class="form-group col-md-6">
+							                <label for="buyerPoints">Points</label>
+							                <input v-model="buyerInfo.points" type="text" class="form-control" id="buyerPoints" style="background-color: white;" disabled>
+							            </div>
+							        </div>
+				    			</div>
+				    			
+						  		<button v-on:click="validateLocation" type="submit" class="btn btn-primary">Update</button>
+						
+								<button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#changePasswordModal">Change Password</button>
+						    	<custom-modal modalName="changePasswordModal" title="Change Password">
+									<change-password-form 
+										v-on:change-password-submit="openChangePasswordConfirmationModal"
+										v-on:change-password-success="closeModal">
+									</change-password-form>
+									<template v-slot:inner-modal>
+										<confirmation-modal
+											v-on:closed="clearLastValidationWrapper"
+											type="primary"
+											modalName="confirmationChangePasswordModal" 
+											title="Confirm Password Change" 
+											:callback="changePassword"
+											callbackData="">
+											Are you sure you want change your password?
+										</confirmation-modal>
+									</template>
+								</custom-modal>
+				    		</form>
+				
+							<confirmation-modal
+								v-on:closed="clear"
+								type="primary"
+								modalName="confirmationUpdateAccount" 
+								title="Confirm Update" 
+								:callback="updateUser"
+								:callbackData="userInfo">
+								Are you sure you want to update your account info?
+							</confirmation-modal>
+						</div>
+					</div>
+				</div>
+			</div>
         </div>
     `,
 
