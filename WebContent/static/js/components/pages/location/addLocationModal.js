@@ -7,9 +7,20 @@ Vue.component("add-location-modal", {
 			:idPrefix="idPrefix"
 		></location-form>
 		<div class="modal-footer">
-			<button type="button" class="btn btn-primary" v-on:click="createLocation">Create Location</button>
+			<button type="button" class="btn btn-primary" v-on:click="validateLocation">Create Location</button>
 			<button type="button" class="btn btn-secondary" data-dismiss="modal" data-target="#addLocationModal">Cancel</button>
 		</div>
+		<template v-slot:inner-modal>
+			<confirmation-modal
+				v-on:closed="clearLastValidationWrapper"
+				type="primary"
+				modalName="confirmationAddModal" 
+				title="Confirm Add" 
+				:callback="createLocation"
+				:callbackData="value">
+				Are you sure you want to add this location?
+			</confirmation-modal>
+		</template>
     </custom-modal>
     `,
 
@@ -38,12 +49,19 @@ Vue.component("add-location-modal", {
     },
 
     methods: {
-        createLocation: function(event) {
+		openAddModal: function(){
+			$("#confirmationAddModal").attr("style", "z-index: 1055; background: rgba(0, 0, 0, 0.3);");
+			$("#confirmationAddModal").modal("toggle");
+		},
+		validateLocation: function(event){
 			event.preventDefault();
 			
 			if(!executeValidation(this.validators)) {
 				return;
 			}
+			this.openAddModal();
+		},
+        createLocation: function(event) {
 			
 			axios(postRestConfig("/WebProjekat/rest/locations", {},
 				{
@@ -61,6 +79,9 @@ Vue.component("add-location-modal", {
 					$('#addLocationModal').modal('toggle');
 					toastr.success('You have successfully added a new location.', '');
 					this.$emit("add-location-success");
+					$("#confirmationAddModal").modal("toggle");
+					$("#confirmationAddModal").modal("toggle");
+
 				})
 				.catch(function(error) {
 					toastr.error(error.response.data.errorMessage, '');
@@ -79,6 +100,10 @@ Vue.component("add-location-modal", {
 			this.value.houseNumber = null;
 			this.value.postalCode = null;
 			this.value.place = null;
+		},
+		
+		clearLastValidationWrapper: function(){
+			clearLastValidation(this.validators);
 		}
     },
 });

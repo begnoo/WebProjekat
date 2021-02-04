@@ -24,7 +24,7 @@ Vue.component("order-table", {
 							<td>{{ticketType}}</td>
 							<td>{{number}}</td>
 							<td>{{manifestationOrder.prices[ticketType]*number}}</td>
-							<td style="text-align: center"><button class="btn btn-danger btn-sm" v-on:click="deleteOrder(manifestationId, ticketType)">Delete</button></td>	
+							<td style="text-align: center"><button class="btn btn-danger btn-sm" v-on:click="openDeleteTicketsModal(manifestationId, ticketType)">Delete</button></td>	
 						</tr>
 					</template>
 				</tr>
@@ -35,7 +35,7 @@ Vue.component("order-table", {
 					<td></td>
 					<td></td>
 					<td>{{getTicketOrderSum()}}</td>
-					<td><button class="btn btn-success btn-sm" style="text-align: center" v-on:click="buyTickets">Buy Tickets</button></td>
+					<td><button class="btn btn-success btn-sm" style="text-align: center" v-on:click="openBuyTicketsModal">Buy Tickets</button></td>
 				</tr>
 			</tbody>
 			</table>
@@ -44,22 +44,51 @@ Vue.component("order-table", {
 			<h3>You have nothing in your shopping cart.</h3>
 		</div>
 	</div>
+		<confirmation-modal
+			type="success"
+			modalName="buyTicketsModal" 
+			title="Buy Tickets" 
+			:callback="buyTickets"
+			:callbackData="shoppingCart">
+			Are you sure you want to buy this ticket order?
+		</confirmation-modal>+
+		<confirmation-modal
+			type="danger"
+			modalName="deleteTicketsModal" 
+			title="Delete Tickets" 
+			:callback="deleteOrder"
+			:callbackData="[manifestationIdToDelete, ticketTypeToDelete]">
+			Are you sure you want to delete this ticket order?
+		</confirmation-modal>
 	</div>
     `,
 
 	data: function() {
 		return {
 			shoppingCart: {},
+			manifestationIdToDelete: null,
+			ticketTypeToDelete: null,
 		}
 	},
 
 	methods: {
-		deleteOrder: function(manifestationId, ticketType) {
+		openDeleteTicketsModal: function(manifestationId, ticketType){
+			this.manifestationIdToDelete = manifestationId;
+			this.ticketTypeToDelete = ticketType;
+			$('#deleteTicketsModal').modal('toggle');
+		},
+		openBuyTicketsModal: function(ticket){
+			$('#buyTicketsModal').modal('toggle');
+		},
+		deleteOrder: function(data) {
+			let manifestationId = data[0];
+			let ticketType = data[1];
 			this.shoppingCart[manifestationId].order[ticketType] = 0;
 			const numberOfTickets = Object.values(this.shoppingCart[manifestationId].order).reduce((sum, value) => sum += value);
 			if (!numberOfTickets) {
 				delete this.shoppingCart[manifestationId];
 			}
+			$('#deleteTicketsModal').modal('toggle');
 			localStorage.setObject("shoppingCart", this.shoppingCart);
 		},
 		getTicketOrderSum: function() {
@@ -70,7 +99,6 @@ Vue.component("order-table", {
 					sum += prices[ticketType] * order[ticketType];
 				}
 			}
-			console.log(sum);
 			return sum;
 		},
 		buyTickets: function() {
@@ -98,6 +126,7 @@ Vue.component("order-table", {
 					.catch(error => toastr.error(error.response.data.errorMessage, ''));
 			}
 			this.shoppingCart = {};
+			$('#buyTicketsModal').modal('toggle');
 			localStorage.setObject("shoppingCart", this.shoppingCart);
 		},
 		

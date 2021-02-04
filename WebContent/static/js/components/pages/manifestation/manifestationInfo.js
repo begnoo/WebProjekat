@@ -28,7 +28,7 @@ Vue.component("manifestation-info", {
 							</span>
 							</td>
 						</tr>
-						<tr>
+						<tr v-if="getEventStatus() == 'EVENT ENDED'">
 							<td class="td-label">Rating: </td>
 							<td v-if="manifestationRating == 0" class="td-info text-right">Not yet graded</td>
 							<td v-else class="td-info text-right"><rating-span :rating="manifestationRating"></rating-span></td>
@@ -89,7 +89,6 @@ Vue.component("manifestation-info", {
 
 	methods: {
 		getEventStatus: function() {
-			//ruzna html realizacija, menjati ako ostane vremena
 			const eventDate = moment(this.manifestation.eventDate, "YYYY-MM-DD hh:mm");
 			const eventEndDate = moment(this.manifestation.eventEndDate, "YYYY-MM-DD hh:mm");
 			if (eventDate > Date.now() && this.manifestation.seats > 0) {

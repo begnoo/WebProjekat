@@ -3,9 +3,22 @@ Vue.component("add-manifestation-modal", {
     <custom-modal modalName="addManifestationModal" title="Add Manifestation">
         <manifestation-form :value="value" :idPrefix='idPrefix' v-on:inputChange="newValue => value = newValue"></manifestation-form>
 		<div class="modal-footer">
-			<button type="button" class="btn btn-primary" v-on:click="createManifestation">Add Manifestation</button>
+			<button type="button" class="btn btn-primary" v-on:click="validateManifestation">Add Manifestation</button>
 			<button type="button" class="btn btn-secondary" data-dismiss="modal" data-target="#addManifestationModal">Cancel</button>
 		</div>
+		
+		<template v-slot:inner-modal>
+			<confirmation-modal
+				v-on:closed="clearLastValidationWrapper"
+				type="primary"
+				modalName="confirmationModal" 
+				title="Confirm Add" 
+				:callback="createManifestation"
+				:callbackData="value">
+				Are you sure you want to add this manifestation?
+			</confirmation-modal>
+		</template>
+		
     </custom-modal>
     `,
     data: function () {
@@ -27,13 +40,21 @@ Vue.component("add-manifestation-modal", {
     },
 
     methods: {
-        createManifestation: function (event) {
+		openAddModal: function(){
+			$("#confirmationModal").attr("style", "z-index: 1055; background: rgba(0, 0, 0, 0.3);");
+			$("#confirmationModal").modal("toggle");
+		},
+		validateManifestation: function (event) {
             event.preventDefault();
-            
-            if(!executeValidation(this.getValidators())) {
+
+			if(!executeValidation(this.getValidators())) {
 				return;
 			}
-            
+			this.openAddModal();
+
+        },
+        createManifestation: function () {       
+	   
             axios(postRestConfig("/WebProjekat/rest/manifestations", {}, {
                     name: this.value.name,
                     type: this.value.type,
@@ -52,6 +73,8 @@ Vue.component("add-manifestation-modal", {
 					this.value.id = response.data.id;
 					this.$emit("add-manifestation-success", response.data);
 					this.updateSeller(response.data);
+					$("#confirmationModal").modal("toggle");
+					$("#addManifestationModal").modal("toggle");
                 })
                 .catch(function (error) {
 					if(error.response.data.errorMessages) {
@@ -104,6 +127,10 @@ Vue.component("add-manifestation-modal", {
             this.value.regularTicketPrice = null;
             this.value.locationId = null;
 			this.value.id = null;
+		},
+		
+		clearLastValidationWrapper: function(){
+			clearLastValidation(this.getValidators());
 		}
     }
 });

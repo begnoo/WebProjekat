@@ -21,13 +21,24 @@ Vue.component('account-page', {
 			        </div>
     			</div>
     			
-		  		<button v-on:click="updateUser" type="submit" class="btn btn-primary">Update</button>
+		  		<button v-on:click="validateLocation" type="submit" class="btn btn-primary">Update</button>
+		
 				<button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#changePasswordModal">Change Password</button>
 		    	<custom-modal modalName="changePasswordModal" title="Change Password">
 					<change-password-form v-on:change-password-success="closeModal">
 					</change-password-form>
 				</custom-modal>
     		</form>
+
+			<confirmation-modal
+				v-on:closed="clear"
+				type="primary"
+				modalName="confirmationUpdateAccount" 
+				title="Confirm Update" 
+				:callback="updateUser"
+				:callbackData="userInfo">
+				Are you sure you want to update your account info?
+			</confirmation-modal>
         </div>
     `,
 
@@ -56,13 +67,20 @@ Vue.component('account-page', {
     
     methods:
 	{
-    	updateUser: function(event) {
+		openUpdateModall: function(){
+			$("#confirmationUpdateAccount").attr("style", "z-index: 1055; background: rgba(0, 0, 0, 0.3);");
+			$("#confirmationUpdateAccount").modal("toggle");
+		},
+		validateLocation: function(event){
             event.preventDefault();
             
 			if(!executeValidation(this.validators)) {
 				return;
 			}
-            
+			this.openUpdateModall();
+		},
+    	updateUser: function() {
+
 			let loggedUser = localStorage.getObject('loggedUser');
 			let userId = loggedUser.user.id;	
 
@@ -76,6 +94,7 @@ Vue.component('account-page', {
             })).then(response => {
 				this.clear();
 				toastr.success(`You have successfully updated your account.`, '');
+				$("#confirmationUpdateAccount").modal("toggle");
             	loggedUser.user = response.data;
             	localStorage.setObject('loggedUser', loggedUser);
             })

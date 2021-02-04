@@ -22,10 +22,19 @@ Vue.component('comment-form', {
 					</div>
 										
 					<div class="mb-3" >
-						<button v-on:click="sendComment" class="btn btn-primary">Submit</button>
+						<button v-on:click="validateComment" class="btn btn-primary">Submit</button>
 					</div>
 				</form>
 			</div>
+			<confirmation-modal
+				v-on:closed="clear"
+				type="primary"
+				modalName="confirmationAddCommentModal" 
+				title="Confirm Comment" 
+				:callback="sendComment"
+				:callbackData="commentText">
+				Are you sure you want to add this comment?
+			</confirmation-modal>
 		</div>
 	`,
 	
@@ -41,18 +50,25 @@ Vue.component('comment-form', {
 	
 	methods:
 	{
+		openAddCommentModal: function(){
+			$("#confirmationAddCommentModal").attr("style", "z-index: 1055; background: rgba(0, 0, 0, 0.3);");
+			$("#confirmationAddCommentModal").modal("toggle");
+		},
 		changeRating: function(changedRate)
 		{
 			this.rating = changedRate;
 		},
-		
-		sendComment: function(event)
-		{
+		validateComment: function(){
 			event.preventDefault();
 			
 			if(!executeValidation(this.validators)) {
 				return;
 			}
+			this.openAddCommentModal();
+		},
+		
+		sendComment: function()
+		{
 			
 			let loggedUser = localStorage.getObject('loggedUser');
 			if(!loggedUser)
@@ -74,6 +90,8 @@ Vue.component('comment-form', {
             ).then(response => {
 				this.clear();
 				toastr.success(`You have successfully posted a new comment.`, '');
+				$("#confirmationAddCommentModal").modal("toggle");
+
 			 })
              .catch(function(error)
              {

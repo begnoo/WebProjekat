@@ -19,8 +19,8 @@ Vue.component("buyer-tickets-table", {
 				      <td>{{ticket.type}}</td>
 				      <td>{{ticket.price}}</td>
 				      <td>{{ticket.status}}</td>
-					  <td v-if="ticket.status == 'Reserved'" style="text-align: center">
-						<button class="btn btn-danger btn-sm" v-on:click="cancelTicket(ticket)">Cancel</button>
+					  <td v-if="ticket.status == 'Reserved' && !isEventCancelationPeriodOver(ticket.manifestation)" style="text-align: center">
+						<button class="btn btn-danger btn-sm" v-on:click="openCancelModal(ticket)">Cancel</button>
 					  </td>	
 					  <td v-else></td>
 				    </tr>
@@ -28,18 +28,44 @@ Vue.component("buyer-tickets-table", {
 				</table>
             </div>
         </div>
+		<confirmation-modal
+		type="danger"
+		modalName="cancelModal" 
+		title="Cancel Ticket" 
+		:callback="cancelTicket"
+		:callbackData="ticketToCancel">
+			Are you sure you want to cancel this ticket?
+		</confirmation-modal>
     </div>
     `,
 
 	props: ["tickets"],
+	
+	data: function(){
+ 		return {
+			ticketToCancel: null,
+		};
+	},
 
 	methods: {
+		isEventCancelationPeriodOver: function(manifestation){
+			console.log("nada");
+			const eventDate = moment(manifestation.eventDate, "YYYY-MM-DD hh:mm");
+			const res = eventDate.isBefore(moment().add(7, 'd'));
+			console.log(res, eventDate, moment().add(7, 'd'));
+			return res;
+		},
+		openCancelModal: function(ticket){
+			this.ticketToCancel = ticket;
+			$('#cancelModal').modal('toggle');
+		},
 		cancelTicket: function(ticket) {
 			axios(deleteRestConfig("/WebProjekat/rest/tickets/" + ticket.id))
 				.then(response => {
 					if (this.updateTicket(response.data)) {
 						toastr.success(`You have successfully canceled ticket for ${ticket.manifestation.name}.`, '')
 						this.updateBuyerInLocalStorage(response.data.buyer, ticket.id);
+						$('#cancelModal').modal('toggle');
 					}
 				})
 				.catch(error => toastr.error(error.response.data.errorMessage, ''));

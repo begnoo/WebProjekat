@@ -7,9 +7,20 @@ Vue.component("edit-location-modal", {
 			:idPrefix="idPrefix"
 		></location-form>
 		<div class="modal-footer">
-			<button type="button" class="btn btn-primary" v-on:click="updateLocation">Update Location</button>
+			<button type="button" class="btn btn-primary" v-on:click="validateLocation">Update Location</button>
 			<button type="button" class="btn btn-secondary" data-dismiss="modal" data-target="#editLocationModal">Cancel</button>
 		</div>
+		<template v-slot:inner-modal>
+			<confirmation-modal
+				v-on:closed="clear"
+				type="success"
+				modalName="confirmationModal" 
+				title="Confirm Add" 
+				:callback="updateLocation"
+				:callbackData="updatedValue">
+				Are you sure you want to update this location?
+			</confirmation-modal>
+		</template>
 	</custom-modal>
     `,
 
@@ -31,12 +42,20 @@ Vue.component("edit-location-modal", {
 	},
 
     methods: {
-        updateLocation: function (event) {
-            event.preventDefault();
+		openEditModal: function(){
+			$("#confirmationModal").attr("style", "z-index: 1055; background: rgba(0, 0, 0, 0.3);");
+			$("#confirmationModal").modal("toggle");
+		},
+		validateLocation: function(event){
+			event.preventDefault();
 
 			if(!executeValidation(this.validators)) {
 				return;
 			}
+			
+			this.openEditModal();
+		},
+        updateLocation: function () {
 
 			const data = {
 					id: this.updatedValue.id,
@@ -55,6 +74,7 @@ Vue.component("edit-location-modal", {
 					toastr.success('You have successfully updated a location.', '');
 					this.trigger = !this.trigger;
 					this.$emit("update-location-success", response.data);
+					$("#confirmationModal").modal("toggle");
                 })
                 .catch(function (error) {
                     toastr.error(error.response.data.errorMessage, '');
@@ -66,6 +86,8 @@ Vue.component("edit-location-modal", {
 		}
     },
 	created: function(){
+					console.log("uhv2acen");
+
 		this.updatedValue = this.location;
 	}
 });

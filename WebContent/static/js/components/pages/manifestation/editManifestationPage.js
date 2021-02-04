@@ -9,9 +9,22 @@ Vue.component("edit-manifestation-modal", {
 							v-on:inputChange="newValue => updatedValue = newValue">
 		</manifestation-form>
 		<div class="modal-footer">
-			<button type="button" class="btn btn-primary" v-on:click="updateManifestation">Update Manifestation</button>
+			<button type="button" class="btn btn-primary" v-on:click="openUpdateModal">Update Manifestation</button>
 			<button type="button" class="btn btn-secondary" data-dismiss="modal" data-target="#editManifestationModal">Cancel</button>
         </div>
+		<template v-slot:inner-modal>
+			<confirmation-modal
+				v-on:closed="clear"
+				type="primary"
+				modalName="confirmationModal" 
+				title="Confirm Update" 
+				:callback="updateManifestation"
+				:callbackData="updatedValue">
+				Are you sure you want to update this manifestation?
+			</confirmation-modal>
+		</template>
+
+
     </custom-modal>
     `,
    
@@ -26,30 +39,38 @@ Vue.component("edit-manifestation-modal", {
 	},
 
     methods: {
-        updateManifestation: function (event) {
+		openUpdateModal: function(){
+			$("#confirmationModal").attr("style", "z-index: 1055; background: rgba(0, 0, 0, 0.3);");
+			$("#confirmationModal").modal("toggle");
+		},
+        validateManifestation: function (event) {
             event.preventDefault();
 
 			if(!executeValidation(this.getValidators())) {
 				return;
 			}
-			
+			openUpdateModal();
+
+        },
+		updateManifestation: function(){
 			const data = {
-					id: this.updatedValue.id,
-                    name: this.updatedValue.name,
-                    type: this.updatedValue.type,
-                    seats: this.updatedValue.seats,
-                    eventDate: this.updatedValue.eventDate + " " + this.updatedValue.eventTime,
-                    eventEndDate: this.updatedValue.eventEndDate + " " + this.updatedValue.eventEndTime,
-                    regularTicketPrice: this.updatedValue.regularTicketPrice,
-                    locationId: this.updatedValue.locationId,
-                };
-			console.log(data);
+				id: this.updatedValue.id,
+                name: this.updatedValue.name,
+                type: this.updatedValue.type,
+                seats: this.updatedValue.seats,
+                eventDate: this.updatedValue.eventDate + " " + this.updatedValue.eventTime,
+                eventEndDate: this.updatedValue.eventEndDate + " " + this.updatedValue.eventEndTime,
+                regularTicketPrice: this.updatedValue.regularTicketPrice,
+                locationId: this.updatedValue.locationId,
+            };
+
             axios(putRestConfig("/WebProjekat/rest/manifestations", {}, data))
                 .then((response) => {
 					this.clear();
                     toastr.success(`You have successfully updated a manifestation.`, '');
 					this.trigger = !this.trigger;
 					this.$emit("update-success", response.data);
+					$("#confirmationModal").modal("toggle");
                 })
                 .catch(function (error) {
                     if(error.response.data.errorMessages) {
@@ -64,8 +85,7 @@ Vue.component("edit-manifestation-modal", {
 	                    toastr.error(error.response.data.errorMessage, '');
 					}
                 });
-        },
-
+		},
 		getValidators: function() {
 			return {
 				'editManifestationName': [validateLength(3, 150)],

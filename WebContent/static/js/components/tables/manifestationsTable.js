@@ -11,7 +11,6 @@ Vue.component("manifestation-table", {
 							<th scope="col">Price(RSD)</th>
 							<th scope="col"></th>
 							<th scope="col"></th>
-							<th scope="col"></th>
 					  </tr>
 				</thead>
 				<tbody>
@@ -23,36 +22,61 @@ Vue.component("manifestation-table", {
 							<td>{{ manifestation.eventEndDate}}</td>
 							<td>{{ manifestation.seats}}</td>
 							<td>{{ manifestation.regularTicketPrice}}</td>
-							<td v-if="manifestation.status">Active</td>
-							<td v-else>Pending</td>
-							<td>
-							<button type="button"
-									class="btn btn-primary btn-sm"
-									v-on:click="viewManifestation(manifestation.id)">
-									View
-							</button>
 							
-							<button 
-							 v-if="manifestation.status"
-							 type="button"
-							 class="btn btn-secondary btn-sm"
-							 data-toggle="modal"
-							 data-target="#editLocationModal"
-						 	 v-on:click="goToManifestationTicketsPage(manifestation)">
-							 	Tickets
-							 </button>
-
-							<button type="button"
-							 class="btn btn-danger btn-sm"
-							 data-toggle="modal"
-							 data-target="#editLocationModal"
-						 	 v-on:click="deleteManifestation(manifestation)">
-							 	Delete
-							 </button>
-						  </td>	
+							<td>
+								
+								<button type="button"
+										class="btn btn-primary btn-sm"
+										v-on:click="viewManifestation(manifestation.id)">
+										View
+								</button>
+								
+								<button
+										v-if="isAdmin && !manifestation.status"
+										type="button"
+										class="btn btn-success btn-sm"
+										v-on:click="openApprovalModal(manifestation)">
+										Approve
+								</button>
+								
+								<button 
+								 v-if="manifestation.status"
+								 type="button"
+								 class="btn btn-secondary btn-sm"
+								 data-toggle="modal"
+							 	 v-on:click="goToManifestationTicketsPage(manifestation)">
+								 	Tickets
+								 </button>
+							</td>
+							
+							<td>
+								<button type="button"
+								 class="btn btn-danger btn-sm"
+								 data-toggle="modal"
+							 	 v-on:click="openDeleteModal(manifestation)">
+								 	Delete
+								 </button>
+							</td>
 					  </tr>
 				</tbody>
 	      </table>
+	  <confirmation-modal
+		type="success"
+		modalName="approvalModal" 
+		title="Approve Manifestation" 
+		:callback="approveManifestation"
+		:callbackData="manifestationToApprove">
+			Are you sure you want to approve this manifestation?
+		</confirmation-modal>
+		
+		<confirmation-modal
+		type="danger"
+		modalName="deleteModal" 
+		title="Delete Manifestation" 
+		:callback="deleteManifestation"
+		:callbackData="manifestationToDelete">
+			Are you sure you want to delete this manifestation?
+		</confirmation-modal>
   	</div>
     `,
 
@@ -61,6 +85,8 @@ Vue.component("manifestation-table", {
     data: function () {
         return {
             isAdmin: false,
+			manifestationToApprove: null,
+			manifestationToDelete: null,
         };
     },
 
@@ -68,6 +94,14 @@ Vue.component("manifestation-table", {
         emitSelectedManifestation: function (location) {
             this.$emit("manifestation-selected", location);
         },
+		openApprovalModal: function(manifestationId){
+			this.manifestationToApprove = manifestationId;
+			$('#approvalModal').modal('toggle');
+		},
+		openDeleteModal: function(manifestationId){
+			this.manifestationToDelete = manifestationId;
+			$('#deleteModal').modal('toggle');
+		},
 
         deleteManifestation: function (manifestation) {
             axios(
@@ -78,6 +112,8 @@ Vue.component("manifestation-table", {
                 .then((response) => {
                     toastr.success(`${manifestation.name} is deleted.`, "");
                     this.$emit("deleted-manifestation", response.data);
+					$('#deleteModal').modal('toggle');
+
                 })
                 .catch((error) =>
                     toastr.error(error.response.data.errorMessage, "")
@@ -90,7 +126,8 @@ Vue.component("manifestation-table", {
                 )
             )
                 .then((response) => {
-                    toastr.success(`${manifestation.name} is successfully approved.`, "")
+                    toastr.success(`${manifestation.name} is successfully approved.`, "");
+					$('#approvalModal').modal('toggle');
                     manifestation.status = true;
                 })
                 .catch((error) => toastr.error(error.response.data.errorMessage, ""));

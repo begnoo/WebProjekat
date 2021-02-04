@@ -51,7 +51,7 @@ Vue.component('users-table',
 					<p>Are you sure, that you want to block this user?</p>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="blockUser(userToBlock)">Yes</button>
+					<button type="button" class="btn btn-danger" data-dismiss="modal" v-on:click="blockUser(userToBlock)">Yes</button>
 					<button type="button" class="btn btn-secondary" data-dismiss="modal" data-target="#blockUser">No</button>
 				</div>
 			</div>
