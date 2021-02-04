@@ -11,7 +11,7 @@ Vue.component("search-tickets-form", {
 				    <div class="col-sm-10">
 					    <div class="input-group">	
 							<div class="btn-group" role="group" aria-label="Basic example">
-								<button v-on:click="this.submitSearch" type="submit" class="btn btn-primary">Search</button>
+								<button v-on:click="this.submitSearch" type="submit" class="btn btn-primary"><i class="fas fa-search"></button>
 								<button v-on:click="this.showHideForm" class="btn btn-primary dropdown-toggle"></button>
 							</div>
 						</div>

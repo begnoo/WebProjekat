@@ -35,15 +35,21 @@ Vue.component("manifestation-info", {
 						</tr>
 						<tr>
 							<td class="td-label">Event start: </td>
-							<td class="td-info text-right">{{this.manifestation.eventDate}}</td>
+							<td class="td-info text-right">
+							<i class="far fa-calendar-alt"></i> {{getDateTimeStrings(this.manifestation.eventDate)[0]}}
+							<i class="far fa-clock"></i> {{getDateTimeStrings(this.manifestation.eventDate)[1]}}
+							</td>
 						</tr>
 						<tr>
 							<td class="td-label">Event end: </td>
-							<td class="td-info text-right">{{this.manifestation.eventEndDate}}</td>
+							<td class="td-info text-right">
+							<i class="far fa-calendar-alt"></i> {{getDateTimeStrings(this.manifestation.eventEndDate)[0]}}
+							<i class="far fa-clock"></i> {{getDateTimeStrings(this.manifestation.eventEndDate)[1]}}
+							</td>
 						</tr>
 						<tr>
 							<td class="td-label">Seats left: </td>
-							<td class="td-info text-right">{{this.manifestation.seats}}</td>
+							<td class="td-info text-right">{{this.manifestation.seats}} <i class="fas fa-chair"></i></td>
 						</tr>
 						<tr>
 							<td class="td-label">Regular ticket price: </td>
@@ -57,11 +63,11 @@ Vue.component("manifestation-info", {
 						</tr>
 						<tr class="tr-address">
 							<td class="td-label">Address: </td>
-							<td class="td-info text-right">{{this.manifestation.location.address.street}} {{this.manifestation.location.address.houseNumber}}</td>
+							<td class="td-info text-right"><i class="far fa-compass"></i> {{this.manifestation.location.address.street}} {{this.manifestation.location.address.houseNumber}}</td>
 						</tr>
 						<tr>
 							<td></td>
-							<td class="td-info text-right">{{this.manifestation.location.address.place}}, {{this.manifestation.location.address.postalCode}}</td>
+							<td class="td-info text-right"><i class="fas fa-city"></i> {{this.manifestation.location.address.place}}, {{this.manifestation.location.address.postalCode}}</td>
 						</tr>
 						
 					</tbody>
@@ -100,6 +106,10 @@ Vue.component("manifestation-info", {
 			else if (eventDate <= Date.now()) {
 				return "EVENT STARTED";
 			}
+		},
+		
+		getDateTimeStrings: function(dateTimeString){
+			return dateTimeString.split(" ");
 		},
 		getCoordinates: function() {
 			return [this.manifestation.location.longitude, this.manifestation.location.latitude];

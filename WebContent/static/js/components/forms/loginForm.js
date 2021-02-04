@@ -1,22 +1,29 @@
 Vue.component('login-form', {
     template:
     `
-	<div class="d-flex justify-content-center min-vh-100 align-items-center">
-		<div class="row">
-			<form>
-			<div class="mb-3">
-				<label for="loginUsername" class="form-label">Username</label>
-				<input type="text" class="form-control" id="loginUsername" v-model="username">
+	<div class="container" style="min-height: 90vh;">
+		<div class="row justify-content-center align-items-center" style="min-height: 90vh;">
+			<div class="col-5">
+				<div class="card">
+					<div class="card-body">
+						<form>
+							<div class="mb-3">
+								<label for="loginUsername" class="form-label">Username</label>
+								<input type="text" class="form-control" id="loginUsername" v-model="username">
+							</div>
+							<div class="mb-3">
+								<label for="loginPassword" class="form-label">Password</label>
+								<input type="password" class="form-control" id="loginPassword" v-model="password">
+				            </div>
+				            <div class="d-flex d-flex justify-content-between">
+					            <button v-on:click="login" class="btn btn-primary">Login</button>
+					            <button v-on:click="redirectToRegister" class="btn btn-primary">Register</button>
+				            </div>
+						</form>
+					</div>
+				</div>
+
 			</div>
-			<div class="mb-3">
-				<label for="loginPassword" class="form-label">Password</label>
-				<input type="password" class="form-control" id="loginPassword" v-model="password">
-            </div>
-            <div class="d-flex d-flex justify-content-between">
-            <button v-on:click="login" class="btn btn-primary">Login</button>
-            <button v-on:click="redirectToRegister" class="btn btn-primary">Register</button>
-            </div>
-			</form>
 		</div>
 	</div>
     `,
@@ -29,7 +36,7 @@ Vue.component('login-form', {
 				'loginUsername': [validateRequired()],
 				'loginPassword': [validateRequired()]
 			}
-        }
+        };
     },
 
     methods:
