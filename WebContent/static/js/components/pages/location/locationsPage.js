@@ -3,7 +3,7 @@ Vue.component('locations-page',
 		template:
 			`
 	<div class="container">
-		<div class="row mt-3">
+		<div class="row mt-5">
 			<locations-table :locations="locations" v-on:deleted-location="trigger = !trigger" v-on:location-selected="updateLocation"></locations-table>
 		</div>
 		<div class="row mt-3">
