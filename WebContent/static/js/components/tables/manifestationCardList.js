@@ -66,6 +66,7 @@ Vue.component("manifestation-card-list", {
 		
 		redirectToInfo: function(id){
 			this.$router.push("manifestations/" + id);
+			this.$emit("redirection");
 		}
 
     },

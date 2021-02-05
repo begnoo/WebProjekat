@@ -3,7 +3,7 @@ Vue.component('custom-modal',
     template:
     `
 	<div class="modal fade" :id="modalName" tabindex="-1" role="dialog" v-bind:aria-hidden=true>
-		<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+		<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		    <div class="modal-content">
 		    	<div class="modal-header">
 		    		<h5 class="modal-title" id="commentModalLabel">{{title}}</h5>
@@ -20,7 +20,7 @@ Vue.component('custom-modal',
 	</div>
     `,
 
-	props: ["modalName", "title"],
+	props: ["modalName", "title", "xl"],
 
     data: function() {
  		return {
@@ -36,6 +36,8 @@ Vue.component('custom-modal',
     },
 		
 	mounted: function() {
-
+		if(this.xl){
+			$(`#${this.modalName} > .modal-dialog`).attr("style", "width:100%; max-width:1250px;");
+		}
 	}
 });

@@ -53,7 +53,6 @@ public class LocationsServlet extends AbstractServletBase {
 	
 	@GET
 	@Path("/")
-	@Authorize(roles = "Administrator,Seller")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Location> readAll(@QueryParam("number") int number, @QueryParam("size") int size)
 	{

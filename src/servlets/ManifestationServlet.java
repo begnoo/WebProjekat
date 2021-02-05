@@ -26,7 +26,6 @@ import core.requests.manifestations.CreateManifestationRequest;
 import core.requests.manifestations.UpdateManifestationRequest;
 import core.responses.manifestations.ManifestationRatingResponse;
 import core.responses.manifestations.WholeManifestationObjectResponse;
-import core.responses.tickets.WholeTicketObjectResponse;
 import core.service.IAdvanceSearchService;
 import core.service.IManifestationService;
 import core.service.IPaginationService;
@@ -71,12 +70,27 @@ public class ManifestationServlet extends AbstractServletBase {
 		List<Manifestation> manifestations = manifestationService.readSuggestions();
 		List<Manifestation> paginatedManifestation = paginationService.readPage(manifestations, new Page(number, size));
 		
-		List<WholeManifestationObjectResponse> wholeTicketObjectsForManifestation = paginatedManifestation.stream()
-				.map(ticket -> generateManifestationObjectResponse(ticket))
+		List<WholeManifestationObjectResponse> WholeManifestatiosnObjectResponse = paginatedManifestation.stream()
+				.map(manifestation -> generateManifestationObjectResponse(manifestation))
 				.collect(Collectors.toList());
 
 		
-		return wholeTicketObjectsForManifestation;
+		return WholeManifestatiosnObjectResponse;
+	}
+	
+	@GET
+	@Path("manifestations/location/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<WholeManifestationObjectResponse> readManifestationsByLocationId(@PathParam("id") UUID locationId, @QueryParam("number") int number, @QueryParam("size") int size) {
+		List<Manifestation> manifestations = manifestationService.readByLocationId(locationId);
+		List<Manifestation> paginatedManifestation = paginationService.readPage(manifestations, new Page(number, size));
+		
+		List<WholeManifestationObjectResponse> WholeManifestatiosnObjectResponse = paginatedManifestation.stream()
+				.map(manifestation -> generateManifestationObjectResponse(manifestation))
+				.collect(Collectors.toList());
+
+		
+		return WholeManifestatiosnObjectResponse;
 	}
 	
 	@GET
@@ -110,7 +124,7 @@ public class ManifestationServlet extends AbstractServletBase {
 		List<Manifestation> paginatedManifestation = paginationService.readPage(manifestations, new Page(number, size));
 		
 		List<WholeManifestationObjectResponse> wholeTicketObjectsForManifestation = paginatedManifestation.stream()
-				.map(ticket -> generateManifestationObjectResponse(ticket))
+				.map(manifestation -> generateManifestationObjectResponse(manifestation))
 				.collect(Collectors.toList());
 		
 		return wholeTicketObjectsForManifestation;

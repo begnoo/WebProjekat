@@ -12,6 +12,12 @@ Vue.component("navbar", {
 	      <li v-for="option in activeOptions" :key="option.name" class="nav-item active">
 	        <router-link :to="option.path" class="nav-link">{{option.name}}</router-link>
 	      </li>
+      	<li class="nav-item active">
+			<router-link to="/manifestations-map" class="nav-link">
+				Map
+			</router-link>
+		</li>
+
 		</ul>
 		<ul class="navbar-nav ml-auto">
 			<li v-if="this.sharedState.userLoggedIn" class="nav-item active">

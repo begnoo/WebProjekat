@@ -42,7 +42,11 @@ public class ManifestationService extends CrudService<Manifestation> implements 
 	public List<Manifestation> readByLocationId(UUID locationId) {
 		return repository.read()
 				.stream()
+				.filter(manifestation -> manifestation.isStatus())
 				.filter(manifestation -> manifestation.getLocationId().equals(locationId))
+				.filter(manifestation -> manifestation.getEventDate().isAfter(LocalDateTime.now()))
+				.filter(manifestation -> manifestation.getEventDate().isBefore(LocalDateTime.now().plusDays(7)))
+				.sorted((manifestation1, manifestation2) -> manifestation1.getEventDate().compareTo(manifestation2.getEventDate()))
 				.collect(Collectors.toList());
 	}
 	

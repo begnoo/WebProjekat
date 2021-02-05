@@ -22,7 +22,6 @@ Vue.component('login-form', {
 						</form>
 					</div>
 				</div>
-
 			</div>
 		</div>
 	</div>
