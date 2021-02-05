@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import core.service.IAuthorizationService;
 import core.service.IBuyerTypeService;
+import core.service.ICalendarService;
 import core.service.ICommentService;
 import core.service.IImageService;
 import core.service.IJwtService;
@@ -17,6 +18,7 @@ import core.service.IUserService;
 import repository.DbContext;
 import services.utils.factories.creators.AuthorizationServiceCreator;
 import services.utils.factories.creators.BuyerTypeServiceCreator;
+import services.utils.factories.creators.CalendarServiceCreator;
 import services.utils.factories.creators.CommentServiceCreator;
 import services.utils.factories.creators.ImageServiceCreator;
 import services.utils.factories.creators.JwtServiceCreator;
@@ -42,6 +44,7 @@ public class ServiceFactory implements IServiceFactory {
 		creators.put(ITicketService.class, TicketServiceCreator.class);
 		creators.put(ITicketOrderService.class, TicketOrderServiceCreator.class);
 		creators.put(IUserService.class, UserServiceCreator.class);
+		creators.put(ICalendarService.class, CalendarServiceCreator.class);
 	}
 	
 	@Override

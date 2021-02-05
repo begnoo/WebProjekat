@@ -17,7 +17,7 @@ const DistrustfulBuyersPage = {template: "<distrustful-buyers-page></distrustful
 const MyCommentsPage = {template: "<my-comments-page></my-comments-page>"};
 const ManifestationTicketsPage = {template: "<manifestation-tickets-page></manifestation-tickets-page>"};
 const MapPage = {template: "<map-page></map-page>"};
-
+const TimetablePage = {template: "<timetable-page></timetable-page>"};
 
 
 const router = new VueRouter({
@@ -41,6 +41,7 @@ const router = new VueRouter({
 		{ path: "/manifestation-tickets/:id", component: ManifestationTicketsPage },
 		{ path: "/seller-manifestations/:id", component: ManifestationsPage },
 		{ path: "/manifestations-map", component: MapPage },
+		{ path: "/timetable", component: TimetablePage },
     ],
 });
 
@@ -62,7 +63,7 @@ const routeAllowedRoles = {
 	"/manifestation-tickets/:id": ["Administrator", "Seller"],
 	"/seller-manifestations/:id": ["Administrator"],
 	"/manifestations-map": ["Administrator", "Buyer", "Seller", ""],
-
+	"/timetable": ["Buyer"]
 }
 
 const isUserAllowed = function(to, from, next){

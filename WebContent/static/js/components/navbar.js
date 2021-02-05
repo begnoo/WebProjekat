@@ -54,6 +54,7 @@ Vue.component("navbar", {
 				{name: "Tickets", path: "/buyer-tickets"},
 				{name : "Cart", path : "/cart"},
 				{name: "My Comments", path: "/my-comments"},
+				{name: "Calendar", path: "/timetable"}
 
 			],
 			sellerOptions: [

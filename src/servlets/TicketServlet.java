@@ -1,5 +1,7 @@
 package servlets;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -18,14 +20,17 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import core.domain.dto.BuyerTicketsForCalendar;
 import core.domain.dto.Page;
 import core.domain.dto.TicketOrder;
 import core.domain.dto.TicketsSearchParamethers;
 import core.domain.enums.TicketType;
 import core.domain.models.Ticket;
 import core.repository.IRepository;
+import core.responses.tickets.BuyerTicketsForCalendarResponse;
 import core.responses.tickets.WholeTicketObjectResponse;
 import core.service.IAdvanceSearchService;
+import core.service.ICalendarService;
 import core.service.IPaginationService;
 import core.service.ITicketOrderService;
 import core.service.ITicketService;
@@ -44,9 +49,10 @@ public class TicketServlet extends AbstractServletBase {
 
 	private ITicketService ticketService;
 	private ITicketOrderService ticketOrderService;
+	private ICalendarService calendarService;
 	private IAdvanceSearchService<Ticket, TicketsSearchParamethers> searchService;
 	private IPaginationService<Ticket> paginationService;
-
+	
 	public TicketServlet()
 	{
 		super();
@@ -58,7 +64,7 @@ public class TicketServlet extends AbstractServletBase {
 		
 		ticketService = (ITicketService) serviceFactory.getService(ITicketService.class, context);
 		ticketOrderService = (ITicketOrderService) serviceFactory.getService(ITicketOrderService.class, context);
-		
+		calendarService = (ICalendarService) serviceFactory.getService(ICalendarService.class, context);
 		paginationService = new PaginationService<Ticket>();
 
 		IRepository<Ticket> ticketRepository = new TicketRepository(context);
@@ -137,6 +143,29 @@ public class TicketServlet extends AbstractServletBase {
 		}
 		
 		return ticketOrderService.getTicketPricesWithBuyerDiscount(regularPrice, buyerTypeId);
+	}
+	
+	@GET
+	@Path("users/buyers/{buyerId}/tickets/calendar")
+	@Authorize(roles = "Buyer")
+	@UserSpecific()
+	@Produces(MediaType.APPLICATION_JSON)
+	public BuyerTicketsForCalendarResponse readTicketsOnDate(@PathParam("buyerId") UUID buyerId, @QueryParam("date") String date) {
+		LocalDate wantedDate = null;
+		try {
+			wantedDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		}
+		catch(Exception e) {
+			System.out.println("Bad date.");
+		}
+		
+		BuyerTicketsForCalendar buyerTickets = calendarService.getBuyerTicketsForDate(buyerId, wantedDate);
+		
+		List<WholeTicketObjectResponse> wholeTicketObjects = buyerTickets.getTicketsOnDate().stream()
+				.map(ticket -> generateTicketObjectResponse(ticket))
+				.collect(Collectors.toList());
+
+		return new BuyerTicketsForCalendarResponse(buyerTickets.getLocationsOfTickets(), wholeTicketObjects);
 	}
 	
 	@POST

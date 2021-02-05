@@ -1,10 +1,11 @@
 const UNAUTHORIZED = 401;
+const FORBIDEN = 403;
 
 axios.interceptors.response.use(
 	response => response,
 	error => {
 		const {status} = error.response;
-		if (status === UNAUTHORIZED) {
+		if (status === UNAUTHORIZED || status === FORBIDEN) {
 			logoutUser();
 	    }
 
