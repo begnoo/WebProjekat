@@ -52,6 +52,8 @@ Vue.component("manifestation-map", {
 					wrapX: false,
 	            });
 
+			const startingCoordinates = this.locations.length != 0 ? [this.locations[0].longitude, this.locations[0].latitude] : [45.28, 19.83];
+
             this.map = new ol.Map({
                 target: this.$refs["map-root"],
                 layers: [
@@ -66,7 +68,7 @@ Vue.component("manifestation-map", {
                 view: new ol.View({
                     zoom: this.zoom,
                     center: ol.proj.transform(
-	                    [this.locations[0].longitude, this.locations[0].latitude],
+	                    startingCoordinates,
 	                    "EPSG:4326",
 	                    "EPSG:3857"
                		),

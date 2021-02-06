@@ -41,6 +41,7 @@ Vue.component("location-form-map", {
             this.updateCoordinates(transformedCoordinates);
         },
         initMap: function () {
+			
             this.markerFeature = new ol.Feature({
                 geometry: new ol.geom.Point(ol.proj.fromLonLat(this.coordinates)),
             });
