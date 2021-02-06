@@ -26,7 +26,7 @@ Vue.component("manifestation-tickets", {
 						<label for="ticketsPrice" class="form-label">Price of tickets: </label>
 						<input type="text" style="background-color: white;" :value="ticketsPrice" class="form-control" name="ticketsPriceField" disabled>
 					</div>
-					<div v-if="isBuyer && !hasEventStarted()" class="mb-3">
+					<div v-if="isBuyer && !hasEventStarted() && manifestation.seats > 0" class="mb-3">
 						<button v-on:click="addToCart" class="btn btn-primary">Add to Cart</button>
 					</div>
 				</form>
@@ -115,6 +115,10 @@ Vue.component("manifestation-tickets", {
 			}
 			
 			if(this.isBuyer){
+				if(this.ticketAmount > this.manifestation.seats){
+					toastr.error(`There are only ${this.manifestation.seats} seats left`);
+					return;
+				}
 				if (!localStorage.getObject("shoppingCart")) {
 				const shoppingCart = {};
 				localStorage.setObject("shoppingCart", shoppingCart);

@@ -97,13 +97,13 @@ Vue.component("manifestation-info", {
 		getEventStatus: function() {
 			const eventDate = moment(this.manifestation.eventDate, "YYYY-MM-DD hh:mm");
 			const eventEndDate = moment(this.manifestation.eventEndDate, "YYYY-MM-DD hh:mm");
-			if (eventDate > Date.now() && this.manifestation.seats > 0) {
+			if (eventDate.toDate() > Date.now() && this.manifestation.seats > 0) {
 				return "EVENT AVAILABLE";
 			}
-			if (eventEndDate <= Date.now()) {
+			if (eventEndDate.toDate() <= Date.now()) {
 				return "EVENT ENDED";
 			}
-			else if (eventDate <= Date.now()) {
+			else if (eventDate.toDate() <= Date.now()) {
 				return "EVENT STARTED";
 			}
 		},
