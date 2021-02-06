@@ -106,7 +106,7 @@ Vue.component("location-form", {
 				if (address.town) {
 					this.value.place = address.town;
 				}
-				if (address.city) {
+				else if (address.city) {
 					this.value.place = address.city;
 				}
 				if (address.road) {
@@ -115,11 +115,14 @@ Vue.component("location-form", {
 				if (address.postCode) {
 					this.value.postalCode = address.postCode;
 				}
-				if (address.postcode) {
+				else if (address.postcode) {
 					this.value.postalCode = address.postcode;
 				}
 				if (address["house-number"]) {
 					this.value.houseNumber = address["house-number"];
+				}
+				else if (address["house_number"]) {
+					this.value.houseNumber = address["house_number"];
 				}
 			}
 		},

@@ -4,10 +4,14 @@ const FORBIDEN = 403;
 axios.interceptors.response.use(
 	response => response,
 	error => {
-		const {status} = error.response;
+		const { status } = error.response;
+		if (error.response.config.url == "/WebProjekat/rest/authorization") {
+			
+			return Promise.reject(error);
+		}
 		if (status === UNAUTHORIZED || status === FORBIDEN) {
 			logoutUser();
-	    }
+		}
 
 		return Promise.reject(error);
 	}
