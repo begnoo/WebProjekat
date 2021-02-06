@@ -68,7 +68,9 @@ Vue.component("buyer-tickets-table", {
 						$('#cancelModal').modal('toggle');
 					}
 				})
-				.catch(error => toastr.error(error.response.data.errorMessage, ''));
+				.catch(error => {
+					toastr.error(error.response.data.errorMessage, '');
+				});
 		},
 		updateTicket: function(updatedTicket) {
 			if (updatedTicket.length == 0) {
@@ -80,9 +82,9 @@ Vue.component("buyer-tickets-table", {
 			return true;
 		},
 		updateBuyerInLocalStorage: function(updatedBuyer, ticketId) {
-			let loggedUser = localStorage.getObject("loggedUser", ticketId);
+			let loggedUser = localStorage.getObject("loggedUser");
 			loggedUser.user.typeId = updatedBuyer.typeId;
-			loggedUser.user.points = loggedUser.points;
+			loggedUser.user.points = updatedBuyer.points;
 			ticket = loggedUser.user.tickets.find(ticket => ticket.id == ticketId);
 			ticket.status = "Canceled";
 			localStorage.setObject("loggedUser", loggedUser);
