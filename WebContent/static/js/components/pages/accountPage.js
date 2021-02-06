@@ -133,6 +133,16 @@ Vue.component('account-page', {
               });
         },
 
+		getBuyerInfo: function(buyerTypeId){
+			axios(getRestConfig('/WebProjekat/rest/buyer-type/' + buyerTypeId)).then(response => {
+            	this.buyerInfo.buyerTypeName = response.data.name;
+            })
+             .catch(function(error)
+              {
+                toastr.error(error.response.data.errorMessage, ''); 	
+              });
+		},
+
 		clear: function() {
 			clearLastValidation(this.validators);	
 		},
@@ -153,7 +163,7 @@ Vue.component('account-page', {
 		this.userRole = loggedUser.user.role;
 		
 		if(this.userRole === "Buyer") {
-			this.buyerInfo.buyerTypeName = loggedUser.user.type.name;
+			this.getBuyerInfo(loggedUser.user.typeId);
 			this.buyerInfo.points = loggedUser.user.points;
 		}
 	}		

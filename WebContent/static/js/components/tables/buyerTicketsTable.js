@@ -82,6 +82,7 @@ Vue.component("buyer-tickets-table", {
 			return true;
 		},
 		updateBuyerInLocalStorage: function(updatedBuyer, ticketId) {
+			console.log(updatedBuyer);
 			let loggedUser = localStorage.getObject("loggedUser");
 			loggedUser.user.typeId = updatedBuyer.typeId;
 			loggedUser.user.points = updatedBuyer.points;
