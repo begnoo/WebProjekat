@@ -44,9 +44,6 @@ public class ManifestationService extends CrudService<Manifestation> implements 
 				.stream()
 				.filter(manifestation -> manifestation.isStatus())
 				.filter(manifestation -> manifestation.getLocationId().equals(locationId))
-				.filter(manifestation -> manifestation.getEventDate().isAfter(LocalDateTime.now()))
-				.filter(manifestation -> manifestation.getEventDate().isBefore(LocalDateTime.now().plusDays(7)))
-				.sorted((manifestation1, manifestation2) -> manifestation1.getEventDate().compareTo(manifestation2.getEventDate()))
 				.collect(Collectors.toList());
 	}
 	
@@ -177,5 +174,15 @@ public class ManifestationService extends CrudService<Manifestation> implements 
 												.collect(Collectors.averagingInt(Integer::intValue));
 		
 		return (int) Math.round(rating);
+	}
+
+	@Override
+	public List<Manifestation> readByLocationIdInFollowingWeek(UUID locationId) {
+		return readByLocationId(locationId)
+				.stream()
+				.filter(manifestation -> manifestation.getEventDate().isAfter(LocalDateTime.now()))
+				.filter(manifestation -> manifestation.getEventDate().isBefore(LocalDateTime.now().plusDays(7)))
+				.sorted((manifestation1, manifestation2) -> manifestation1.getEventDate().compareTo(manifestation2.getEventDate()))
+				.collect(Collectors.toList());
 	}
 }

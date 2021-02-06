@@ -10,6 +10,8 @@ public interface IManifestationService extends ICrudService<Manifestation> {
 	
 	List<Manifestation> readByLocationId(UUID locationId);
 	
+	List<Manifestation> readByLocationIdInFollowingWeek(UUID locationId);
+	
 	List<Manifestation> readBySellerId(UUID sellerId);
 	
 	Manifestation approve(UUID manifestationId);

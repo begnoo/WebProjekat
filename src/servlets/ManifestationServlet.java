@@ -82,7 +82,7 @@ public class ManifestationServlet extends AbstractServletBase {
 	@Path("manifestations/location/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<WholeManifestationObjectResponse> readManifestationsByLocationId(@PathParam("id") UUID locationId, @QueryParam("number") int number, @QueryParam("size") int size) {
-		List<Manifestation> manifestations = manifestationService.readByLocationId(locationId);
+		List<Manifestation> manifestations = manifestationService.readByLocationIdInFollowingWeek(locationId);
 		List<Manifestation> paginatedManifestation = paginationService.readPage(manifestations, new Page(number, size));
 		
 		List<WholeManifestationObjectResponse> WholeManifestatiosnObjectResponse = paginatedManifestation.stream()
