@@ -133,14 +133,30 @@ Vue.component('account-page', {
               });
         },
 
-		getBuyerInfo: function(buyerTypeId){
-			axios(getRestConfig('/WebProjekat/rest/buyer-type/' + buyerTypeId)).then(response => {
-            	this.buyerInfo.buyerTypeName = response.data.name;
+		getUserInfo: function(userId){
+			axios(getRestConfig('/WebProjekat/rest/users/' + userId)).then(response => {
+            	let loggedUser = localStorage.getObject('loggedUser');
+				loggedUser.user = response.data;
+            	localStorage.setObject('loggedUser', loggedUser);
+				this.setFields(loggedUser.user);
             })
              .catch(function(error)
               {
                 toastr.error(error.response.data.errorMessage, ''); 	
               });
+		},
+		
+		setFields : function(user) {
+			this.userInfo.name = user.name;
+			this.userInfo.surname = user.surname;
+			this.userInfo.gender = user.gender;
+			this.userInfo.birthdate = user.birthdate.split(' ')[0];
+			this.userRole = user.role;
+		
+			if(this.userRole === "Buyer") {
+				this.buyerInfo.buyerTypeName = user.type.name;
+				this.buyerInfo.points = user.points;
+			}
 		},
 
 		clear: function() {
@@ -156,16 +172,7 @@ Vue.component('account-page', {
 	mounted: function()
 	{
 		let loggedUser = localStorage.getObject('loggedUser');
-		this.userInfo.name = loggedUser.user.name;
-		this.userInfo.surname = loggedUser.user.surname;
-		this.userInfo.gender = loggedUser.user.gender;
-		this.userInfo.birthdate = loggedUser.user.birthdate.split(' ')[0];
-		this.userRole = loggedUser.user.role;
-		
-		if(this.userRole === "Buyer") {
-			this.getBuyerInfo(loggedUser.user.typeId);
-			this.buyerInfo.points = loggedUser.user.points;
-		}
+		this.getUserInfo(loggedUser.user.id);
 	}		
 });
 

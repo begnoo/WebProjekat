@@ -6,9 +6,9 @@ axios.interceptors.response.use(
 	error => {
 		const { status } = error.response;
 		if (error.response.config.url == "/WebProjekat/rest/authorization") {
-			
 			return Promise.reject(error);
 		}
+		
 		if (status === UNAUTHORIZED || status === FORBIDEN) {
 			logoutUser();
 		}
