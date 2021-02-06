@@ -1,57 +1,12 @@
 [ {
-  "id" : "7ea2fb97-49c4-44bc-9283-5eaf552df20d",
-  "createdAt" : "2021-02-06 11:15",
-  "active" : true,
-  "latitude" : "45.255476227223596",
-  "longitude" : "16.861740782873927",
-  "address" : {
-    "id" : "1275bfe1-7c67-4320-81e8-7a8d24559e1a",
-    "createdAt" : "2021-02-06 11:15",
-    "active" : true,
-    "street" : "Cara Dusana",
-    "houseNumber" : "8",
-    "place" : "Beograd",
-    "postalCode" : "11000"
-  }
-}, {
-  "id" : "4e38a57f-30cb-4ab2-90ba-73472b88775a",
-  "createdAt" : "2021-02-06 11:15",
-  "active" : true,
-  "latitude" : "45.25232069530534",
-  "longitude" : "19.864217762093517",
-  "address" : {
-    "id" : "4cdc31b5-0a6a-4f4a-b847-32b6fae2b6b6",
-    "createdAt" : "2021-02-06 11:15",
-    "active" : true,
-    "street" : "Cajkovskog",
-    "houseNumber" : "8",
-    "place" : "Novi Sad",
-    "postalCode" : "21000"
-  }
-}, {
-  "id" : "6b89e4ad-ecd4-4536-8cfb-a491876dca54",
-  "createdAt" : "2021-02-06 11:15",
-  "active" : true,
-  "latitude" : "45.25318675266331",
-  "longitude" : "19.84244351316218",
-  "address" : {
-    "id" : "32c659ec-afb4-4d67-885b-0099ff06b4f8",
-    "createdAt" : "2021-02-06 11:15",
-    "active" : true,
-    "street" : "Narodnih heroja",
-    "houseNumber" : "3",
-    "place" : "Novi Sad",
-    "postalCode" : "21000"
-  }
-}, {
-  "id" : "e5b5984d-41ac-4eaf-9b72-78112ba5d53b",
-  "createdAt" : "2021-02-06 11:15",
+  "id" : "dd130604-9ee5-4ef4-97a5-5dd8bcfa5b33",
+  "createdAt" : "2021-02-06 12:07",
   "active" : true,
   "latitude" : "44.81433635371563",
   "longitude" : "20.421267940534413",
   "address" : {
-    "id" : "f5acde39-3fb5-4571-99a0-8e131f1b263c",
-    "createdAt" : "2021-02-06 11:15",
+    "id" : "0838b0f5-501d-41d1-a225-962352993209",
+    "createdAt" : "2021-02-06 12:07",
     "active" : true,
     "street" : "Bulevar Arsenija Carnojevica",
     "houseNumber" : " 58",
@@ -59,33 +14,78 @@
     "postalCode" : "11000"
   }
 }, {
-  "id" : "eab65766-9dbf-48c2-b361-03ff12ecadf7",
-  "createdAt" : "2021-02-06 11:15",
-  "active" : true,
-  "latitude" : "45.24467634915695",
-  "longitude" : "19.847757594244282",
-  "address" : {
-    "id" : "e30ac030-79c1-4031-8b8f-cffed5a2cbbb",
-    "createdAt" : "2021-02-06 11:15",
-    "active" : true,
-    "street" : "Doktora Ilije Djuricica",
-    "houseNumber" : "11",
-    "place" : "Novi Sad",
-    "postalCode" : "21000"
-  }
-}, {
-  "id" : "40e09269-97e9-4c43-a9d9-f77e5b7e5da4",
-  "createdAt" : "2021-02-06 11:15",
+  "id" : "0f2212ee-9b0d-4586-9ee5-9437961353e5",
+  "createdAt" : "2021-02-06 12:07",
   "active" : true,
   "latitude" : "45.2470805144055",
   "longitude" : "19.845354677817618",
   "address" : {
-    "id" : "1a698fd3-cc0b-49ee-b54b-9efabe1b5ff1",
-    "createdAt" : "2021-02-06 11:15",
+    "id" : "0906a302-058a-44f9-b49a-46101501db4d",
+    "createdAt" : "2021-02-06 12:07",
     "active" : true,
     "street" : "Sutjeska",
     "houseNumber" : "2",
     "place" : " Novi Sad",
+    "postalCode" : "21000"
+  }
+}, {
+  "id" : "dde70146-8c1f-42c5-a341-44199e4c0f35",
+  "createdAt" : "2021-02-06 12:07",
+  "active" : true,
+  "latitude" : "45.25232069530534",
+  "longitude" : "19.864217762093517",
+  "address" : {
+    "id" : "a82d8394-9f59-4973-bf16-101d1b1fdeba",
+    "createdAt" : "2021-02-06 12:07",
+    "active" : true,
+    "street" : "Cajkovskog",
+    "houseNumber" : "8",
+    "place" : "Novi Sad",
+    "postalCode" : "21000"
+  }
+}, {
+  "id" : "43afea4a-ad4f-40fa-886c-e4d015d7f7c6",
+  "createdAt" : "2021-02-06 12:07",
+  "active" : true,
+  "latitude" : "45.255476227223596",
+  "longitude" : "16.861740782873927",
+  "address" : {
+    "id" : "4daaa936-944f-4424-8f7b-78bf999e1f53",
+    "createdAt" : "2021-02-06 12:07",
+    "active" : true,
+    "street" : "Cara Dusana",
+    "houseNumber" : "8",
+    "place" : "Beograd",
+    "postalCode" : "11000"
+  }
+}, {
+  "id" : "625f142f-09e5-4d22-ab73-c6cc38bc228b",
+  "createdAt" : "2021-02-06 12:07",
+  "active" : true,
+  "latitude" : "45.25318675266331",
+  "longitude" : "19.84244351316218",
+  "address" : {
+    "id" : "0fdbc4c4-ea3d-44ac-af50-c93b18a4e5a0",
+    "createdAt" : "2021-02-06 12:07",
+    "active" : true,
+    "street" : "Narodnih heroja",
+    "houseNumber" : "3",
+    "place" : "Novi Sad",
+    "postalCode" : "21000"
+  }
+}, {
+  "id" : "0e5c6e92-6b7b-45f0-a7bf-1a9410a5d254",
+  "createdAt" : "2021-02-06 12:07",
+  "active" : true,
+  "latitude" : "45.24467634915695",
+  "longitude" : "19.847757594244282",
+  "address" : {
+    "id" : "105ed514-8082-4fec-87df-218904ca8ab2",
+    "createdAt" : "2021-02-06 12:07",
+    "active" : true,
+    "street" : "Doktora Ilije Djuricica",
+    "houseNumber" : "11",
+    "place" : "Novi Sad",
     "postalCode" : "21000"
   }
 } ]

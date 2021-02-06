@@ -101,7 +101,7 @@ Vue.component("order-table", {
 			}
 			return sum;
 		},
-		buyTickets: function() {
+		buyTickets: async function() {
 			for (let manifestationOrder of Object.values(this.shoppingCart)) {
 				const { manifestation, order } = manifestationOrder;
 
@@ -117,7 +117,7 @@ Vue.component("order-table", {
 					}
 				}
 
-				axios(postRestConfig("../WebProjekat/rest/tickets/", {}, shoppingCartToSend))
+				await axios(postRestConfig("../WebProjekat/rest/tickets/", {}, shoppingCartToSend))
 					.then(response => {
 						toastr.success(`We have received your order.`, '');
 						const updatedBuyer = response.data[0].buyer;

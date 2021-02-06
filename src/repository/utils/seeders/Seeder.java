@@ -60,9 +60,9 @@ public class Seeder {
 
 		// BuyerTypes
 		Repository<BuyerType> buyerTypeRepository = new Repository<>(context, BuyerType.class);
-		BuyerType goldType = new BuyerType("Gold", 10, 2000);
-		BuyerType silverType = new BuyerType("Silver", 5, 1500);
-		BuyerType bronzeType = new BuyerType("Bronze", 3, 1000);
+		BuyerType goldType = new BuyerType("Gold", 10, 35000);
+		BuyerType silverType = new BuyerType("Silver", 5, 20000);
+		BuyerType bronzeType = new BuyerType("Bronze", 3, 10000);
 		BuyerType defaultType = new BuyerType("Default", 0, 0);
 
 		goldType = buyerTypeRepository.create(goldType);
@@ -85,11 +85,11 @@ public class Seeder {
 		Buyer buyer1 = new Buyer("paneze", "3c403feaa682d4187c0d305e1b4fc41bfeb86375898e1f5820875c60774d4c87", "npnhgcjtqd", "Milos", "Panic", Gender.Male, LocalDateTime.now().minusYears(21),
 				new ArrayList<Ticket>(), 100, defaultType.getId(), defaultType);
 		Buyer buyer2 = new Buyer("majoneze", "f769c72cccca176947dd0a95da60912e2b1665d1a1be12f2632b23ffde463643", "yyjzmhgnsc", "Dalibor", "Malic", Gender.Male, LocalDateTime.now().minusYears(50),
-				new ArrayList<Ticket>(), 950, bronzeType.getId(), bronzeType);
+				new ArrayList<Ticket>(), 19999, bronzeType.getId(), bronzeType);
 		Buyer buyer3 = new Buyer("sljuxa", "380bcdb605215810a942bc3276469b3efd03def53f93570d8f4850983a6bdb03", "mhvahaapiy", "Marko", "Suljak", Gender.Male, LocalDateTime.now().minusYears(13),
-				new ArrayList<Ticket>(), 1600, silverType.getId(), silverType);
+				new ArrayList<Ticket>(), 21000, silverType.getId(), silverType);
 		Buyer buyer4 = new Buyer("nadxa", "e5f449ea84b08e6cdd236a83d0b37fba2255cd4dc32548bfa8576d72dc904d7f", "qjabyspexs", "Nadezda", "Seratlic", Gender.Female, LocalDateTime.now().minusYears(90),
-				new ArrayList<Ticket>(), 2800, goldType.getId(), goldType);
+				new ArrayList<Ticket>(), 35010, goldType.getId(), goldType);
 		Buyer buyer5 = new Buyer("zocalez", "ec49cebd3de09ae74e737eff274ed658ba6438ef78a99e42e1225cf2b3599737", "eqzafpzyqj", "Zoran", "Jankov", Gender.Male, LocalDateTime.now().minusYears(21),
 				new ArrayList<Ticket>(), 500, defaultType.getId(), defaultType);
 
@@ -146,12 +146,12 @@ public class Seeder {
 				1500, false, location3.getId(), location3,
 				seller2.getId(), seller2, "../WebProjekat/rest/images/default.jpg");
 		Manifestation manifestation8 = new Manifestation("Odbrana projekta", ManifestationType.Festival, 1000,
-				LocalDateTime.of(LocalDate.of(2021, Month.FEBRUARY, 6), LocalTime.of(12, 0)), 
-				LocalDateTime.of(LocalDate.of(2021, Month.FEBRUARY, 6), LocalTime.of(14, 0)),
+				LocalDateTime.of(LocalDate.of(2021, Month.FEBRUARY, 6), LocalTime.of(14, 0)), 
+				LocalDateTime.of(LocalDate.of(2021, Month.FEBRUARY, 6), LocalTime.of(15, 0)),
 				1500, true, location6.getId(), location6,
 				seller1.getId(), seller1, "../WebProjekat/rest/images/ntp.jpg");
 		Manifestation manifestation9 = new Manifestation("Proslava projekta", ManifestationType.Festival, 4,
-				LocalDateTime.of(LocalDate.of(2021, Month.FEBRUARY, 6), LocalTime.of(14, 20)), 
+				LocalDateTime.of(LocalDate.of(2021, Month.FEBRUARY, 6), LocalTime.of(15, 20)), 
 				LocalDateTime.of(LocalDate.of(2021, Month.FEBRUARY, 7), LocalTime.of(10, 00)),
 				500, true, location6.getId(), location6,
 				seller1.getId(), seller1, "../WebProjekat/rest/images/pivo.jpg");

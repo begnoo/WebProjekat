@@ -1,29 +1,29 @@
 [ {
-  "id" : "b4e486c3-40c8-4b42-8cce-6f8e3abca1c9",
-  "createdAt" : "2021-02-06 11:15",
+  "id" : "db9445c0-d0a7-4726-8b8f-8505b28ba6b6",
+  "createdAt" : "2021-02-06 12:07",
   "active" : true,
   "name" : "Default",
   "discount" : 0,
   "minimumPoints" : 0
 }, {
-  "id" : "475eb501-7d7e-49f9-b7fc-bccc3beca8ad",
-  "createdAt" : "2021-02-06 11:15",
-  "active" : true,
-  "name" : "Gold",
-  "discount" : 10,
-  "minimumPoints" : 2000
-}, {
-  "id" : "9e80c331-1e6b-4faf-819d-f6eaa117f1be",
-  "createdAt" : "2021-02-06 11:15",
-  "active" : true,
-  "name" : "Silver",
-  "discount" : 5,
-  "minimumPoints" : 1500
-}, {
-  "id" : "7a72f2c7-27ae-4802-8ee4-3aa6f33e452b",
-  "createdAt" : "2021-02-06 11:15",
+  "id" : "f697fb17-bdd2-48c7-892c-30e0f7bbb705",
+  "createdAt" : "2021-02-06 12:07",
   "active" : true,
   "name" : "Bronze",
   "discount" : 3,
-  "minimumPoints" : 1000
+  "minimumPoints" : 10000
+}, {
+  "id" : "33fef5bb-f8bc-465d-a8bf-3d58cb73b0c8",
+  "createdAt" : "2021-02-06 12:07",
+  "active" : true,
+  "name" : "Silver",
+  "discount" : 5,
+  "minimumPoints" : 20000
+}, {
+  "id" : "fe4db9c1-2599-4edc-b337-b9adfcdb7c92",
+  "createdAt" : "2021-02-06 12:07",
+  "active" : true,
+  "name" : "Gold",
+  "discount" : 10,
+  "minimumPoints" : 35000
 } ]
