@@ -104,8 +104,8 @@ public class TicketService extends CrudService<Ticket> implements ITicketService
 			throw new MissingEntityException(String.format("Ticket with id = %s does not exists.", ticketId));
 		}
 		
-		boolean hasNotStarted = ticket.getManifestationDate().isAfter(LocalDateTime.now());
-		if(hasNotStarted) {
+		boolean hasNotStartedAndTicketIsReserved = ticket.getManifestationDate().isAfter(LocalDateTime.now()) && ticket.getStatus() == TicketStatus.Reserved;
+		if(hasNotStartedAndTicketIsReserved) {
 			returnSeatsAndTakeUserPoints(ticket, -1);
 		}
 		

@@ -27,7 +27,7 @@ Vue.component('comment-form', {
 				</form>
 			</div>
 			<confirmation-modal
-				v-on:closed="clear"
+				v-on:closed="clearLastValidationWrapper"
 				type="primary"
 				modalName="confirmationAddCommentModal" 
 				title="Confirm Comment" 
@@ -107,6 +107,9 @@ Vue.component('comment-form', {
 		clearForm: function() {
 			this.rating = 1;
 			this.commentText = "";
+		},
+		clearLastValidationWrapper: function(){
+			clearLastValidation(this.validators);
 		}
 	}
 });

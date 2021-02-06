@@ -50,7 +50,7 @@ Vue.component("manifestation-page", {
 		},
 		hasEventEnded: function(){
 			const eventEndDate = moment(this.manifestation.eventEndDate, "YYYY-MM-DD hh:mm");
-			return eventEndDate <= Date.now();
+			return eventEndDate.isBefore(moment());
 		},
 
 	},

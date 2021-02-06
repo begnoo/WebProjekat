@@ -2,7 +2,7 @@ Vue.component('distrustful-buyers-page',
 {
     template:
     `
-	<div>
+	<div class="mt-5">
 		<div v-show="users.length != 0">
 	    	<users-table block="true" v-on:deleted-user="trigger = !trigger" :users="users"></users-table>
     		<pagination :trigger="trigger" :restConfig="restConfig" :pageSize="pageSize" :selectedPage="selectedPage" v-on:update-page-data="setUsers"></pagination>

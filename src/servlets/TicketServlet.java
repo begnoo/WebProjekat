@@ -115,8 +115,7 @@ public class TicketServlet extends AbstractServletBase {
 	
 	@GET
 	@Path("users/buyers/{buyerId}/tickets")
-	@Authorize(roles = "Administrator,Buyer")
-	@UserSpecific()
+	@Authorize()
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<WholeTicketObjectResponse> readByBuyerId(@PathParam("buyerId") UUID buyerId, @QueryParam("only-reserved") boolean onlyReserved, @QueryParam("number") int number, @QueryParam("size") int size) {
 		List<Ticket> ticketsOfBuyer;
