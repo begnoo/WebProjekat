@@ -147,9 +147,14 @@ public class Seeder {
 				seller2.getId(), seller2, "../WebProjekat/rest/images/default.jpg");
 		Manifestation manifestation8 = new Manifestation("Odbrana projekta", ManifestationType.Festival, 1000,
 				LocalDateTime.of(LocalDate.of(2021, Month.FEBRUARY, 6), LocalTime.of(12, 0)), 
-				LocalDateTime.of(LocalDate.of(2021, Month.FEBRUARY, 6), LocalTime.of(15, 0)),
-				1500, false, location6.getId(), location6,
-				seller1.getId(), seller1, "../WebProjekat/rest/images/default.jpg");
+				LocalDateTime.of(LocalDate.of(2021, Month.FEBRUARY, 6), LocalTime.of(14, 0)),
+				1500, true, location6.getId(), location6,
+				seller1.getId(), seller1, "../WebProjekat/rest/images/ntp.jpg");
+		Manifestation manifestation9 = new Manifestation("Proslava projekta", ManifestationType.Festival, 4,
+				LocalDateTime.of(LocalDate.of(2021, Month.FEBRUARY, 6), LocalTime.of(14, 20)), 
+				LocalDateTime.of(LocalDate.of(2021, Month.FEBRUARY, 7), LocalTime.of(10, 00)),
+				500, true, location6.getId(), location6,
+				seller1.getId(), seller1, "../WebProjekat/rest/images/pivo.jpg");
 
 		manifestationRepository.create(manifestation1);
 		manifestationRepository.create(manifestation2);
@@ -159,7 +164,7 @@ public class Seeder {
 		manifestationRepository.create(manifestation6);
 		manifestationRepository.create(manifestation7);
 		manifestationRepository.create(manifestation8);
-
+		manifestationRepository.create(manifestation9);
 
 		seller1.getManifestations().add(manifestation1);
 		seller2.getManifestations().add(manifestation2);

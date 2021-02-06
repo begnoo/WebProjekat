@@ -2,7 +2,7 @@ Vue.component('manifestations-modal',
 {
     template:
     `
-	<custom-modal modalName="manifestationsModal" title="Current Manifestations" xl="true">
+	<custom-modal modalName="manifestationsModal" title="Upcoming Manifestations" xl="true">
 		<div class="container">
 			<div class="row">
 				<div class="col">
