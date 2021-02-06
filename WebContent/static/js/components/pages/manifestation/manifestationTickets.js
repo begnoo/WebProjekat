@@ -94,12 +94,14 @@ Vue.component("manifestation-tickets", {
 			if (loggedUser) {
 				const buyerTypeId = this.isBuyer ? loggedUser.user.typeId : null;
 				axios(getRestConfig("../WebProjekat/rest/tickets/prices", {
-					typeId: buyerTypeId,
+					buyerTypeId: buyerTypeId,
 					price: regularTicketPrice,
 				}))
 					.then(
-						(response) =>
-							(this.ticketPricesWithDiscounts = response.data)
+						(response) => {
+							this.ticketPricesWithDiscounts = response.data
+						}
+
 					)
 					.catch((error) => toastr.error(error.response.data.errorMessage, ''));
 			}

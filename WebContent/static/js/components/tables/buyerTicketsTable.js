@@ -51,10 +51,8 @@ Vue.component("buyer-tickets-table", {
 
 	methods: {
 		isEventCancelationPeriodOver: function(manifestation){
-			console.log("nada");
 			const eventDate = moment(manifestation.eventDate, "YYYY-MM-DD hh:mm");
 			const res = eventDate.isBefore(moment().add(7, 'd'));
-			console.log(res, eventDate, moment().add(7, 'd'));
 			return res;
 		},
 		openCancelModal: function(ticket){
